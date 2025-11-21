@@ -1,7 +1,7 @@
-
-fun main() {
-    println("ByteBloom Academy: Ecosystem Project Starter")
-    println("✅ Project setup is correct and runnable.")
+import Data.Classes.Files.parseMenteData
+fun main(){
+    val mentee = parseMenteData()
+    println(mentee)
 }
 
 
