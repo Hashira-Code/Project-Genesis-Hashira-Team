@@ -16,4 +16,12 @@ fun parsePreformanceData(): List<PerformanceRaw>{
 
 
 }
+fun parseTeamData(): List<TeamRaw> {
+    return File("src/main/resources/teams.csv")
+        .readLines()
+        .drop(1)
+        .map { it.split(",") }
+        .map { TeamRaw(it[0], it[1], it[2]) }
+}
+
 
