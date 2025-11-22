@@ -20,6 +20,7 @@ fun parsePreformanceData(): List<PerformanceRaw> {
     }
 }
 
+
 // Function to read teams.csv and convert each line into a TeamRaw object
 fun parseTeamData(): List<TeamRaw> {
     return File("src/main/resources/teams.csv")
