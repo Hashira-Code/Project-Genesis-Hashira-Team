@@ -1,15 +1,13 @@
 
-import Data.Classes.Files.parseMenteData
-import Data.Classes.Files.parsePreformanceData
-import Data.Classes.Files.parseTeamData
+import models.parseMenteeData
+import models.parsePerformanceData
+import models.parseTeamData
 
 fun main(){
-    // Call the parser functions to read the CSV data
-    val mentee = parseMenteData()
-    // Print the number of items to make sure the parsing works
+    val mentee = parseMenteeData()
     println(mentee.size)
 
-    val performance = parsePreformanceData()
+    val performance = parsePerformanceData()
     println(performance.size)
 
     val teams = parseTeamData()
