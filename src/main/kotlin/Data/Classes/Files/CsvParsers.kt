@@ -2,16 +2,22 @@ package Data.Classes.Files
 
 import java.io.File
 
-// Function to read mentees.csv and convert each line into a MenteeRaw object
+
 fun parseMenteData(): List<MenteeRaw> {
-    val lines1 = File("src/main/resources/mentees.csv").readLines()
-    return lines1.drop(1).map { line ->
-        val parts = line.split(",")
-        MenteeRaw(parts[0].trim(), parts[1].trim(), parts[2].trim())
-    }
+    return File("src/main/resources/mentees.csv")
+        .readLines()
+        .drop(1)
+        .map { line ->
+            val fields=line.split(",")
+            MenteeRaw(
+                fields[0].trim()
+            )
+
+        }
+
 }
 
-// Function to read performance.csv and convert each line into a PerformanceRaw object
+
 fun parsePreformanceData(): List<PerformanceRaw> {
     val lines2 = File("src/main/resources/performance.csv").readLines()
     return lines2.drop(1).map { line2 ->
@@ -21,7 +27,8 @@ fun parsePreformanceData(): List<PerformanceRaw> {
 }
 
 
-// Function to read teams.csv and convert each line into a TeamRaw object
+
+
 fun parseTeamData(): List<TeamRaw> {
     return File("src/main/resources/teams.csv")
         .readLines()
