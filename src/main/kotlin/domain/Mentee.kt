@@ -6,7 +6,5 @@ data class Mentee(
     val teamId: String
 ) {
     var team: Team? = null
-    var submissions : List<PerformanceSubmission> = emptyList()
-
-
+    var submissions = mutableListOf<PerformanceSubmission>()
 }
