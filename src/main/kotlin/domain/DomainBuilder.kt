@@ -6,21 +6,19 @@ import models.PerformanceRaw
 
 class DomainBuilder {
 
-    fun buildTeams(rawTeams: List<TeamRaw>): List<Team> {
+    private fun buildTeams(rawTeams: List<TeamRaw>): List<Team> {
         return rawTeams.map { rawTeam ->
             Team(
                 teamId = rawTeam.teamId,
                 teamName = rawTeam.teamName,
-                mentorLead = rawTeam.mentorLead
+                mentorLead = rawTeam.mentorLead,
+                mentees = mutableListOf()
 
             )
         }
     }
 
-
-
-
-    fun buildMentees(rawMentees: List<MenteeRaw>, teams: List<Team>): List<Mentee> {
+    private fun buildMentees(rawMentees: List<MenteeRaw>, teams: List<Team>): List<Mentee> {
             val teamsById = teams.associateBy { it.teamId }
             return rawMentees.map { rawMentee ->
                 val team = teamsById[rawMentee.teamId]
@@ -34,13 +32,9 @@ class DomainBuilder {
                 team?.mentees?.add(mentee)
                 mentee
             }
-
     }
 
-
-
-
-    fun buildSubmissions(rawSubmissions: List<PerformanceRaw>, mentees: List<Mentee>) {
+    private fun buildSubmissions(rawSubmissions: List<PerformanceRaw>, mentees: List<Mentee>) {
         val menteesById = mentees.associateBy { it.menteeId }
         rawSubmissions.forEach { raw ->
             val submission = PerformanceSubmission(
@@ -52,6 +46,7 @@ class DomainBuilder {
             menteesById[raw.menteeId]?.submissions?.add(submission)
         }
     }
+
     fun buildDomain(
         rawTeams: List<TeamRaw>,
         rawMentees: List<MenteeRaw>,
