@@ -1,10 +1,9 @@
 package domain
 
 data class Mentee(
-    val menteeId: String,
+    val id: String,
     val name: String,
-    val teamId: String
-) {
+    val teamId: String,
+    val submissions: MutableList<PerformanceSubmission> = mutableListOf(),
     var team: Team? = null
-    var submissions = mutableListOf<PerformanceSubmission>()
-}
+)

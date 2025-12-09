@@ -1,7 +1,7 @@
 package models
 
 data class MenteeRaw(
-    val menteeId: String,
+    val id: String,
     val name: String,
     val teamId: String
 )
