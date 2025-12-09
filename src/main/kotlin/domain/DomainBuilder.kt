@@ -24,7 +24,7 @@ class DomainBuilder {
             val mentee = Mentee(
                 Id = raw.Id,
                 name = raw.name,
-                teamId = raw.Id
+                teamId = raw.teamId
             )
             val team = teamsById[raw.teamId]
             mentee.assignTeam(team)
