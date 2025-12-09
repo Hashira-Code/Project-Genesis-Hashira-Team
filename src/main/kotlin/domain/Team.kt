@@ -5,4 +5,8 @@ data class Team(
     val teamName: String,
     val mentorLead: String,
     val mentees: MutableList<Mentee> = mutableListOf()
-)
+){
+    fun addMentee(mentee: Mentee){
+        mentees.add(mentee)
+    }
+}
