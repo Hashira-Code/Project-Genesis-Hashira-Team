@@ -20,7 +20,7 @@ fun main(){
     val firstTeam = teams.firstOrNull()
 
     if (firstTeam != null) {
-        println("Team: ${firstTeam.teamName}")
+        println("Team: ${firstTeam.Name}")
         println("Mentor Lead: ${firstTeam.mentorLead}")
         println("Mentees:")
 

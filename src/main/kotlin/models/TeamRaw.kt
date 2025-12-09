@@ -1,7 +1,7 @@
 package models
 
 data class TeamRaw(
-    val id: String,
+    val teamId: String,
     val teamName: String,
     val mentorLead: String
 )

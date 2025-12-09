@@ -9,20 +9,18 @@ class DomainBuilder {
     private fun buildTeams(rawTeams: List<TeamRaw>): List<Team> {
         return rawTeams.map { raw->
             Team(
-                id = raw.id,
-                teamName = raw.teamName,
-                mentorLead = raw.mentorLead,
-                mentees = mutableListOf()
-
+                id = raw.teamId,
+                Name = raw.teamName,
+                mentorLead = raw.mentorLead
             )
         }
     }
     private fun buildMentees(rawMentees: List<MenteeRaw>, teams: List<Team>): List<Mentee> {
             val teamsById = teams.associateBy { it.id }
             return rawMentees.map { raw ->
-                val team = teamsById[raw.id]
+                val team = teamsById[raw.menteeId]
                 val mentee = Mentee(
-                    id = raw.id,
+                    id = raw.menteeId,
                     name = raw.name,
                     teamId = raw.teamId
                 )
@@ -36,11 +34,10 @@ class DomainBuilder {
         rawSubmissions.forEach { raw ->
             val submission = PerformanceSubmission(
                 menteeId = raw.menteeId,
-                submissionId = raw.submissionId,
-                submissionType = raw.submissionType,
+                id = raw.submissionId,
+                type = raw.submissionType ,
                 score = raw.score
             )
-            menteesById[raw.menteeId]?.addSubmission(submission)
         }
     }
     fun buildDomain(
