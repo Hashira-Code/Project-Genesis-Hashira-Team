@@ -26,7 +26,7 @@ fun main(){
 
 
         firstTeam.mentees.forEach { mentee ->
-            println(" - ${mentee.name} (ID: ${mentee.Id})")
+            println(" - ${mentee.name} (ID: ${mentee.id})")
         }
     } else {
         println("No Teams")

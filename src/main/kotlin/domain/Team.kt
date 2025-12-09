@@ -1,7 +1,7 @@
 package domain
 
 data class Team(
-    val Id: String,
+    val id: String,
     val teamName: String,
     val mentorLead: String,
     val mentees: MutableList<Mentee> = mutableListOf()
