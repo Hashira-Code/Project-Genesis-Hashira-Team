@@ -2,13 +2,10 @@ import models.parseTeamData
 import models.parseMenteeData
 import models.parsePerformanceData
 import domain.DomainBuilder
-
 fun main(){
-
     val rawTeams = parseTeamData()
     val rawMentees = parseMenteeData()
     val rawSubmissions = parsePerformanceData()
-
     val domainBuilder = DomainBuilder()
     val teams = domainBuilder.buildDomain(
         rawTeams,
