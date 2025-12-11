@@ -15,16 +15,11 @@ fun main(){
         rawMentees,
         rawSubmissions
     )
-
-
     val firstTeam = teams.firstOrNull()
-
     if (firstTeam != null) {
-        println("Team: ${firstTeam.Name}")
+        println("Team: ${firstTeam.name}")
         println("Mentor Lead: ${firstTeam.mentorLead}")
         println("Mentees:")
-
-
         firstTeam.mentees.forEach { mentee ->
             println(" - ${mentee.name} (ID: ${mentee.id})")
         }

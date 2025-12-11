@@ -7,50 +7,54 @@ import models.PerformanceRaw
 class DomainBuilder {
 
     private fun buildTeams(rawTeams: List<TeamRaw>): List<Team> {
-        return rawTeams.map { raw->
+        return rawTeams.map { raw ->
             Team(
                 id = raw.teamId,
-                Name = raw.teamName,
+                name = raw.teamName,
                 mentorLead = raw.mentorLead
             )
         }
     }
-   private fun buildMentees(rawMentees: List<MenteeRaw>, teams: List<Team>): List<Mentee> {
-        val teamsById = getTeamsById(teams)
+
+    private fun buildMentees(rawMentees: List<MenteeRaw>, teams: List<Team>): List<Mentee> {
+        val teamsById = teams.associateBy { it.id }
+
         return rawMentees.map { raw ->
-            val team = getTeamForRaw(raw, teamsById)
-            val mentee = createMenteeFromRaw(raw)
-            setTeamAndAddMentee(mentee, team)
+            val mentee = createMentee(raw)
+            val team = teamsById[raw.teamId]
+            mentee.team = team
+            team?.mentees?.add(mentee)
             mentee
         }
     }
-    private fun getTeamsById(teams: List<Team>) =
-        teams.associateBy { it.id }
-    private fun getTeamForRaw(raw: MenteeRaw, teamsById: Map<String, Team>): Team? {
-            return teamsById[raw.teamId]
+
+    private fun createMentee(raw: MenteeRaw): Mentee {
+        return Mentee(
+            id = raw.menteeId,
+            name = raw.name,
+            teamId = raw.teamId
+        )
     }
-    private fun createMenteeFromRaw(raw: MenteeRaw): Mentee {
-            return Mentee(
-                id = raw.menteeId,
-                name = raw.name,
-                teamId = raw.teamId
-            )
-    }
-    private fun setTeamAndAddMentee(mentee: Mentee, team: Team?) {
-            mentee.team = team
-            team?.mentees?.add(mentee)
-    }
+
     private fun buildSubmissions(rawSubmissions: List<PerformanceRaw>, mentees: List<Mentee>) {
         val menteesById = mentees.associateBy { it.id }
+
         rawSubmissions.forEach { raw ->
-            val submission = PerformanceSubmission(
-                menteeId = raw.menteeId,
-                id = raw.submissionId,
-                type = raw.submissionType ,
-                score = raw.score
-            )
+            val submission = createSubmission(raw)
+            val mentee = menteesById[raw.menteeId]
+            mentee?.submissions?.add(submission)
         }
     }
+
+    private fun createSubmission(raw: PerformanceRaw): PerformanceSubmission {
+        return PerformanceSubmission(
+            id = raw.submissionId,
+            type = raw.submissionType,
+            score = raw.score,
+            menteeId = raw.menteeId
+        )
+    }
+
     fun buildDomain(
         rawTeams: List<TeamRaw>,
         rawMentees: List<MenteeRaw>,
