@@ -27,7 +27,7 @@ class DomainBuilder {
     private fun getTeamsById(teams: List<Team>) =
         teams.associateBy { it.id }
     private fun getTeamForRaw(raw: MenteeRaw, teamsById: Map<String, Team>): Team? {
-            return teamsById[raw.menteeId]
+            return teamsById[raw.teamId]
     }
     private fun createMenteeFromRaw(raw: MenteeRaw): Mentee {
             return Mentee(
