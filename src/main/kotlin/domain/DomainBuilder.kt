@@ -1,11 +1,8 @@
 package domain
-
 import models.TeamRaw
 import models.MenteeRaw
 import models.PerformanceRaw
-
 class DomainBuilder {
-
     private fun buildTeams(rawTeams: List<TeamRaw>): List<Team> {
         return rawTeams.map { raw ->
             Team(
@@ -15,7 +12,6 @@ class DomainBuilder {
             )
         }
     }
-
     private fun buildMentees(rawMentees: List<MenteeRaw>, teams: List<Team>): List<Mentee> {
         val teamsById = teams.associateBy { it.id }
 
@@ -27,7 +23,6 @@ class DomainBuilder {
             mentee
         }
     }
-
     private fun createMentee(raw: MenteeRaw): Mentee {
         return Mentee(
             id = raw.menteeId,
@@ -35,7 +30,6 @@ class DomainBuilder {
             teamId = raw.teamId
         )
     }
-
     private fun buildSubmissions(rawSubmissions: List<PerformanceRaw>, mentees: List<Mentee>) {
         val menteesById = mentees.associateBy { it.id }
 
@@ -45,7 +39,6 @@ class DomainBuilder {
             mentee?.submissions?.add(submission)
         }
     }
-
     private fun createSubmission(raw: PerformanceRaw): PerformanceSubmission {
         return PerformanceSubmission(
             id = raw.submissionId,
@@ -54,7 +47,6 @@ class DomainBuilder {
             menteeId = raw.menteeId
         )
     }
-
     fun buildDomain(
         rawTeams: List<TeamRaw>,
         rawMentees: List<MenteeRaw>,
