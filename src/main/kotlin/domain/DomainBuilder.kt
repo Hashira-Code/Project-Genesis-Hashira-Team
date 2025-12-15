@@ -13,22 +13,31 @@ class DomainBuilder {
         }
     }
     private fun buildMentees(rawMentees: List<MenteeRaw>, teams: List<Team>): List<Mentee> {
-        val teamsById = teams.associateBy { it.id }
+        val teamsById = getTeamsById(teams)
         return rawMentees.map { raw ->
-            val mentee = createMentee(raw)
-            val team = teamsById[raw.teamId]
-            mentee.team = team
-            team?.mentees?.add(mentee)
+            val team = getTeamForRaw(raw, teamsById)
+            val mentee = createMenteeFromRaw(raw)
+            setTeamAndAddMentee(mentee, team)
             mentee
         }
     }
-    private fun createMentee(raw: MenteeRaw): Mentee {
+    private fun getTeamsById(teams: List<Team>)=
+            teams.associateBy{it.id}
+    private fun getTeamForRaw(raw: MenteeRaw,teamsById: Map<String, Team>):Team?{
+        return teamsById[raw.teamId]
+    }
+    private fun createMenteeFromRaw(raw: MenteeRaw): Mentee {
         return Mentee(
             id = raw.menteeId,
             name = raw.name,
             teamId = raw.teamId
         )
     }
+    private fun setTeamAndAddMentee(mentee: Mentee,team: Team?){
+         mentee.team = team
+         team?.mentees?.add(mentee)
+    }
+    
     private fun buildSubmissions(rawSubmissions: List<PerformanceRaw>, mentees: List<Mentee>) {
         val menteesById = mentees.associateBy { it.id }
         rawSubmissions.forEach { raw ->
