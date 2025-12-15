@@ -43,10 +43,7 @@ class DomainBuilder {
             teamId = raw.teamId
         )
     }
-    private fun setTeamAndAddMentee(
-        mentee: Mentee,
-        team: Team?
-    ) {
+    private fun setTeamAndAddMentee(mentee: Mentee,  team: Team? ) {
         mentee.team = team
         team?.mentees?.add(mentee)
     }
