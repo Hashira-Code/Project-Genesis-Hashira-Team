@@ -9,7 +9,6 @@ class DomainBuilder {
         buildSubmissions(rawSubmissions, mentees)
         return teams
         }
-     }
      private fun buildTeams(rawTeams: List<TeamRaw>): List<Team> {
         return rawTeams.map { raw ->
             createTeamFromRaw(raw)
@@ -66,6 +65,6 @@ class DomainBuilder {
             menteeId = raw.menteeId
         )
     }
-
+}
 
 
