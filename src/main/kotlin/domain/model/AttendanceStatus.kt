@@ -6,9 +6,6 @@ enum class AttendanceStatus {
     LATE,
     UNKNOWN;
 
-    fun isAbsent() = this == ABSENT
-    fun isPresent() = this == PRESENT
-    fun isLate() = this == LATE
 
     companion object {
 
