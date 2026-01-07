@@ -1,4 +1,4 @@
-package DataRaw
+package dataRaw
 
 data class menteeRaw(
     val id: String,

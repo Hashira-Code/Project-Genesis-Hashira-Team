@@ -1,4 +1,4 @@
-package DataRaw
+package dataRaw
 
 data class teamRaw(
     val id: String,
