@@ -8,9 +8,7 @@ import dataRaw.teamRaw
 import java.io.File
 
 class csvDataSource(val path:String): dataSource {
-    private val rawList= File(path).readLines().drop(1).map { Raw ->
-        Raw.split(",")
-    }
+
     override fun getAllAttendance():List<AttendanceRaw>{
        return  attendanceParse()
     }
@@ -32,7 +30,7 @@ class csvDataSource(val path:String): dataSource {
 
 
     private fun menteeParse():List<menteeRaw>{
-         return rawList.map{Raw ->
+         return  readLinesCsv(path).map{Raw ->
              menteeRaw(
                  id=Raw[0].trim(),
                  name=Raw[1].trim(),
@@ -41,7 +39,7 @@ class csvDataSource(val path:String): dataSource {
          } }
 
     private fun teamParse():List<teamRaw>{
-        return rawList.map{Raw ->
+        return readLinesCsv(path).map{Raw ->
             teamRaw(
                 id=Raw[0].trim(),
                 name=Raw[1].trim(),
@@ -50,7 +48,7 @@ class csvDataSource(val path:String): dataSource {
         } }
 
     private fun projectParse():List<projectRaw>{
-        return rawList.map{Raw ->
+        return  readLinesCsv(path).map{Raw ->
             projectRaw(
                 id=Raw[0].trim(),
                 name=Raw[1].trim(),
