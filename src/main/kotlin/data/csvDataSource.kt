@@ -1,5 +1,7 @@
 package data
 
+import dataRaw.AttendanceRaw
+import dataRaw.PerformanceRaw
 import dataRaw.menteeRaw
 import dataRaw.projectRaw
 import dataRaw.teamRaw
@@ -8,6 +10,13 @@ import java.io.File
 class csvDataSource(val path:String): dataSource {
     private val rawList= File(path).readLines().drop(1).map { Raw ->
         Raw.split(",")
+    }
+    override fun getAllAttendance():List<AttendanceRaw>{
+       return  attendanceParse()
+    }
+
+    override fun getAllPerformance(): List<PerformanceRaw> {
+      return performanceParse()
     }
     override fun getAllMentees(): List<menteeRaw> {
        return menteeParse()
@@ -20,6 +29,7 @@ class csvDataSource(val path:String): dataSource {
     override fun getAllProjects(): List<projectRaw> {
         return projectParse()
     }
+
 
     private fun menteeParse():List<menteeRaw>{
          return rawList.map{Raw ->
@@ -47,4 +57,41 @@ class csvDataSource(val path:String): dataSource {
                 teamId=Raw[2].trim()
             )
         } }
-}
+    private fun performanceParse(): List<PerformanceRaw> {
+        return readLinesCsv("performance.csv").mapNotNull { raw ->
+            PerformanceRaw(
+                raw[1],
+                raw[2],
+                raw[3].toDoubleOrNull() ?:0.0,
+                raw[0]
+
+            )
+
+        }
+
+    }
+    private fun attendanceParse(): List<AttendanceRaw> {
+        return readLinesCsv("attendance.csv").mapNotNull { raw ->
+            AttendanceRaw(
+                raw[0],
+                raw.drop(1)
+            )
+
+        }
+
+    }
+
+    fun readLinesCsv(resource: String): List<List<String>> {
+        return File("$path/$resource").readLines()
+            .drop(1)
+            .map { line ->
+                line.split(",").map { feild -> feild.trim() }
+            }
+
+
+    }
+
+
+
+
+    }
