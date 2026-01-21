@@ -3,7 +3,7 @@ import dataRaw.AttendanceRaw
 import domain.model.Attendance
 import domain.model.AttendanceStatus
 class AttendanceMapper  : Mapper <AttendanceRaw,Attendance>{
-    override fun toDaomain(rawList:List<AttendanceRaw>):List<Attendance> {
+    override fun toDomain(rawList:List<AttendanceRaw>):List<Attendance> {
         return rawList.flatMap {raw ->
             raw.weeks.mapIndexed { index, status ->
                 Attendance(

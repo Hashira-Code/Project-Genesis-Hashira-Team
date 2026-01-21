@@ -7,7 +7,7 @@ import domain.model.SubmissionType
 
 
 class PerformanceMapper() : Mapper<PerformanceRaw ,PerformanceSubmission>{
-    override fun toDaomain(rawList: List<PerformanceRaw>): List<PerformanceSubmission>{
+    override fun toDomain(rawList: List<PerformanceRaw>): List<PerformanceSubmission>{
         return rawList.map { raw ->
             PerformanceSubmission (
                 raw.id ,
