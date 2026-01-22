@@ -1,13 +1,13 @@
 package data.repository
-import data.dataSource
+import data.source.DataSource
 import domain.model.Project
 import domain.repository.ProjectRepo
-import mapper.Mapper
-import dataRaw.projectRaw
+import data.mapper.Mapper
+import data.model.ProjectRaw
 
 class ProjectRepoImpl(
-    private val dataSource: dataSource,
-    private val mapper: Mapper<projectRaw, Project>
+    private val dataSource: DataSource,
+    private val mapper: Mapper<ProjectRaw, Project>
 ) : ProjectRepo {
     private val cache: List<Project> by lazy {
         mapper.toDomain(dataSource.getAllProjects())

@@ -1,7 +1,6 @@
-package mapper
+package data.mapper
 
-import dataRaw.PerformanceRaw
-import domain.model.AttendanceStatus
+import data.model.PerformanceRaw
 import domain.model.PerformanceSubmission
 import domain.model.SubmissionType
 

@@ -1,15 +1,15 @@
 package data.repository
-import data.dataSource
+import data.source.DataSource
 import domain.model.PerformanceSubmission
 import domain.model.SubmissionType
-import domain.repository.PerformanceRepository
-import mapper.Mapper
-import dataRaw.PerformanceRaw
+import domain.repository.PerformanceRepo
+import data.mapper.Mapper
+import data.model.PerformanceRaw
 
 class PerformanceRepository(
-    private val dataSource: dataSource,
+    private val dataSource: DataSource,
     private val mapper: Mapper<PerformanceRaw, PerformanceSubmission>
-) : PerformanceRepository {
+) : PerformanceRepo {
 
     private val cache: List<PerformanceSubmission> by lazy {
         mapper.toDomain(dataSource.getAllPerformance())

@@ -1,5 +1,5 @@
-package mapper
-import dataRaw.AttendanceRaw
+package data.mapper
+import data.model.AttendanceRaw
 import domain.model.Attendance
 import domain.model.AttendanceStatus
 class AttendanceMapper  : Mapper <AttendanceRaw,Attendance>{
