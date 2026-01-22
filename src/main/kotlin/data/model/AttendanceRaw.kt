@@ -1,4 +1,4 @@
-package dataRaw
+package data.model
 
 data class AttendanceRaw(
   val  menteeId : String ,

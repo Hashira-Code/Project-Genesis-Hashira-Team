@@ -1,13 +1,14 @@
-package data
+package data.source
 
-import dataRaw.AttendanceRaw
-import dataRaw.PerformanceRaw
-import dataRaw.menteeRaw
-import dataRaw.projectRaw
-import dataRaw.teamRaw
+import data.source.DataSource
+import data.model.AttendanceRaw
+import data.model.MenteeRaw
+import data.model.PerformanceRaw
+import data.model.ProjectRaw
+import data.model.TeamRaw
 import java.io.File
 
-class csvDataSource(val path:String): dataSource {
+class CsvDataSource(val path:String): DataSource {
 
     override fun getAllAttendance():List<AttendanceRaw>{
        return  attendanceParse()
@@ -16,43 +17,43 @@ class csvDataSource(val path:String): dataSource {
     override fun getAllPerformance(): List<PerformanceRaw> {
       return performanceParse()
     }
-    override fun getAllMentees(): List<menteeRaw> {
+    override fun getAllMentees(): List<MenteeRaw> {
        return menteeParse()
     }
 
-    override fun getAllTeams(): List<teamRaw> {
+    override fun getAllTeams(): List<TeamRaw> {
         return teamParse()
     }
 
-    override fun getAllProjects(): List<projectRaw> {
+    override fun getAllProjects(): List<ProjectRaw> {
         return projectParse()
     }
 
 
-    private fun menteeParse():List<menteeRaw>{
-         return  readLinesCsv(path).map{Raw ->
-             menteeRaw(
-                 id=Raw[0].trim(),
-                 name=Raw[1].trim(),
-                 teamId=Raw[2].trim()
+    private fun menteeParse():List<MenteeRaw>{
+         return  readLinesCsv(path).map{raw ->
+             MenteeRaw(
+                 id = raw[0].trim(),
+                 name = raw[1].trim(),
+                 teamId = raw[2].trim()
              )
          } }
 
-    private fun teamParse():List<teamRaw>{
-        return readLinesCsv(path).map{Raw ->
-            teamRaw(
-                id=Raw[0].trim(),
-                name=Raw[1].trim(),
-                mentorLead = Raw[2].trim()
+    private fun teamParse():List<TeamRaw>{
+        return readLinesCsv(path).map{raw ->
+            TeamRaw(
+                id = raw[0].trim(),
+                name = raw[1].trim(),
+                mentorLead = raw[2].trim()
             )
         } }
 
-    private fun projectParse():List<projectRaw>{
-        return  readLinesCsv(path).map{Raw ->
-            projectRaw(
-                id=Raw[0].trim(),
-                name=Raw[1].trim(),
-                teamId=Raw[2].trim()
+    private fun projectParse():List<ProjectRaw>{
+        return  readLinesCsv(path).map{raw ->
+            ProjectRaw(
+                id = raw[0].trim(),
+                name = raw[1].trim(),
+                teamId = raw[2].trim()
             )
         } }
     private fun performanceParse(): List<PerformanceRaw> {
@@ -60,7 +61,7 @@ class csvDataSource(val path:String): dataSource {
             PerformanceRaw(
                 raw[1],
                 raw[2],
-                raw[3].toDoubleOrNull() ?:0.0,
+                raw[3].toDoubleOrNull() ?: 0.0,
                 raw[0]
 
             )

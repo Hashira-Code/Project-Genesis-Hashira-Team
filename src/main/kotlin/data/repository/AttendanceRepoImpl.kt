@@ -1,15 +1,15 @@
 package data.repository
 
-import data.dataSource
+import data.source.DataSource
 import domain.model.Attendance
-import domain.repository.AttendanceRepository
-import mapper.Mapper
-import dataRaw.AttendanceRaw
+import domain.repository.AttendanceRepo
+import data.mapper.Mapper
+import data.model.AttendanceRaw
 
-class DefaultAttendanceRepository(
-    private val dataSource: dataSource,
+class AttendanceRepoImpl(
+    private val dataSource: DataSource,
     private val mapper: Mapper<AttendanceRaw, Attendance>
-) : AttendanceRepository {
+) : AttendanceRepo {
 
     private val cache: List<Attendance> by lazy {
         mapper.toDomain(dataSource.getAllAttendance())
