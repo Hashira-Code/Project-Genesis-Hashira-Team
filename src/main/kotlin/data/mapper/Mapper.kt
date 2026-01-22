@@ -1,7 +1,4 @@
-package mapper
-
-import dataRaw.menteeRaw
-import domain.model.Mentee
+package data.mapper
 
 
 interface Mapper<T,R> {
