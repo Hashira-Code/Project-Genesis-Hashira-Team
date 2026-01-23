@@ -6,7 +6,7 @@ import domain.repository.PerformanceRepository
 import mapper.Mapper
 import dataRaw.PerformanceRaw
 
-class PerformanceRepoImpl(
+class PerformanceRepository(
     private val dataSource: dataSource,
     private val mapper: Mapper<PerformanceRaw, PerformanceSubmission>
 ) : PerformanceRepository {
