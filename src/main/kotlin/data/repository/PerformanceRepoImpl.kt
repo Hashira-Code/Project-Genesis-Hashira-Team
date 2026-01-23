@@ -1,15 +1,16 @@
 package data.repository
+
 import data.dataSource
 import domain.model.PerformanceSubmission
 import domain.model.SubmissionType
-import domain.repository.PerformanceRepository
+import domain.repository.PerformanceRepo
 import mapper.Mapper
 import dataRaw.PerformanceRaw
 
 class PerformanceRepoImpl(
     private val dataSource: dataSource,
     private val mapper: Mapper<PerformanceRaw, PerformanceSubmission>
-) : PerformanceRepository {
+) : PerformanceRepo {
 
     private val cache: List<PerformanceSubmission> by lazy {
         mapper.toDomain(dataSource.getAllPerformance())
@@ -30,5 +31,4 @@ class PerformanceRepoImpl(
 
     override fun getByType(type: SubmissionType): List<PerformanceSubmission> =
         byType[type].orEmpty()
-
 }
