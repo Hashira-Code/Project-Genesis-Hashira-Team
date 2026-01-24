@@ -1,14 +1,14 @@
 package data.repository
-
-import data.dataSource
+import data.mapper.Mapper
+import data.model.PerformanceRaw
+import data.source.DataSource
 import domain.model.PerformanceSubmission
 import domain.model.SubmissionType
 import domain.repository.PerformanceRepo
-import mapper.Mapper
-import dataRaw.PerformanceRaw
+
 
 class PerformanceRepoImpl(
-    private val dataSource: dataSource,
+    private val dataSource: DataSource,
     private val mapper: Mapper<PerformanceRaw, PerformanceSubmission>
 ) : PerformanceRepo {
 
@@ -31,4 +31,5 @@ class PerformanceRepoImpl(
 
     override fun getByType(type: SubmissionType): List<PerformanceSubmission> =
         byType[type].orEmpty()
+
 }

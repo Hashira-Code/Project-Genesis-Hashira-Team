@@ -1,14 +1,14 @@
 package data.repository
 
-import data.dataSource
+import data.source.DataSource
 import domain.model.Mentee
 import domain.repository.MenteeRepo
-import mapper.*
-import dataRaw.menteeRaw
+import data.mapper.*
+import data.model.MenteeRaw
 
-class DefaultMenteeRepository(
-    private val dataSource: dataSource,
-    private val mapper: Mapper<menteeRaw, Mentee>
+class MenteeRepoImpl(
+    private val dataSource: DataSource,
+    private val mapper: Mapper<MenteeRaw, Mentee>
 ) : MenteeRepo {
 
 
