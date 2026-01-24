@@ -1,12 +1,13 @@
 package data.repository
+import data.mapper.Mapper
+import data.model.PerformanceRaw
 import data.source.DataSource
 import domain.model.PerformanceSubmission
 import domain.model.SubmissionType
 import domain.repository.PerformanceRepo
-import data.mapper.Mapper
-import data.model.PerformanceRaw
 
-class PerformanceRepository(
+
+class PerformanceRepoImpl(
     private val dataSource: DataSource,
     private val mapper: Mapper<PerformanceRaw, PerformanceSubmission>
 ) : PerformanceRepo {
