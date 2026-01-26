@@ -6,7 +6,7 @@ import domain.model.Mentee
 import domain.repository.AttendanceRepo
 import domain.repository.MenteeRepo
 
-class calculateAttendancePercentageUseCase(
+class CalculateAttendancePercentageUseCase(
     private val menteeRepo: MenteeRepo,
     private val attendanceRepo: AttendanceRepo
 ) {

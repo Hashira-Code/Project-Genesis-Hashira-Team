@@ -1,7 +1,7 @@
 package domain.useCase
 
-class menteesWithPerfectAttendanceUseCase(
-    private val calculateAttendancePercentageUseCase: calculateAttendancePercentageUseCase) {
+class MenteesWithPerfectAttendanceUseCase(
+    private val calculateAttendancePercentageUseCase: CalculateAttendancePercentageUseCase) {
 
     fun execute(): List<String>{
         return calculateAttendancePercentageUseCase.execute().filter { percentage ->
