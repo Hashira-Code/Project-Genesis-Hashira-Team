@@ -2,9 +2,9 @@ package domain.useCase
 
 import domain.repository.TeamRepo
 
-class teamAttendanceReportUseCase(
+class TeamAttendanceReportUseCase(
     private val teamRepo: TeamRepo,
-    private val calculateAttendancePercentageUseCase: calculateAttendancePercentageUseCase
+    private val calculateAttendancePercentageUseCase: CalculateAttendancePercentageUseCase
 ) {
     fun execute() {
            teamRepo.getAll().forEach {team ->

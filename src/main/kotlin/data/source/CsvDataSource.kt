@@ -31,7 +31,7 @@ class CsvDataSource(val path:String): DataSource {
 
 
     private fun menteeParse():List<MenteeRaw>{
-         return  readLinesCsv(path).map{raw ->
+         return  readLinesCsv("mentees.csv").map{raw ->
              MenteeRaw(
                  id = raw[0].trim(),
                  name = raw[1].trim(),
@@ -40,7 +40,7 @@ class CsvDataSource(val path:String): DataSource {
          } }
 
     private fun teamParse():List<TeamRaw>{
-        return readLinesCsv(path).map{raw ->
+        return readLinesCsv("teams.csv").map{raw ->
             TeamRaw(
                 id = raw[0].trim(),
                 name = raw[1].trim(),
@@ -49,7 +49,7 @@ class CsvDataSource(val path:String): DataSource {
         } }
 
     private fun projectParse():List<ProjectRaw>{
-        return  readLinesCsv(path).map{raw ->
+        return  readLinesCsv("projects.csv").map{raw ->
             ProjectRaw(
                 id = raw[0].trim(),
                 name = raw[1].trim(),
