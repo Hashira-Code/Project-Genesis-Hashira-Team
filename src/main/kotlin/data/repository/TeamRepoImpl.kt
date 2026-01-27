@@ -15,8 +15,11 @@ class DefaultTeamRepository(
         mapper.toDomain(dataSource.getAllTeams())
     }
 
+    private val byId: Map<String, Team> by lazy {
+        cache.associateBy { it.id }
+    }
 
     override fun getAll(): List<Team> = cache
 
-
+    override fun getById(id: String): Team? = byId[id]
 }
