@@ -15,19 +15,9 @@ class AttendanceRepoImpl(
         mapper.toDomain(dataSource.getAllAttendance())
     }
 
-    private val byMenteeId: Map<String, List<Attendance>> by lazy {
-        cache.groupBy { it.menteeId }
-    }
-
-    private val byWeekNumber: Map<Int, List<Attendance>> by lazy {
-        cache.groupBy { it.weekNumber }
-    }
-
     override fun getAll(): List<Attendance> = cache
 
-    override fun getByMenteeId(menteeId: String): List<Attendance> =
-        byMenteeId[menteeId].orEmpty()
 
-    override fun getByWeekNumber(weekNumber: Int): List<Attendance> =
-        byWeekNumber[weekNumber].orEmpty()
+
+
 }

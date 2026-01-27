@@ -14,9 +14,9 @@ class GetAbsentMenteesNamesUseCase(
         val mentees = menteeRepo.getAll()
 
         return findAbsentMenteesNames(
-            attendances = attendances,
-            mentees = mentees,
-            weekNumber = weekNumber
+             attendances,
+             mentees,
+             weekNumber
         )
     }
 
@@ -28,11 +28,8 @@ class GetAbsentMenteesNamesUseCase(
 
         val menteesById = mentees.associateBy { it.id }
 
-        return attendances
-            .filter {
-                it.weekNumber == weekNumber &&
-                        it.status == AttendanceStatus.ABSENT
-            }
+        return attendances.filter {
+            it.weekNumber == weekNumber && it.status == AttendanceStatus.ABSENT }
             .mapNotNull { attendance ->
                 menteesById[attendance.menteeId]?.name
             }
