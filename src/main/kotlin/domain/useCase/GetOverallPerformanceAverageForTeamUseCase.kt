@@ -8,16 +8,27 @@ class GetOverallPerformanceAverageForTeamUseCase(
 ) {
 
     fun execute(teamId: String): Double {
-        val menteeIds = menteeRepo
+        return calculateAverage(
+            getScoresForMentees(
+                getMenteeIdsByTeam(teamId)
+            )
+        )
+    }
+
+    private fun getMenteeIdsByTeam(teamId: String): List<String> {
+        return menteeRepo
             .getByTeamId(teamId)
             .map { it.id }
+    }
 
-        if (menteeIds.isEmpty()) return 0.0
-        val scores = performanceRepo
+    private fun getScoresForMentees(menteeIds: List<String>): List<Double> {
+        return performanceRepo
             .getAll()
             .filter { it.menteeId in menteeIds }
             .map { it.score }
+    }
 
-        return if (scores.isEmpty()) 0.0 else scores.average()
+    private fun calculateAverage(scores: List<Double>): Double {
+        return scores.takeIf { it.isNotEmpty() }?.average() ?: 0.0
     }
 }
