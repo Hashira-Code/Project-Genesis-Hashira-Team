@@ -16,20 +16,9 @@ class PerformanceRepoImpl(
         mapper.toDomain(dataSource.getAllPerformance())
     }
 
-    private val byMenteeId: Map<String, List<PerformanceSubmission>> by lazy {
-        cache.groupBy { it.menteeId }
-    }
-
-    private val byType: Map<SubmissionType, List<PerformanceSubmission>> by lazy {
-        cache.groupBy { it.type }
-    }
 
     override fun getAll(): List<PerformanceSubmission> = cache
 
-    override fun getByMenteeId(menteeId: String): List<PerformanceSubmission> =
-        byMenteeId[menteeId].orEmpty()
 
-    override fun getByType(type: SubmissionType): List<PerformanceSubmission> =
-        byType[type].orEmpty()
 
 }
