@@ -1,4 +1,4 @@
-package domain.useCase
+package domain.usecase
 import domain.repository.MenteeRepo
 import domain.repository.TeamRepo
 
