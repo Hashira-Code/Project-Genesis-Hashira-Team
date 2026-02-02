@@ -1,4 +1,4 @@
-package domain.useCase
+package domain.usecase
 import domain.model.Mentee
 import domain.repository.PerformanceRepo
 import domain.repository.MenteeRepo
