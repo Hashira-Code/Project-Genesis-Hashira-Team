@@ -1,4 +1,4 @@
-package domain.useCase
+package domain.usecase
 import domain.repository.MenteeRepo
 import domain.repository.PerformanceRepo
 
@@ -7,7 +7,7 @@ class GetOverallPerformanceAverageForTeamUseCase(
     private val performanceRepo: PerformanceRepo
 ) {
 
-    fun execute(teamId: String): Double {
+    fun invoke(teamId: String): Double {
         return calculateAverage(
             getScoresForMentees(
                 getMenteeIdsByTeam(teamId)

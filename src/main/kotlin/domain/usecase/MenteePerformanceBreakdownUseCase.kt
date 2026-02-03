@@ -1,4 +1,4 @@
-package domain.useCase
+package domain.usecase
 import domain.model.SubmissionType
 import domain.repository.PerformanceRepo
 

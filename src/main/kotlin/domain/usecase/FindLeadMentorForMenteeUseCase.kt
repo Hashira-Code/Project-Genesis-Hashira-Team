@@ -1,4 +1,4 @@
-package domain.useCase
+package domain.usecase
 import domain.repository.MenteeRepo
 import domain.repository.TeamRepo
 
@@ -7,7 +7,7 @@ class FindLeadMentorForMenteeUseCase(
     private val teamRepo: TeamRepo
 ) {
 
-    fun execute(menteeId: String): String? {
+    fun invoke(menteeId: String): String? {
 
         val mentee = menteeRepo.getById(menteeId) ?: return null
         val team = teamRepo.getById(mentee.teamId) ?: return null
