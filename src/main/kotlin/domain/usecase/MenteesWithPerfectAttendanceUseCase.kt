@@ -3,10 +3,10 @@ package domain.usecase
 class MenteesWithPerfectAttendanceUseCase(
     private val calculateAttendancePercentageUseCase: CalculateAttendancePercentageUseCase) {
 
-    fun execute(): List<String>{
-        return calculateAttendancePercentageUseCase.execute().filter { percentage ->
-            percentage.second==100.0 }.map{
-            it.first.name
+    operator fun invoke(): List<String>{
+        return calculateAttendancePercentageUseCase().filterValues { percentage ->
+            percentage==100.0 }.keys.map{mentee ->
+                mentee.name}
         }
-    }
+
 }
