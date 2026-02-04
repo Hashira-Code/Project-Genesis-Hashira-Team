@@ -5,7 +5,7 @@ enum class SubmissionType {
     TASK,
     BOOK_CLUB,
     WORKSHOP,
-    UNKNOWN;
+
 
 }
 
