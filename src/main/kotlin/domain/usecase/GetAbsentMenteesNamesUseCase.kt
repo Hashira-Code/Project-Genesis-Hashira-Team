@@ -9,32 +9,24 @@ class GetAbsentMenteesNamesUseCase(
     private val menteeRepo: MenteeRepo
 ) {
 
-    fun execute(weekNumber: Int): List<String> {
-        val attendances = attendanceRepo.getAll()
-        val mentees = menteeRepo.getAll()
+    operator fun invoke(weekNumber: Int): List<String> {
 
-        return findAbsentMenteesNames(
-            attendances = attendances,
-            mentees = mentees,
-            weekNumber = weekNumber
-        )
+        require(weekNumber > 0)
+
+        val absentIds = attendanceRepo
+            .getByWeekNumber(weekNumber)
+            .asSequence()
+            .filter { it.status == AttendanceStatus.ABSENT }
+            .map { it.menteeId }
+            .toSet()
+
+        if (absentIds.isEmpty()) return emptyList()
+
+        return menteeRepo.getAll()
+            .asSequence()
+            .filter { it.id in absentIds }
+            .map { it.name }
+            .toList()
     }
 
-    private fun findAbsentMenteesNames(
-        attendances: List<Attendance>,
-        mentees: List<Mentee>,
-        weekNumber: Int
-    ): List<String> {
-
-        val menteesById = mentees.associateBy { it.id }
-
-        return attendances
-            .filter {
-                it.weekNumber == weekNumber &&
-                        it.status == AttendanceStatus.ABSENT
-            }
-            .mapNotNull { attendance ->
-                menteesById[attendance.menteeId]?.name
-            }
-    }
 }
