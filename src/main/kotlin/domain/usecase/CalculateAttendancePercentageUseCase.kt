@@ -8,33 +8,23 @@ import domain.repository.MenteeRepo
 
 class CalculateAttendancePercentageUseCase(
     private val menteeRepo: MenteeRepo,
-    private val attendanceRepo: AttendanceRepo
+    private val attendanceRepo: AttendanceRepo,
+    private val attendanceTimes:CalculatingMenteeAttendanceTimesUseCase
 ) {
 
-    fun execute():List<Pair<Mentee, Double>>{
-        val totalWeeks=totalWeeks(attendanceRepo.getAll())
-        val MenteeAttendanceWeeks=numOfMenteeAttendanceWeeks(menteeRepo.getAll(),attendanceRepo.getAll())
-        return menteeRepo.getAll().zip(percentageOfAttendance(totalWeeks,MenteeAttendanceWeeks))
+    operator fun invoke():Map<Mentee, Double>{
+        val totalWeeks=getTotalNumberOfWeeks(attendanceRepo.getAll())
+
+        return menteeRepo.getAll().associate { mentee ->
+           val percentageOfAttendance=(attendanceTimes()[mentee.id]?:0/totalWeeks)*100.0
+
+            mentee to percentageOfAttendance
+        }
     }
 
-    private fun totalWeeks(attendance: List<Attendance>): Int=
+    private fun getTotalNumberOfWeeks(attendance: List<Attendance>): Int=
         attendance.map{it.weekNumber}.distinct().size
 
-
-    private fun numOfMenteeAttendanceWeeks(mentee: List<Mentee>,attendanceList: List<Attendance>): List<Int>{
-        return mentee.map { mentee ->
-            attendanceList.filter { it.menteeId==mentee.id}
-                .map { it.status }
-                .filter { it==AttendanceStatus.PRESENT }
-                .size
-        }
-    }
-
-    private fun percentageOfAttendance(totalWeeks: Int, listOfmenteeAttendane: List<Int>): List<Double>{
-        return listOfmenteeAttendane.map{numOfWeekAttendance ->
-            (numOfWeekAttendance/totalWeeks)*100.0
-        }
-    }
-
-
 }
+
+
