@@ -9,28 +9,22 @@ class FindMenteesNamesWithTasksUseCase(
     private val performanceRepo: PerformanceRepo
 ) {
 
-    fun execute(): List<String> {
-        val mentees = menteeRepo.getAll()
-        val submissions = performanceRepo.getAll()
+    operator fun invoke(): List<String> {
 
-        return findMenteesNamesWithTasks(
-            mentees = mentees,
-            submissions = submissions
-        )
-    }
+        val taskSubmissions = performanceRepo
+            .getByType(SubmissionType.TASK)
 
-    private fun findMenteesNamesWithTasks(
-        mentees: List<Mentee>,
-        submissions: List<PerformanceSubmission>
-    ): List<String> {
+        if (taskSubmissions.isEmpty()) return emptyList()
 
-        val menteeIdsWithTasks = submissions
-            .filter { it.type == SubmissionType.TASK }
+        val menteeIdsWithTasks = taskSubmissions
+            .asSequence()
             .map { it.menteeId }
             .toSet()
 
-        return mentees
+        return menteeRepo.getAll()
+            .asSequence()
             .filter { it.id in menteeIdsWithTasks }
             .map { it.name }
+            .toList()
     }
 }

@@ -24,7 +24,10 @@ class AttendanceMapper  : Mapper <AttendanceRaw,Attendance>{
 
     }
 
-fun String.toAttendanceStatus() : AttendanceStatus {
-    return runCatching { AttendanceStatus.valueOf(this.trim().uppercase()) }
-        .getOrElse { AttendanceStatus.UNKNOWN }
-}
+private fun String.toAttendanceStatus() : AttendanceStatus =
+    when (this.trim().uppercase()) {
+        "PRESENT" -> AttendanceStatus.PRESENT
+        "ABSENT" -> AttendanceStatus.ABSENT
+        "LATE" -> AttendanceStatus.LATE
+        else -> throw IllegalArgumentException("Invalid attendance status: $this")
+    }
