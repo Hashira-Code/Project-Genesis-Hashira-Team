@@ -171,8 +171,10 @@ The goal is to highlight strengths and provide clear, actionable improvements in
 
 ---
 
-# **💙 A Message from Team Heart to ByteBloom 💙** - **💙->>> The Kernels <<<-💙**
+# **💙 A Message from Team Heart to ByteBloom 💙**
+# **💙💙💙->>> The Kernels <<<-💙💙💙**
 From our team to yours, we genuinely wish you clarity, growth, and continuous improvement.  
 May we keep learning, building, and rising together — side by side — inside the Byte BloomBloom fortress. 💙
 
 ---
+
