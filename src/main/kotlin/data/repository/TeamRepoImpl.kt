@@ -6,7 +6,7 @@ import data.source.DataSource
 import domain.repository.TeamRepo
 
 
-class DefaultTeamRepository(
+class TeamRepoImpl(
     private val dataSource: DataSource,
     private val mapper: Mapper<TeamRaw, Team>
 ) : TeamRepo {
