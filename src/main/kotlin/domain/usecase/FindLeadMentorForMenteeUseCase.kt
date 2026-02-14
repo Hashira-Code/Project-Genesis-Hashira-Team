@@ -7,7 +7,7 @@ class FindLeadMentorForMenteeUseCase(
     private val teamRepo: TeamRepo
 ) {
 
-    fun invoke(menteeId: String): String? {
+    operator fun invoke(menteeId: String): String? {
 
         val mentee = menteeRepo.getById(menteeId) ?: return null
         val team = teamRepo.getById(mentee.teamId) ?: return null

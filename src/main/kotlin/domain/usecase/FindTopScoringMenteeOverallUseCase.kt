@@ -6,7 +6,7 @@ class FindTopScoringMenteeOverallUseCase(
     private val performanceRepo: PerformanceRepo,
     private val menteeRepo: MenteeRepo
 ) {
-    fun execute(): Mentee? {
+    operator fun invoke(): Mentee? {
         val topMenteeId = findTopMenteeId()
         return getMenteeById(topMenteeId)
     }
