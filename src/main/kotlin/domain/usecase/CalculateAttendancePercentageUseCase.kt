@@ -16,7 +16,7 @@ class CalculateAttendancePercentageUseCase(
         val totalWeeks=getTotalNumberOfWeeks(attendanceRepo.getAll())
 
         return menteeRepo.getAll().associate { mentee ->
-           val percentageOfAttendance=((attendanceTimes()[mentee.id]?:0).toDouble()/totalWeeks)*100.0
+           val percentageOfAttendance=((attendanceTimes()[mentee.id]?:0).toDouble()/totalWeeks)*PERCENTAGE_MULTIPLIER
 
             mentee to percentageOfAttendance
         }
@@ -24,6 +24,10 @@ class CalculateAttendancePercentageUseCase(
 
     private fun getTotalNumberOfWeeks(attendance: List<Attendance>): Int=
         attendance.map{it.weekNumber}.distinct().size
+    companion object {
+        private const val PERCENTAGE_MULTIPLIER=100.0
+
+    }
 
 }
 
