@@ -57,11 +57,16 @@ class EvaluateTeamHealthUseCase(
         attendanceRate: Double
     ): TeamHealthStatus =
         when {
-            avgPerformance >= 80 && attendanceRate >= 0.9 ->
+            avgPerformance >= EXCELLENT_PERFORMANCE_THRESHOLD && attendanceRate >= EXCELENT_ATTENDANCE_THRESHOLD ->
                 TeamHealthStatus.EXCELLENT
-            avgPerformance >= 60 && attendanceRate >= 0.7 ->
+            avgPerformance >= GOOD_PERFORMANCE_THRESHOLD && attendanceRate >= GOOD_ATTENDANCE_THRESHOLD ->
                 TeamHealthStatus.GOOD
             else ->
                 TeamHealthStatus.NEEDS_ATTENTION
         }
+    companion object {
+        private const val EXCELLENT_PERFORMANCE_THRESHOLD=80.0
+        private const val GOOD_PERFORMANCE_THRESHOLD=60.0
+        private const val EXCELENT_ATTENDANCE_THRESHOLD=0.9
+        private const val GOOD_ATTENDANCE_THRESHOLD=0.7}
 }

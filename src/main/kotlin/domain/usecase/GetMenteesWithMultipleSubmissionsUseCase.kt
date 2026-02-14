@@ -13,10 +13,14 @@ class GetMenteesWithMultipleSubmissionsUseCase(
             submissions
                 .groupingBy { it.menteeId }
                 .eachCount()
-                .filter { it.value > 1 }
+                .filter { it.value > MINIMUM_MULTIPLE_SUBMISSIONS }
                 .keys
         return mentees
             .filter { it.id in menteeIdsWithMultipleSubmissions }
             .map { it.name }
+    }
+    companion object {
+        private const val MINIMUM_MULTIPLE_SUBMISSIONS=1
+
     }
 }

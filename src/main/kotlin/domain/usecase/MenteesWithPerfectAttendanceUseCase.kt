@@ -5,8 +5,12 @@ class MenteesWithPerfectAttendanceUseCase(
 
     operator fun invoke(): List<String>{
         return calculateAttendancePercentageUseCase().filterValues { percentage ->
-            percentage==100.0 }.keys.map{mentee ->
+            percentage==PERFECT_ATTENDANCE_PERCENTAGE }.keys.map{mentee ->
                 mentee.name}
         }
+    companion object {
+        private const val PERFECT_ATTENDANCE_PERCENTAGE=100.0
+
+    }
 
 }

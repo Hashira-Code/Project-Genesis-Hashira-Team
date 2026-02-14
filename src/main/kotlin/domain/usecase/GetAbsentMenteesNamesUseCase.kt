@@ -11,7 +11,7 @@ class GetAbsentMenteesNamesUseCase(
 
     operator fun invoke(weekNumber: Int): List<String> {
 
-        require(weekNumber > 0)
+        require(weekNumber > MINIMUM_WEEK_NUMBER)
 
         val absentIds = attendanceRepo
             .getByWeekNumber(weekNumber)
@@ -27,6 +27,10 @@ class GetAbsentMenteesNamesUseCase(
             .filter { it.id in absentIds }
             .map { it.name }
             .toList()
+    }
+    companion object {
+        private const val MINIMUM_WEEK_NUMBER=100.0
+
     }
 
 }
