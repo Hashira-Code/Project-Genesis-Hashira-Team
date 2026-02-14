@@ -7,7 +7,7 @@ class GetOverallPerformanceAverageForTeamUseCase(
     private val performanceRepo: PerformanceRepo
 ) {
 
-    fun invoke(teamId: String): Double {
+    operator fun invoke(teamId: String): Double {
         return calculateAverage(
             getScoresForMentees(
                 getMenteeIdsByTeam(teamId)
