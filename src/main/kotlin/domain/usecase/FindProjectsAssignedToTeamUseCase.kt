@@ -2,6 +2,7 @@ package domain.usecase
 
 import domain.model.Project
 import domain.repository.ProjectRepo
+import domain.request.FindProjectsAssignedToTeamRequest
 import domain.validation.TeamIdValidator
 
 class FindProjectsAssignedToTeamUseCase(
