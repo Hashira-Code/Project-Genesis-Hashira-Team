@@ -2,15 +2,18 @@ package domain.usecase
 
 import domain.model.Project
 import domain.repository.ProjectRepo
+import domain.validation.TeamIdValidator
 
 class FindProjectsAssignedToTeamUseCase(
-    private val projectRepo: ProjectRepo
+    private val projectRepo: ProjectRepo,
+    private val TeamIdValidator: TeamIdValidator
 ) {
-
-    operator fun invoke(teamId: String): List<Project> {
-
-        require(teamId.isNotBlank()) { "Team ID cannot be blank" }
-
-        return projectRepo.getByTeamId(teamId)
+    operator fun invoke(request: FindProjectsAssignedToTeamRequest): List<Project> {
+        val validationResult =
+            TeamIdValidator.validate(request.teamId)
+        validationResult.onFailure {
+            throw it
+        }
+        return projectRepo.getByTeamId(request.teamId)
     }
 }
