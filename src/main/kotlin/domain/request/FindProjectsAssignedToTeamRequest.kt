@@ -1,4 +1,4 @@
-package domain.usecase
+package domain.request
 
 data class FindProjectsAssignedToTeamRequest(
     val teamId: String
