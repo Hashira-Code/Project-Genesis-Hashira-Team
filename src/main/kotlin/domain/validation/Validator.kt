@@ -1,5 +1,5 @@
 package domain.validation
 
-interface Validator<T> {
-    fun validate(value : T):  Result<T>
+interface Validator<I,O> {
+    fun validate(value : I):  Result<O>
 }
