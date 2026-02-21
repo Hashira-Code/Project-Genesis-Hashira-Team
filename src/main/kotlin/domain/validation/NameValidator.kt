@@ -2,7 +2,7 @@ package domain.validation
 
 import domain.exception.NameValidationException
 
-class NameValidator : Validator<String> {
+class NameValidator : Validator<String, String> {
     override fun validate(value: String): Result<String> {
         if (value.isBlank()) {
             return Result.failure(NameValidationException("Name cannot be blank"))
