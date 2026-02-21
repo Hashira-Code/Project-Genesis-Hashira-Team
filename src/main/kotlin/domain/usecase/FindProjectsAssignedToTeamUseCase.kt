@@ -2,19 +2,18 @@ package domain.usecase
 
 import domain.model.Project
 import domain.repository.ProjectRepo
-import domain.request.FindProjectsAssignedToTeamRequest
 import domain.validation.TeamIdValidator
-
+import domain.request.TeamIdRequest
 class FindProjectsAssignedToTeamUseCase(
     private val projectRepo: ProjectRepo,
-    private val TeamIdValidator: TeamIdValidator
+    private val teamIdValidator: TeamIdValidator
 ) {
-    operator fun invoke(request: FindProjectsAssignedToTeamRequest): List<Project> {
+    operator fun invoke(request: TeamIdRequest): List<Project> {
         val validationResult =
-            TeamIdValidator.validate(request.teamId)
+            teamIdValidator.validate(request.id)
         validationResult.onFailure {
             throw it
         }
-        return projectRepo.getByTeamId(request.teamId)
+        return projectRepo.getByTeamId(request.id)
     }
 }

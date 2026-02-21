@@ -1,15 +1,19 @@
 package domain.validation
+
 import domain.exception.ScoreValidationException
-class ScoreValidator: Validator<Int> {
-    override fun validate(value: Int): Result<Int> {
-        if (value < 0) {
+class ScoreValidator : Validator<String, Double> {
+    override fun validate(value: String): Result<Double> {
+        val score = value.toDoubleOrNull()
+            ?: return Result.failure(
+                ScoreValidationException("Score must be a number"))
+        if (score < 0) {
             return Result.failure(
                 ScoreValidationException("Score cannot be negative"))
         }
-        if (value > 100) {
+        if (score > 100) {
             return Result.failure(
                 ScoreValidationException("Score cannot exceed 100"))
         }
-        return Result.success(value)
+        return Result.success(score)
     }
 }

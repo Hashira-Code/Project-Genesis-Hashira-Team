@@ -1,6 +1,6 @@
 package domain.validation
 import domain.exception.IdValidationException
-class TeamIdValidator: Validator<String> {
+class TeamIdValidator: Validator<String,String> {
     override fun validate(value: String): Result<String> {
         if (value.isBlank()) {
             return Result.failure(
