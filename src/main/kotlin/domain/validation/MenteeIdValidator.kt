@@ -1,18 +1,25 @@
-package domain.validation
+ package domain.validation
+ import domain.exception.IdValidationException
 
-import domain.exception.IdValidationException
+ class MenteeIdValidator : Validator<String,String> {
+            override fun validate(value: String): Result<String> =
+                value.takeIf { it.isNotBlank() }
+                    ?.takeIf { VALID_PATTERN.matches(it) }
+                    ?.let { Result.success(it) }
+                    ?: Result.failure(
+                        IdValidationException(
+                            when {
+                                value.isBlank() -> EMPTY_MSG
+                                else -> INVALID_FORMAT_MSG
+                            }
+                        )
+                    )
 
-class MenteeIdValidator : Validator<String,String> {
-    override fun validate(value: String): Result<String> {
-        if (value.isBlank()) {
-            return Result.failure(IdValidationException("Mentee ID Cannot be blank"))
+            companion object {
+                const val EMPTY_MSG = "Mentee ID cannot be blank"
+                const val INVALID_FORMAT_MSG = "Mentee ID must start with 'm' followed by digits"
+                private val VALID_PATTERN = Regex("^m\\d+$")
+            }
         }
-        if (!value.matches(Regex("^m\\d+$"))) {
-            return Result.failure(IdValidationException("Mentee ID must start wiht 'm' followed by digits"))
-
-        }
-        return Result.success(value)
-
-    }
 
 }
