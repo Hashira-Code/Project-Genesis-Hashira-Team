@@ -1,26 +1,28 @@
 package domain.validation
 
-import domain.exception.IdValidationException
 import domain.exception.WeekNumberValidationException
 
 class WeekNumberValidator : Validator<String, Int> {
     override fun validate(value: String): Result<Int> {
-        if (value.isBlank()) {
-            return Result.failure(
-                WeekNumberValidationException("Week number cannot be empty")
+        return value.takeIf { it.isNotBlank() }
+            ?.toIntOrNull()
+            ?.let { weekNumber ->
+                if (weekNumber > MIN_WEEK) {
+                    Result.success(weekNumber)
+                } else {
+                    Result.failure(WeekNumberValidationException(NON_POSITIVE_ERROR))
+                }
+            } ?: Result.failure(
+            WeekNumberValidationException(
+                if (value.isBlank()) EMPTY_ERROR else INVALID_ERROR
             )
-        }
-        val weekNumber = value.toIntOrNull() ?:
-        return Result.failure(
-            WeekNumberValidationException("Week number must be valid"))
-
-        if (weekNumber <= 0) {
-            return Result.failure(
-                WeekNumberValidationException("Week must be greater than zero"))
-
-        }
-        return Result.success(weekNumber)
+        )
     }
 
+    companion object {
+        private const val EMPTY_ERROR = "Week number cannot be empty"
+        private const val INVALID_ERROR = "Week number must be valid"
+        private const val NON_POSITIVE_ERROR = "Week must be greater than zero"
+        private const val MIN_WEEK = 0
+    }
 }
-
