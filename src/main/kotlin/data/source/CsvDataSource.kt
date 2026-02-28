@@ -31,7 +31,7 @@ class CsvDataSource(val path:String): DataSource {
 
 
     private fun menteeParse():List<MenteeRaw>{
-         return  readLinesCsv("mentees.csv").map{raw ->
+         return  readLinesCsv(MENTEES_FILE).map{raw ->
              MenteeRaw(
                  id = raw[0].trim(),
                  name = raw[1].trim(),
@@ -40,7 +40,7 @@ class CsvDataSource(val path:String): DataSource {
          } }
 
     private fun teamParse():List<TeamRaw>{
-        return readLinesCsv("teams.csv").map{raw ->
+        return readLinesCsv(TEAMS_FILE).map{raw ->
             TeamRaw(
                 id = raw[0].trim(),
                 name = raw[1].trim(),
@@ -49,7 +49,7 @@ class CsvDataSource(val path:String): DataSource {
         } }
 
     private fun projectParse():List<ProjectRaw>{
-        return  readLinesCsv("projects.csv").map{raw ->
+        return  readLinesCsv(PROJECTS_FILE).map{raw ->
             ProjectRaw(
                 id = raw[0].trim(),
                 name = raw[1].trim(),
@@ -57,7 +57,7 @@ class CsvDataSource(val path:String): DataSource {
             )
         } }
     private fun performanceParse(): List<PerformanceRaw> {
-        return readLinesCsv("performance.csv").mapNotNull { raw ->
+        return readLinesCsv(PERFORMANCE_FILE).mapNotNull { raw ->
             PerformanceRaw(
                 raw[1],
                 raw[2],
@@ -70,7 +70,7 @@ class CsvDataSource(val path:String): DataSource {
 
     }
     private fun attendanceParse(): List<AttendanceRaw> {
-        return readLinesCsv("attendance.csv").mapNotNull { raw ->
+        return readLinesCsv(ATTENDANCE_FILE).mapNotNull { raw ->
             AttendanceRaw(
                 raw[0],
                 raw.drop(1)
@@ -87,6 +87,14 @@ class CsvDataSource(val path:String): DataSource {
                 line.split(",").map { feild -> feild.trim() }
             }
 
+
+    }
+    companion object {
+        private const val ATTENDANCE_FILE="attendance.csv"
+        private const val PERFORMANCE_FILE="performance.csv"
+        private const val TEAMS_FILE="teams.csv"
+        private const val MENTEES_FILE="mentees.csv"
+        private const val PROJECTS_FILE="projects.csv"
 
     }
 
