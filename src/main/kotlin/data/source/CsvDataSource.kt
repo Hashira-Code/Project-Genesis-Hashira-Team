@@ -33,36 +33,36 @@ class CsvDataSource(val path:String): DataSource {
     private fun menteeParse():List<MenteeRaw>{
          return  readLinesCsv(MENTEES_FILE).map{raw ->
              MenteeRaw(
-                 id = raw[0].trim(),
-                 name = raw[1].trim(),
-                 teamId = raw[2].trim()
+                 id = raw[0],
+                 name = raw[1],
+                 teamId = raw[2]
              )
          } }
 
     private fun teamParse():List<TeamRaw>{
         return readLinesCsv(TEAMS_FILE).map{raw ->
             TeamRaw(
-                id = raw[0].trim(),
-                name = raw[1].trim(),
-                mentorLead = raw[2].trim()
+                id = raw[0],
+                name = raw[1],
+                mentorLead = raw[2]
             )
         } }
 
     private fun projectParse():List<ProjectRaw>{
         return  readLinesCsv(PROJECTS_FILE).map{raw ->
             ProjectRaw(
-                id = raw[0].trim(),
-                name = raw[1].trim(),
-                teamId = raw[2].trim()
+                id = raw[0],
+                name = raw[1],
+                teamId = raw[2]
             )
         } }
     private fun performanceParse(): List<PerformanceRaw> {
-        return readLinesCsv(PERFORMANCE_FILE).mapNotNull { raw ->
+        return readLinesCsv(PERFORMANCE_FILE).map { raw ->
             PerformanceRaw(
-                raw[1],
-                raw[2],
-                raw[3].toDoubleOrNull() ?: 0.0,
-                raw[0]
+                id = raw[1],
+                type = raw[2],
+                score = raw[3].toDoubleOrNull() ?: 0.0,
+                menteeId = raw[0]
 
             )
 
@@ -70,10 +70,10 @@ class CsvDataSource(val path:String): DataSource {
 
     }
     private fun attendanceParse(): List<AttendanceRaw> {
-        return readLinesCsv(ATTENDANCE_FILE).mapNotNull { raw ->
+        return readLinesCsv(ATTENDANCE_FILE).map { raw ->
             AttendanceRaw(
-                raw[0],
-                raw.drop(1)
+                menteeId =  raw[0],
+                weeks = raw.drop(1)
             )
 
         }
