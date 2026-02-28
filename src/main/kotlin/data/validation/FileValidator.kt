@@ -11,19 +11,19 @@ class FileValidator : Validator<File>{
     }
     private fun validateExists(file: File): File
       =  file.takeIf { it.exists() }
-        ?: throw IllegalArgumenException("File does not exist: ${file.path}")
+        ?: throw IllegalArgumentException("File does not exist: ${file.path}")
 
     private fun validateIsFile(file: File):File
     = file.takeIf { it.isFile }
-        ?: throw IllegalArgumenException("Path is not a file: ${file.path}")
+        ?: throw IllegalArgumentException("Path is not a file: ${file.path}")
 
     private fun validateCsvExtension(file: File):File
     = file.takeIf { it.extension.equals("csv", ignoreCase=true) }
-        ?: throw IllegalArgumenException("File must be CSV ${file.path}")
+        ?: throw IllegalArgumentException("File must be CSV ${file.path}")
 
     private fun validateNotEmpty(file: File):File
     = file.takeIf { it.length() > 0 }
-        ?: throw IllegalArgumenException("File is Empty: ${file.path}")
+        ?: throw IllegalArgumentException("File is Empty: ${file.path}")
 
 
 
