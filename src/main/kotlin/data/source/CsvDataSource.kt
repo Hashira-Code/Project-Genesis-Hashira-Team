@@ -7,8 +7,12 @@ import data.model.PerformanceRaw
 import data.model.ProjectRaw
 import data.model.TeamRaw
 import java.io.File
+import kotlin.io.readLines
 
-class CsvDataSource(val path:String): DataSource {
+class CsvDataSource(
+    val path:String,
+    private val fileValidator: Validator<File>
+   ): DataSource {
 
     override fun getAllAttendance():List<AttendanceRaw>{
        return  attendanceParse()
@@ -81,10 +85,13 @@ class CsvDataSource(val path:String): DataSource {
     }
 
     fun readLinesCsv(resource: String): List<List<String>> {
-        return File("$path/$resource").readLines()
+        val file = File("$path/$resource")
+            fileValidator.validate(file)
+                .onFailure { throw it }
+        return file.readLines()
             .drop(1)
             .map { line ->
-                line.split(",").map { feild -> feild.trim() }
+                line.split(",").map { it.trim() }
             }
 
 
