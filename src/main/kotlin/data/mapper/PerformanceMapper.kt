@@ -5,17 +5,15 @@ import domain.model.PerformanceSubmission
 import domain.model.SubmissionType
 
 
-class PerformanceMapper() : Mapper<PerformanceRaw ,PerformanceSubmission>{
+class PerformanceMapper : Mapper<PerformanceRaw ,PerformanceSubmission>{
     override fun toDomain(rawList: List<PerformanceRaw>): List<PerformanceSubmission>{
         return rawList.map { raw ->
-            require(raw.score >= 0)
-            "Score cannot be negative: ${raw.score}"
 
             PerformanceSubmission (
-                raw.id ,
-                raw.menteeId,
-                raw.Type.toSubmissionType() ,
-                raw.score
+                id =  raw.id ,
+                menteeId = raw.menteeId,
+                type = raw.type.toSubmissionType() ,
+                score = raw.score
             )
         }
 

@@ -7,9 +7,9 @@ class AttendanceMapper  : Mapper <AttendanceRaw,Attendance>{
         return rawList.flatMap {raw ->
             raw.weeks.mapIndexed { index, status ->
                 Attendance(
-                     raw.menteeId,
-                    index+1,
-                    status.toAttendanceStatus()
+                    menteeId = raw.menteeId,
+                    weekNumber = index+1,
+                    status = status.toAttendanceStatus()
 
 
 
