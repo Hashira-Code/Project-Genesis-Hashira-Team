@@ -1,5 +1,5 @@
 package data.source
-
+import data.validation.Validator
 import data.source.DataSource
 import data.model.AttendanceRaw
 import data.model.MenteeRaw
@@ -33,7 +33,6 @@ class CsvDataSource(
         return projectParse()
     }
 
-
     private fun menteeParse():List<MenteeRaw>{
          return  readLinesCsv(MENTEES_FILE).map{raw ->
              MenteeRaw(
@@ -41,8 +40,8 @@ class CsvDataSource(
                  name = raw[1],
                  teamId = raw[2]
              )
-         } }
-
+         }
+    }
     private fun teamParse():List<TeamRaw>{
         return readLinesCsv(TEAMS_FILE).map{raw ->
             TeamRaw(
@@ -50,8 +49,8 @@ class CsvDataSource(
                 name = raw[1],
                 mentorLead = raw[2]
             )
-        } }
-
+        }
+    }
     private fun projectParse():List<ProjectRaw>{
         return  readLinesCsv(PROJECTS_FILE).map{raw ->
             ProjectRaw(
@@ -59,7 +58,8 @@ class CsvDataSource(
                 name = raw[1],
                 teamId = raw[2]
             )
-        } }
+        }
+    }
     private fun performanceParse(): List<PerformanceRaw> {
         return readLinesCsv(PERFORMANCE_FILE).map { raw ->
             PerformanceRaw(
@@ -67,11 +67,8 @@ class CsvDataSource(
                 type = raw[2],
                 score = raw[3].toDoubleOrNull() ?: 0.0,
                 menteeId = raw[0]
-
             )
-
         }
-
     }
     private fun attendanceParse(): List<AttendanceRaw> {
         return readLinesCsv(ATTENDANCE_FILE).map { raw ->
@@ -81,20 +78,15 @@ class CsvDataSource(
             )
 
         }
-
     }
-
     fun readLinesCsv(resource: String): List<List<String>> {
         val file = File("$path/$resource")
-            fileValidator.validate(file)
-                .onFailure { throw it }
+        fileValidator.validate(file).getOrThrow()
         return file.readLines()
             .drop(1)
             .map { line ->
                 line.split(",").map { it.trim() }
             }
-
-
     }
     companion object {
         private const val ATTENDANCE_FILE="attendance.csv"
@@ -103,9 +95,5 @@ class CsvDataSource(
         private const val MENTEES_FILE="mentees.csv"
         private const val PROJECTS_FILE="projects.csv"
 
-    }
-
-
-
-
+         }
     }
