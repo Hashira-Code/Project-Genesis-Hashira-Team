@@ -2,7 +2,7 @@ package domain.usecase
 
 import domain.model.SubmissionType
 import domain.repository.PerformanceRepo
-import domain.request.MenteeIdRequest
+import domain.model.request.MenteeIdRequest
 import domain.validation.Validator
 
 class GetPerformanceBreakdownForMenteeUseCase(

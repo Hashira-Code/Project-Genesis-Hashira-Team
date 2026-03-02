@@ -2,7 +2,7 @@ package domain.usecase
 
 import domain.repository.MenteeRepo
 import domain.repository.PerformanceRepo
-import domain.request.TeamIdRequest
+import domain.model.request.TeamIdRequest
 import domain.validation.Validator
 
 class GetOverallPerformanceAverageForTeamUseCase(

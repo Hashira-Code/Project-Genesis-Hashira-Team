@@ -1,8 +1,10 @@
 package domain.usecase
+
 import domain.repository.MenteeRepo
 import domain.repository.TeamRepo
-import domain.request.MenteeIdRequest
+import domain.model.request.MenteeIdRequest
 import domain.validation.MenteeIdValidator
+import domain.model.exception.EntityNotFoundException
 
 class FindLeadMentorForMenteeUseCase(
     private val menteeRepo: MenteeRepo,
@@ -14,11 +16,17 @@ class FindLeadMentorForMenteeUseCase(
             .onFailure { return Result.failure(it) }
 
         val mentee = menteeRepo.getById(request.id)
-            ?: return Result.failure(Exception("Mentee not found"))
+            ?: return Result.failure(EntityNotFoundException(MENTEE_NOT_FOUND_MSG))
 
         val team = teamRepo.getById(mentee.teamId)
-            ?: return Result.failure(Exception("Team not found"))
+            ?: return Result.failure(EntityNotFoundException(TEAM_NOT_FOUND_MSG))
 
         return Result.success(team.mentorLead)
     }
+
+    companion object {
+        const val MENTEE_NOT_FOUND_MSG = "Mentee not found"
+        const val TEAM_NOT_FOUND_MSG = "Team not found"
+    }
+
 }
