@@ -1,17 +1,21 @@
 package domain.validation
 
-import domain.exception.ScoreValidationException
+import domain.model.exception.ValueOutOfRangeException
 
 class ScoreValidator : Validator<Double, Double> {
-    override fun validate(value: Double): Result<Double> =
-        value.takeIf { it >= 0 }
-            ?.let { it.takeIf { it <= MAX_SCORE } ?: return Result.failure(ScoreValidationException(EXCEED_SCORE_MSG)) }
-            ?.let { Result.success(it) }
-            ?: Result.failure(ScoreValidationException(NEGATIVE_SCORE_MSG))
+    override fun validate(value: Double): Result<Double> {
+        if (value < 0) {
+            return Result.failure(ValueOutOfRangeException(NEGATIVE_SCORE_MSG))
+        }
+        if (value > MAX_SCORE) {
+            return Result.failure(ValueOutOfRangeException(EXCEED_SCORE_MSG))
+        }
+        return Result.success(value)
+    }
 
     companion object {
-        const val NEGATIVE_SCORE_MSG = "Score cannot be negative"
-        const val EXCEED_SCORE_MSG = "Score cannot exceed 100"
         private const val MAX_SCORE = 100.0
+        const val NEGATIVE_SCORE_MSG = "Score cannot be negative"
+        const val EXCEED_SCORE_MSG = "Score cannot exceed $MAX_SCORE"
     }
 }

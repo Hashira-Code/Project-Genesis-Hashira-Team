@@ -1,20 +1,22 @@
 package domain.validation
 
-import domain.exception.IdValidationException
+import domain.model.exception.EmptyFieldException
+import domain.model.exception.InvalidFormatException
 
 class TeamIdValidator : Validator<String, String> {
-    override fun validate(value: String): Result<String> =
-        value.takeIf { it.isNotBlank() }
-            ?.let { it.takeIf { it.matches(VALID_PATTERN) } }
-            ?.let { Result.success(it) }
-            ?: Result.failure(
-                IdValidationException(
-                    when {
-                        value.isBlank() -> EMPTY_MSG
-                        else -> INVALID_CHAR_MSG
-                    }
-                )
+    override fun validate(value: String): Result<String> {
+        if (value.isBlank()) {
+            return Result.failure(
+                EmptyFieldException(EMPTY_MSG)
             )
+        }
+        if (!VALID_PATTERN.matches(value)) {
+            return Result.failure(
+                InvalidFormatException(INVALID_CHAR_MSG)
+            )
+        }
+        return Result.success(value)
+    }
 
     companion object {
         const val EMPTY_MSG = "Team ID cannot be empty"
@@ -22,3 +24,4 @@ class TeamIdValidator : Validator<String, String> {
         private val VALID_PATTERN = Regex("^[a-z-]+$")
     }
 }
+
