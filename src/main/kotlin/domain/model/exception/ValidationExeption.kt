@@ -10,5 +10,6 @@ class EmptyFieldException(message: String = "Field cannot be empty") : Validatio
 class InvalidFormatException(message: String = "Invalid format") : ValidationException(message)
 class ValueOutOfRangeException(message: String = "Value out of allowed range") : ValidationException(message)
 class EntityNotFoundException(message: String) : Exception(message)
+class MenteeIdEmptyException(message: String): Exception(message)
 
 

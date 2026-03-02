@@ -1,20 +1,24 @@
 package domain.validation
 
-import domain.model.exception.ValidationException.IdValidationException
+import domain.model.exception.InvalidFormatException
+import domain.model.exception.MenteeIdEmptyException
+
 
 class MenteeIdValidator : Validator<String, String> {
-    override fun validate(value: String): Result<String> =
-        value.takeIf { it.isNotBlank() }
-            ?.takeIf { VALID_PATTERN.matches(it) }
-            ?.let { Result.success(it) }
-            ?: Result.failure(
-                IdValidationException(
-                    when {
-                        value.isBlank() -> EMPTY_MSG
-                        else -> INVALID_FORMAT_MSG
-                    }
-                )
+    override fun validate(value: String): Result<String> {
+        if (value.isBlank()) {
+            return Result.failure(
+                MenteeIdEmptyException(EMPTY_MSG)
             )
+        }
+        if (!VALID_PATTERN.matches(value)) {
+            return Result.failure(
+                InvalidFormatException(INVALID_FORMAT_MSG)
+            )
+        }
+        return Result.success(value)
+
+    }
 
     companion object {
         const val EMPTY_MSG = "Mentee ID cannot be blank"
