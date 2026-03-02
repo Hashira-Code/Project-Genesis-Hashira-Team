@@ -1,6 +1,5 @@
 package domain.model
 
-
 data class PerformanceSubmission(
     val id: String,
     val menteeId: String,

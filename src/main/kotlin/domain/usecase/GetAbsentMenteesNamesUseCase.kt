@@ -1,19 +1,19 @@
-import domain.model.Mentee
-import domain.model.Attendance
+package domain.usecase
+
 import domain.model.AttendanceStatus
 import domain.repository.MenteeRepo
 import domain.repository.AttendanceRepo
-import domain.request.WeekNumberRequest
+import domain.model.request.WeekNumberRequest
 import domain.validation.Validator
 
 class GetAbsentMenteesNamesUseCase(
     private val attendanceRepo: AttendanceRepo,
     private val menteeRepo: MenteeRepo,
-    private val weekNumberValidator: Validator<String, Int>
+    private val weekNumberValidator: Validator<Int, Int>
 ) {
 
     operator fun invoke(request: WeekNumberRequest): Result<List<String>> {
-        return weekNumberValidator.validate(request.rawWeekNumber)
+        return weekNumberValidator.validate(request.weekNumber)
             .fold(
             onSuccess = { weekNumber ->
                 val absentIds = attendanceRepo
@@ -36,6 +36,4 @@ class GetAbsentMenteesNamesUseCase(
 
         )
     }
-
-
 }

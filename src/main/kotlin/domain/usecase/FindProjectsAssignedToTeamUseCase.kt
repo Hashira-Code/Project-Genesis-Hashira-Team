@@ -3,17 +3,28 @@ package domain.usecase
 import domain.model.Project
 import domain.repository.ProjectRepo
 import domain.validation.TeamIdValidator
-import domain.request.TeamIdRequest
+import domain.model.request.TeamIdRequest
+import domain.model.exception.EntityNotFoundException
+
 class FindProjectsAssignedToTeamUseCase(
     private val projectRepo: ProjectRepo,
     private val teamIdValidator: TeamIdValidator
 ) {
-    operator fun invoke(request: TeamIdRequest): List<Project> {
-        val validationResult =
-            teamIdValidator.validate(request.id)
-        validationResult.onFailure {
-            throw it
+
+    operator fun invoke(request: TeamIdRequest): Result<List<Project>> {
+        teamIdValidator.validate(request.id)
+            .onFailure { return Result.failure(it) }
+
+        val projects = projectRepo.getByTeamId(request.id)
+        return if (projects.isNotEmpty()) {
+            Result.success(projects)
+        } else {
+            Result.failure(EntityNotFoundException(NO_PROJECTS_FOUND_MSG))
         }
-        return projectRepo.getByTeamId(request.id)
     }
+
+    companion object {
+        const val NO_PROJECTS_FOUND_MSG = "No projects found for the team"
+    }
+
 }
