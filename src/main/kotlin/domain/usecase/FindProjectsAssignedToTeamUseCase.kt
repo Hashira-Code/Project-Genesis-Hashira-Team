@@ -5,10 +5,11 @@ import domain.repository.ProjectRepo
 import domain.validation.TeamIdValidator
 import domain.model.request.TeamIdRequest
 import domain.model.exception.EntityNotFoundException
+import domain.validation.Validator
 
 class FindProjectsAssignedToTeamUseCase(
     private val projectRepo: ProjectRepo,
-    private val teamIdValidator: TeamIdValidator
+    private val teamIdValidator: Validator<String, String>
 ) {
 
     operator fun invoke(request: TeamIdRequest): Result<List<Project>> {
