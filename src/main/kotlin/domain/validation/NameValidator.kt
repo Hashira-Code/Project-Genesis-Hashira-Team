@@ -23,6 +23,6 @@ class NameValidator : Validator<String, String> {
     companion object {
         private const val MIN_LENGTH = 2
         private const val EMPTY_MSG = "Name cannot be blank"
-        private const val LENGTH_MSG = "Name must be at least 3 characters"
+        private const val LENGTH_MSG = "Name must be at least 2 characters"
     }
 }
