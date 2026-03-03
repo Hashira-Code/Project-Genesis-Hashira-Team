@@ -6,7 +6,7 @@ class EmptyFieldValidator : Validator<List<String>> {
 
         if (input.any { it.isBlank() }) {
             return Result.failure(
-                CsvException.EmptyLineException((ERROR_MESSAGE)))
+                CsvException.EmptyFieldException((ERROR_MESSAGE)))
         }
         return Result.success(input)
 
