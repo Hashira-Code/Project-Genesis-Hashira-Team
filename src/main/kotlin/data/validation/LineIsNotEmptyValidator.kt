@@ -2,11 +2,14 @@ package data.validation
 
 class LineIsNotEmptyValidator : Validator<String> {
 
-    override fun validate(input: String): Result<String> =
-        input.takeIf { it.isNotBlank() }
-            ?.let { Result.success(it) }
-            ?: Result.failure(IllegalArgumentException(ERROR_MESSAGE))
+    override fun validate(input: String): Result<String> {
+        if (input.isBlank()) {
+            return Result.failure(
+                CsvException.EmptyLineException(ERROR_MESSAGE))
+        }
+        return Result.success(input)
 
+    }
     companion object {
         private const val ERROR_MESSAGE = "Line is empty"
     }
