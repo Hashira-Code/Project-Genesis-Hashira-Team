@@ -2,19 +2,16 @@ package data.dataSource
 
 import data.model.*
 import data.validation.EmptyFieldValidator
-import data.validation.LineIsNotEmptyValidator
 import data.validation.MissingColumnsValidator
 import data.validation.Validator
 import java.io.File
 
 class CsvDataSource(
-    val path: String,
-    private val fileValidator: Validator<File>
+    private val path: String,
+    private val fileValidator: Validator<File>,
+    private val lineValidator: Validator<String>
 ) : DataSource {
 
-    private val threeColumnsValidator = MissingColumnsValidator(3)
-    private val fourColumnsValidator = MissingColumnsValidator(4)
-    private val twoColumnsValidator = MissingColumnsValidator(2)
 
     private val emptyFieldValidator = EmptyFieldValidator()
 
@@ -24,23 +21,11 @@ class CsvDataSource(
     override fun getAllTeams() = teamParse()
     override fun getAllProjects() = projectParse()
 
-    private fun <T> parseFile(
-        resource: String,
-        columnsValidator: MissingColumnsValidator,
-        mapper: (List<String>) -> T
-    ): List<T> {
-
-        return readLinesCsv(resource).map { raw ->
-            columnsValidator.validate(raw).getOrThrow()
-            emptyFieldValidator.validate(raw).getOrThrow()
-            mapper(raw)
-        }
-    }
 
     private fun menteeParse(): List<MenteeRaw> =
         parseFile(
             MENTEES_FILE,
-            threeColumnsValidator,
+            MENTEE_COLUMNS,
         ) { raw ->
             MenteeRaw(
                 id = raw[0],
@@ -52,7 +37,7 @@ class CsvDataSource(
     private fun teamParse(): List<TeamRaw> =
         parseFile(
             TEAMS_FILE,
-            threeColumnsValidator,
+            TEAM_COLUMNS,
         ) { raw ->
             TeamRaw(
                 id = raw[0],
@@ -64,7 +49,7 @@ class CsvDataSource(
     private fun projectParse(): List<ProjectRaw> =
         parseFile(
             PROJECTS_FILE,
-            threeColumnsValidator,
+            PROJECT_COLUMNS,
         ) { raw ->
             ProjectRaw(
                 id = raw[0],
@@ -76,7 +61,7 @@ class CsvDataSource(
     private fun performanceParse(): List<PerformanceRaw> =
         parseFile(
             PERFORMANCE_FILE,
-            fourColumnsValidator,
+            PERFORMANCE_COLUMNS,
         ) { raw ->
             PerformanceRaw(
                 id = raw[1],
@@ -89,7 +74,7 @@ class CsvDataSource(
     private fun attendanceParse(): List<AttendanceRaw> =
         parseFile(
             ATTENDANCE_FILE,
-            twoColumnsValidator
+            ATTENDANCE_MIN_COLUMNS
         ) { raw ->
             AttendanceRaw(
                 menteeId = raw[0],
@@ -97,11 +82,22 @@ class CsvDataSource(
             )
         }
 
-    fun readLinesCsv(resource: String): List<List<String>> {
+    private fun <T> parseFile(
+        resource: String,
+        expectedColumns: Int,
+        mapper: (List<String>) -> T
+    ): List<T> {
+        val columnsValidator = MissingColumnsValidator(expectedColumns)
+        return readLinesCsv(resource).map { raw ->
+            columnsValidator.validate(raw).getOrThrow()
+            emptyFieldValidator.validate(raw).getOrThrow()
+            mapper(raw)
+        }
+    }
+
+    private fun readLinesCsv(resource: String): List<List<String>> {
         val file = File("$path/$resource")
         fileValidator.validate(file).getOrThrow()
-
-        val lineValidator = LineIsNotEmptyValidator()
 
         return file.readLines()
             .drop(1)
@@ -119,5 +115,10 @@ class CsvDataSource(
         private const val TEAMS_FILE = "teams.csv"
         private const val MENTEES_FILE = "mentees.csv"
         private const val PROJECTS_FILE = "projects.csv"
+        private const val MENTEE_COLUMNS = 3
+        private const val TEAM_COLUMNS = 3
+        private const val PROJECT_COLUMNS = 3
+        private const val PERFORMANCE_COLUMNS = 4
+        private const val ATTENDANCE_MIN_COLUMNS = 2
     }
 }
