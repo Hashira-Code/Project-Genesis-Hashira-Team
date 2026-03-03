@@ -1,26 +1,16 @@
-package data.source
+package data.dataSource
 
-import data.validation.Validator
-import data.model.AttendanceRaw
-import data.model.MenteeRaw
-import data.model.PerformanceRaw
-import data.model.ProjectRaw
-import data.model.TeamRaw
-import java.io.File
+import data.model.*
+import data.validation.EmptyFieldValidator
 import data.validation.LineIsNotEmptyValidator
 import data.validation.MissingColumnsValidator
-import data.validation.UniqueValueValidator
-import data.validation.EmptyFieldValidator
+import data.validation.Validator
+import java.io.File
 
 class CsvDataSource(
     val path: String,
     private val fileValidator: Validator<File>
 ) : DataSource {
-
-    private val menteeIdValidator = UniqueValueValidator<String>()
-    private val teamIdValidator = UniqueValueValidator<String>()
-    private val projectIdValidator = UniqueValueValidator<String>()
-    private val performanceIdValidator = UniqueValueValidator<String>()
 
     private val threeColumnsValidator = MissingColumnsValidator(3)
     private val fourColumnsValidator = MissingColumnsValidator(4)
@@ -37,14 +27,12 @@ class CsvDataSource(
     private fun <T> parseFile(
         resource: String,
         columnsValidator: MissingColumnsValidator,
-        idValidator: UniqueValueValidator<String>?,
         mapper: (List<String>) -> T
     ): List<T> {
 
         return readLinesCsv(resource).map { raw ->
             columnsValidator.validate(raw).getOrThrow()
             emptyFieldValidator.validate(raw).getOrThrow()
-            idValidator?.validate(raw[0])?.getOrThrow()
             mapper(raw)
         }
     }
@@ -53,7 +41,6 @@ class CsvDataSource(
         parseFile(
             MENTEES_FILE,
             threeColumnsValidator,
-            menteeIdValidator
         ) { raw ->
             MenteeRaw(
                 id = raw[0],
@@ -66,7 +53,6 @@ class CsvDataSource(
         parseFile(
             TEAMS_FILE,
             threeColumnsValidator,
-            teamIdValidator
         ) { raw ->
             TeamRaw(
                 id = raw[0],
@@ -79,7 +65,6 @@ class CsvDataSource(
         parseFile(
             PROJECTS_FILE,
             threeColumnsValidator,
-            projectIdValidator
         ) { raw ->
             ProjectRaw(
                 id = raw[0],
@@ -92,7 +77,6 @@ class CsvDataSource(
         parseFile(
             PERFORMANCE_FILE,
             fourColumnsValidator,
-            performanceIdValidator
         ) { raw ->
             PerformanceRaw(
                 id = raw[1],
@@ -105,8 +89,7 @@ class CsvDataSource(
     private fun attendanceParse(): List<AttendanceRaw> =
         parseFile(
             ATTENDANCE_FILE,
-            twoColumnsValidator,
-            null
+            twoColumnsValidator
         ) { raw ->
             AttendanceRaw(
                 menteeId = raw[0],

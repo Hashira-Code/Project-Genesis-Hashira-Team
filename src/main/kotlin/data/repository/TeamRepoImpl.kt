@@ -2,7 +2,7 @@ package data.repository
 import data.mapper.Mapper
 import domain.model.Team
 import data.model.TeamRaw
-import data.source.DataSource
+import data.dataSource.DataSource
 import domain.repository.TeamRepo
 
 

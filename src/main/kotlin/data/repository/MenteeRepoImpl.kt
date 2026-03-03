@@ -1,6 +1,6 @@
 package data.repository
 
-import data.source.DataSource
+import data.dataSource.DataSource
 import domain.model.Mentee
 import domain.repository.MenteeRepo
 import data.mapper.*
