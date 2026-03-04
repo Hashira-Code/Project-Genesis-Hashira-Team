@@ -1,7 +1,7 @@
 package domain.validation
 
-import domain.model.exception.EmptyFieldException
-import domain.model.exception.InvalidNameLengthException
+import domain.model.exception.ValidationException.EmptyFieldException
+import domain.model.exception.ValidationException.InvalidNameLengthException
 
 class NameValidator : Validator<String, String> {
     override fun validate(value: String): Result<String> {

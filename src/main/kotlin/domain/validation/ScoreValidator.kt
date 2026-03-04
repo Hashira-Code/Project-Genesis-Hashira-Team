@@ -1,6 +1,6 @@
 package domain.validation
 
-import domain.model.exception.ValueOutOfRangeException
+import domain.model.exception.ValidationException.ValueOutOfRangeException
 
 class ScoreValidator : Validator<Double, Double> {
     override fun validate(value: Double): Result<Double> {

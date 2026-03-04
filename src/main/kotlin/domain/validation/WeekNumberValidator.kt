@@ -1,6 +1,6 @@
 package domain.validation
 
-import domain.model.exception.ValueOutOfRangeException
+import domain.model.exception.ValidationException.ValueOutOfRangeException
 
 class WeekNumberValidator : Validator<Int, Int> {
     override fun validate(value: Int): Result<Int> {

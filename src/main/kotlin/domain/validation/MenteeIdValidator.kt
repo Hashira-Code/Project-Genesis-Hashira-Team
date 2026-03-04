@@ -1,7 +1,7 @@
 package domain.validation
 
-import domain.model.exception.InvalidFormatException
-import domain.model.exception.MenteeIdEmptyException
+import domain.model.exception.ValidationException.MenteeIdEmptyException
+import domain.model.exception.ValidationException.InvalidFormatException
 
 
 class MenteeIdValidator : Validator<String, String> {
