@@ -1,5 +1,7 @@
 package data.validation
 
+import data.exception.CsvException
+
 class MissingColumnsValidator(
     private val expectedColumnCount: Int
 ) : Validator<List<String>> {
