@@ -1,7 +1,7 @@
 package data.mapper
 
 
-interface Mapper<T,R> {
-    fun toDomain(rawList:List<T>):List<R>
+interface Mapper<T, R> {
+    fun toDomain(rawList: List<T>): List<R>
 
 }
