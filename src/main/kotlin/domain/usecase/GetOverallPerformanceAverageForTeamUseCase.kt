@@ -4,6 +4,7 @@ import domain.repository.MenteeRepo
 import domain.repository.PerformanceRepo
 import domain.model.request.TeamIdRequest
 import domain.validation.Validator
+import domain.model.exception.ValidationException.DataNotFoundException
 
 class GetOverallPerformanceAverageForTeamUseCase(
     private val menteeRepo: MenteeRepo,
@@ -21,7 +22,7 @@ class GetOverallPerformanceAverageForTeamUseCase(
                     .toSet()
 
                 if (menteeIds.isEmpty()) {
-                    Result.failure(Exception("No mentees found for this team"))
+                    Result.failure(DataNotFoundException(NO_DATA_MSG))
                 } else {
                     val average = performanceRepo
                         .getAll()
@@ -40,5 +41,10 @@ class GetOverallPerformanceAverageForTeamUseCase(
 
     private fun List<Double>.averageOrZero(): Double {
         return if (this.isEmpty()) 0.0 else this.average()
+    }
+
+    companion object {
+        private const val NO_DATA_MSG =
+            "No mentees found for this team"
     }
 }

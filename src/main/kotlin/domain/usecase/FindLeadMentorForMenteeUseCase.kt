@@ -3,14 +3,13 @@ package domain.usecase
 import domain.repository.MenteeRepo
 import domain.repository.TeamRepo
 import domain.model.request.MenteeIdRequest
-import domain.validation.MenteeIdValidator
-import domain.model.exception.EntityNotFoundException
+import domain.model.exception.ValidationException.EntityNotFoundException
 import domain.validation.Validator
 
 class FindLeadMentorForMenteeUseCase(
     private val menteeRepo: MenteeRepo,
     private val teamRepo: TeamRepo,
-    private val menteeIdValidator: Validator<String,String>
+    private val menteeIdValidator: Validator<String, String>
 ) {
     operator fun invoke(request: MenteeIdRequest): Result<String> {
         menteeIdValidator.validate(request.id)

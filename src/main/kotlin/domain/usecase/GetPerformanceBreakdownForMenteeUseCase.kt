@@ -4,6 +4,7 @@ import domain.model.SubmissionType
 import domain.repository.PerformanceRepo
 import domain.model.request.MenteeIdRequest
 import domain.validation.Validator
+import domain.model.exception.ValidationException.DataNotFoundException
 
 class GetPerformanceBreakdownForMenteeUseCase(
     private val performanceRepo: PerformanceRepo,
@@ -18,7 +19,7 @@ class GetPerformanceBreakdownForMenteeUseCase(
                     .asSequence()
 
                 if (submissions.none()) {
-                    Result.failure(Exception("No performance data found for this mentee"))
+                    Result.failure(DataNotFoundException(NO_DATA_MSG))
                 } else {
                     val breakdown = submissions
                         .groupBy { it.type }
@@ -31,4 +32,9 @@ class GetPerformanceBreakdownForMenteeUseCase(
             onFailure = { error -> Result.failure(error) }
         )
     }
+
+    companion object {
+        const val NO_DATA_MSG = "No performance data found for this mentee"
+    }
+
 }
