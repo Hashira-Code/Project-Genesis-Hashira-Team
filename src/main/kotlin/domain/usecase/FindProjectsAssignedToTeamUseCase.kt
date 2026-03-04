@@ -2,9 +2,8 @@ package domain.usecase
 
 import domain.model.Project
 import domain.repository.ProjectRepo
-import domain.validation.TeamIdValidator
 import domain.model.request.TeamIdRequest
-import domain.model.exception.EntityNotFoundException
+import domain.model.exception.ValidationException.EntityNotFoundException
 import domain.validation.Validator
 
 class FindProjectsAssignedToTeamUseCase(
