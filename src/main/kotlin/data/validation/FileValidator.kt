@@ -1,5 +1,6 @@
 package data.validation
 
+import data.exception.CsvException
 import java.io.File
 
 class FileValidator : Validator<File> {
