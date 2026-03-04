@@ -1,18 +1,19 @@
 package data.mapper
 
+import data.exception.CsvException
 import data.model.PerformanceRaw
 import domain.model.PerformanceSubmission
 import domain.model.SubmissionType
 
 
-class PerformanceMapper : Mapper<PerformanceRaw ,PerformanceSubmission>{
-    override fun toDomain(rawList: List<PerformanceRaw>): List<PerformanceSubmission>{
+class PerformanceMapper : Mapper<PerformanceRaw, PerformanceSubmission> {
+    override fun toDomain(rawList: List<PerformanceRaw>): List<PerformanceSubmission> {
         return rawList.map { raw ->
 
-            PerformanceSubmission (
-                id =  raw.id ,
+            PerformanceSubmission(
+                id = raw.id,
                 menteeId = raw.menteeId,
-                type = raw.type.toSubmissionType() ,
+                type = raw.type.toSubmissionType(),
                 score = raw.score
             )
         }
@@ -20,10 +21,11 @@ class PerformanceMapper : Mapper<PerformanceRaw ,PerformanceSubmission>{
 
     }
 }
-fun String.toSubmissionType() : SubmissionType =
+
+fun String.toSubmissionType(): SubmissionType =
     when (this.trim().uppercase()) {
         "TASK" -> SubmissionType.TASK
         "BOOK_CLUB" -> SubmissionType.BOOK_CLUB
         "WORKSHOP" -> SubmissionType.WORKSHOP
-        else -> throw IllegalArgumentException("Invalid submission type: $this")
-}
+        else -> throw CsvException.InvalidEnumException("Invalid submission type: $this")
+    }
