@@ -1,5 +1,6 @@
 package data.dataSource
 
+import data.exception.CsvException
 import data.model.*
 import data.validation.EmptyFieldValidator
 import data.validation.MissingColumnsValidator
@@ -9,11 +10,12 @@ import java.io.File
 class CsvDataSource(
     private val path: String,
     private val fileValidator: Validator<File>,
-    private val lineValidator: Validator<String>
+    private val lineValidator: Validator<String>,
+    private val emptyFieldValidator: Validator<List<String>>
 ) : DataSource {
 
 
-    private val emptyFieldValidator = EmptyFieldValidator()
+
 
     override fun getAllAttendance() = attendanceParse()
     override fun getAllPerformance() = performanceParse()
@@ -88,21 +90,45 @@ class CsvDataSource(
         mapper: (List<String>) -> T
     ): List<T> {
         val columnsValidator = MissingColumnsValidator(expectedColumns)
-        return readLinesCsv(resource).map { raw ->
-            columnsValidator.validate(raw).getOrThrow()
-            emptyFieldValidator.validate(raw).getOrThrow()
+        return readLinesCsv(resource).mapIndexed() { index, raw ->
+            columnsValidator.validate(raw).getOrElse() {
+                throw CsvException.MissingColumnsException(
+                    buildErrorMassage(resource, index + DATA_START_LINE, CsvException.MISSING_COLUMNS)
+                )
+            }
+            emptyFieldValidator.validate(raw).getOrElse() {
+                throw CsvException.EmptyFieldException(
+                    buildErrorMassage(resource, index + DATA_START_LINE, CsvException.EMPTY_FIELD)
+                )
+            }
             mapper(raw)
         }
     }
 
+    private fun buildErrorMassage(
+        resource: String,
+        lineNumber: Int,
+        message: String
+    ): String {
+        return "Error in file '$resource' at line $lineNumber: $message"
+    }
+
     private fun readLinesCsv(resource: String): List<List<String>> {
         val file = File("$path/$resource")
-        fileValidator.validate(file).getOrThrow()
+        fileValidator.validate(file).getOrElse() {
+            throw CsvException.FileNotValidException(
+                buildErrorMassage(resource, 0, CsvException.FILE_NOT_VALID)
+            )
+        }
 
         return file.readLines()
             .drop(1)
-            .filter { line ->
-                lineValidator.validate(line).isSuccess
+            .mapIndexed { index, line ->
+                lineValidator.validate(line).getOrElse {
+                    throw CsvException.EmptyLineException(
+                        buildErrorMassage(resource, DATA_START_LINE, CsvException.EMPTY_LINE)
+                    )
+                }
             }
             .map { line ->
                 line.split(",").map { it.trim() }
@@ -120,5 +146,6 @@ class CsvDataSource(
         private const val PROJECT_COLUMNS = 3
         private const val PERFORMANCE_COLUMNS = 4
         private const val ATTENDANCE_MIN_COLUMNS = 2
+        private const val DATA_START_LINE = 2
     }
 }
