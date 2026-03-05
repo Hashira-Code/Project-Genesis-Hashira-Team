@@ -9,10 +9,10 @@ import domain.repository.MenteeRepo
 class CalculateAttendancePercentageUseCase(
     private val menteeRepo: MenteeRepo,
     private val attendanceRepo: AttendanceRepo,
-    private val attendanceTimes:CalculatingMenteeAttendanceTimesUseCase
+    private val attendanceTimes: GetMenteeAttendanceTimesUseCase
 ) {
 
-    operator fun invoke():Map<Mentee, Double>{
+    operator fun invoke(): Map<Mentee, Double> {
         val totalWeeks=getTotalNumberOfWeeks(attendanceRepo.getAll())
 
         return menteeRepo.getAll().associate { mentee ->

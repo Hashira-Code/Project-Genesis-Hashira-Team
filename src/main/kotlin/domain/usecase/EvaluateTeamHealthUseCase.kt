@@ -30,23 +30,28 @@ class EvaluateTeamHealthUseCase(
         teamId: String,
         mentees: List<domain.model.Mentee>
     ): List<String> =
-        mentees
+        mentees.asSequence()
             .filter { it.teamId == teamId }
             .map { it.id }
+            .toList()
+
     private fun calculateAveragePerformance(
         menteeIds: List<String>,
         performances: List<domain.model.PerformanceSubmission>
     ): Double =
-        performances
+        performances.asSequence()
             .filter { it.menteeId in menteeIds }
             .map { it.score }
             .average()
+
     private fun calculateAttendanceRate(
         menteeIds: List<String>,
         attendances: List<domain.model.Attendance>
     ): Double {
         val teamAttendances =
-            attendances.filter { it.menteeId in menteeIds }
+            attendances.asSequence()
+                .filter { it.menteeId in menteeIds }
+                .toList()
         return if (teamAttendances.isEmpty()) 0.0
         else
             teamAttendances.count { it.status == AttendanceStatus.PRESENT }
