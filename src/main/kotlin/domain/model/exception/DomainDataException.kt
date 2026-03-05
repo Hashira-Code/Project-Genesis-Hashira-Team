@@ -6,5 +6,6 @@ open class DomainDataException(message: String) : Exception(message){
     class EmptyLine(message:String) : DomainDataException(message)
     class MissingColumns(message:String) : DomainDataException(message)
     class EmptyField(message: String) : DomainDataException(message)
+    class InvalidEnum(message: String) : DomainDataException(message)
     class Unknown(message: String) : DomainDataException(message)
 }
