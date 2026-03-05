@@ -1,19 +1,28 @@
 package domain.usecase
+import domain.model.TeamMenteeCount
 import domain.repository.MenteeRepo
 import domain.repository.TeamRepo
+
 class GetTeamsWithMenteesCountUseCase(
     private val teamRepo: TeamRepo,
     private val menteeRepo: MenteeRepo
 ) {
 
-    operator fun invoke(): List<Pair<String, Int>> {
+    operator fun invoke(): List<TeamMenteeCount> {
+        val allMentees = menteeRepo.getAll()
+        val allTeams = teamRepo.getAll()
+
         val menteesCountPerTeam =
-            menteeRepo.getAll()
+            allMentees.asSequence()
                 .groupingBy { it.teamId }
                 .eachCount()
-        return teamRepo.getAll()
+
+        return allTeams.asSequence()
             .map { team ->
-                team.name to (menteesCountPerTeam[team.id] ?: 0)
-            }
+                TeamMenteeCount(
+                    teamName = team.name,
+                    menteeCount = menteesCountPerTeam[team.id] ?: 0
+                )
+            }.toList()
     }
 }
