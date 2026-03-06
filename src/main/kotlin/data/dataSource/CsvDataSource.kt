@@ -93,19 +93,19 @@ class CsvDataSource(
         return readLinesCsv(resource).mapIndexed() { index, raw ->
             columnsValidator.validate(raw).getOrElse() {
                 throw CsvException.MissingColumnsException(
-                    buildErrorMassage(resource, index + DATA_START_LINE, CsvException.MISSING_COLUMNS)
+                    buildErrorMessage(resource, index + DATA_START_LINE, CsvException.MISSING_COLUMNS)
                 )
             }
             emptyFieldValidator.validate(raw).getOrElse() {
                 throw CsvException.EmptyFieldException(
-                    buildErrorMassage(resource, index + DATA_START_LINE, CsvException.EMPTY_FIELD)
+                    buildErrorMessage(resource, index + DATA_START_LINE, CsvException.EMPTY_FIELD)
                 )
             }
             mapper(raw)
         }
     }
 
-    private fun buildErrorMassage(
+    private fun buildErrorMessage(
         resource: String,
         lineNumber: Int,
         message: String
@@ -117,7 +117,7 @@ class CsvDataSource(
         val file = File("$path/$resource")
         fileValidator.validate(file).getOrElse() {
             throw CsvException.FileNotValidException(
-                buildErrorMassage(resource, 0, CsvException.FILE_NOT_VALID)
+                buildErrorMessage(resource, 0, CsvException.FILE_NOT_VALID)
             )
         }
 
@@ -126,7 +126,7 @@ class CsvDataSource(
             .mapIndexed { index, line ->
                 lineValidator.validate(line).getOrElse {
                     throw CsvException.EmptyLineException(
-                        buildErrorMassage(resource, DATA_START_LINE, CsvException.EMPTY_LINE)
+                        buildErrorMessage(resource, index + DATA_START_LINE, CsvException.EMPTY_LINE)
                     )
                 }
             }
