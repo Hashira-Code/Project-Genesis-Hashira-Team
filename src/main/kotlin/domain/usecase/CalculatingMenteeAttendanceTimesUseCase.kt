@@ -9,9 +9,9 @@ class CalculatingMenteeAttendanceTimesUseCase(
     private val attendanceRepo: AttendanceRepo
 )  {
     operator fun invoke():Map<String,Int> {
-        val attendance=attendanceRepo.getAll()
+        val attendance=attendanceRepo.getAll().getOrThrow()
 
-        return menteeRepo.getAll().associate{ mentee ->
+        return menteeRepo.getAll().getOrThrow().associate{ mentee ->
                 val AttendanceTimes=attendance.count{
                     it.menteeId==mentee.id && it.status==AttendanceStatus.PRESENT
                 }

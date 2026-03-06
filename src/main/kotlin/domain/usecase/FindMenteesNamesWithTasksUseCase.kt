@@ -1,8 +1,6 @@
 import domain.repository.PerformanceRepo
 import domain.repository.MenteeRepo
-import domain.model.PerformanceSubmission
 import domain.model.SubmissionType
-import domain.model.Mentee
 
 class FindMenteesNamesWithTasksUseCase(
     private val menteeRepo: MenteeRepo,
@@ -12,7 +10,7 @@ class FindMenteesNamesWithTasksUseCase(
     operator fun invoke(): List<String> {
 
         val taskSubmissions = performanceRepo
-            .getByType(SubmissionType.TASK)
+            .getByType(SubmissionType.TASK).getOrThrow()
 
         if (taskSubmissions.isEmpty()) return emptyList()
 
@@ -21,7 +19,7 @@ class FindMenteesNamesWithTasksUseCase(
             .map { it.menteeId }
             .toSet()
 
-        return menteeRepo.getAll()
+        return menteeRepo.getAll().getOrThrow()
             .asSequence()
             .filter { it.id in menteeIdsWithTasks }
             .map { it.name }

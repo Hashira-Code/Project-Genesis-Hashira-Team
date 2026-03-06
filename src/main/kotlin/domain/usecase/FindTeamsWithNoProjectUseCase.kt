@@ -11,8 +11,8 @@ class FindTeamsWithNoProjectUseCase(
 
     operator fun invoke(): List<Team> {
 
-        val teams = teamRepo.getAll()
-        val projects = projectRepo.getAll()
+        val teams = teamRepo.getAll().getOrThrow()
+        val projects = projectRepo.getAll().getOrThrow()
 
         if (teams.isEmpty()) return emptyList()
 

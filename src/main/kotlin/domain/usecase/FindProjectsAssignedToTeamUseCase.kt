@@ -15,7 +15,7 @@ class FindProjectsAssignedToTeamUseCase(
         teamIdValidator.validate(request.id)
             .onFailure { return Result.failure(it) }
 
-        val projects = projectRepo.getByTeamId(request.id)
+        val projects = projectRepo.getByTeamId(request.id).getOrThrow()
         return if (projects.isNotEmpty()) {
             Result.success(projects)
         } else {

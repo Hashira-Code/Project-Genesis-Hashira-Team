@@ -15,11 +15,14 @@ class FindLeadMentorForMenteeUseCase(
         menteeIdValidator.validate(request.id)
             .onFailure { return Result.failure(it) }
 
-        val mentee = menteeRepo.getById(request.id)
-            ?: return Result.failure(EntityNotFoundException(MENTEE_NOT_FOUND_MSG))
+        val mentee = menteeRepo.getById(request.id).getOrElse {
+            return Result.failure(it)
+        } ?: return Result.failure(EntityNotFoundException(MENTEE_NOT_FOUND_MSG))
 
-        val team = teamRepo.getById(mentee.teamId)
-            ?: return Result.failure(EntityNotFoundException(TEAM_NOT_FOUND_MSG))
+        val team = teamRepo.getById(mentee.teamId).getOrElse {
+            return Result.failure(it)
+        } ?: return Result.failure(EntityNotFoundException(TEAM_NOT_FOUND_MSG))
+
 
         return Result.success(team.mentorLead)
     }

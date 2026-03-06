@@ -15,25 +15,24 @@ class GetAbsentMenteesNamesUseCase(
     operator fun invoke(request: WeekNumberRequest): Result<List<String>> {
         return weekNumberValidator.validate(request.weekNumber)
             .fold(
-            onSuccess = { weekNumber ->
-                val absentIds = attendanceRepo
-                    .getByWeekNumber(weekNumber)
-                    .asSequence()
-                    .filter { it.status == AttendanceStatus.ABSENT }
-                    .map { it.menteeId }
-                    .toSet()
-                val names = menteeRepo
-                    .getAll()
-                    .asSequence()
-                    .filter { it.id in absentIds }
-                    .map { it.name }
-                    .toList()
-                Result.success(names)
+                onSuccess = { weekNumber ->
+                    val absentIds = attendanceRepo
+                        .getByWeekNumber(weekNumber).getOrThrow()
+                        .asSequence()
+                        .filter { it.status == AttendanceStatus.ABSENT }
+                        .map { it.menteeId }
+                        .toSet()
+                    val names = menteeRepo
+                        .getAll().getOrThrow()
+                        .asSequence()
+                        .filter { it.id in absentIds }
+                        .map { it.name }
+                        .toList()
+                    Result.success(names)
 
-            }
-            ,onFailure = { error -> Result.failure(error) }
+                }, onFailure = { error -> Result.failure(error) }
 
 
-        )
+            )
     }
 }

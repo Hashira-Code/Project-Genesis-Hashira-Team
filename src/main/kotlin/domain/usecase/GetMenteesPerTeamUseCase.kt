@@ -12,8 +12,8 @@ class GetMenteesPerTeamUseCase(
 
     operator fun invoke(): Map<Team, List<Mentee>> {
 
-        val teams = teamRepo.getAll()
-        val mentees = menteeRepo.getAll()
+        val teams = teamRepo.getAll().getOrThrow()
+        val mentees = menteeRepo.getAll().getOrThrow()
 
         if (teams.isEmpty()) return emptyMap()
 

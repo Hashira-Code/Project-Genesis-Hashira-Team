@@ -11,8 +11,8 @@ class GetAverageScorePerMenteeUseCase(
 ) {
 
     operator fun invoke(): List<Pair<String, Double>> {
-        val allMentees = menteeRepo.getAll()
-        val allSubmissions = performanceRepo.getAll()
+        val allMentees = menteeRepo.getAll().getOrThrow()
+        val allSubmissions = performanceRepo.getAll().getOrThrow()
 
         val averageScorePerMentee =
             calculateAverageScore(allSubmissions)

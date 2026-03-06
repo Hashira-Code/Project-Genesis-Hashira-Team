@@ -15,7 +15,7 @@ class GetPerformanceBreakdownForMenteeUseCase(
         return menteeIdValidator.validate(request.id).fold(
             onSuccess = { menteeId ->
                 val submissions = performanceRepo
-                    .getByMenteeId(menteeId)
+                    .getByMenteeId(menteeId).getOrThrow()
                     .asSequence()
 
                 if (submissions.none()) {
