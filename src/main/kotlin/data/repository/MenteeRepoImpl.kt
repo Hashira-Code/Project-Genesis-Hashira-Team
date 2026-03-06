@@ -1,6 +1,7 @@
 package data.repository
 
 import data.dataSource.DataSource
+import data.exception.mapCsvErrorToDomain
 import domain.model.Mentee
 import domain.repository.MenteeRepo
 import data.mapper.*
@@ -14,14 +15,15 @@ class MenteeRepoImpl(
 
     private val cache: Result<List<Mentee>> by lazy {
         runCatching { mapper.toDomain(dataSource.getAllMentees()) }
+            .mapCsvErrorToDomain()
     }
 
     private val byId: Map<String, Mentee> by lazy {
-        cache.getOrDefault(emptyList()).associateBy { it.id }
+        cache.getOrThrow().associateBy { it.id }
     }
 
     private val byTeamId: Map<String, List<Mentee>> by lazy {
-        cache.getOrDefault(emptyList()).groupBy { it.teamId }
+        cache.getOrThrow().groupBy { it.teamId }
     }
 
     override fun getAll(): Result<List<Mentee>> = cache

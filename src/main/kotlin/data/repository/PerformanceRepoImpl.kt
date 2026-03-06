@@ -3,6 +3,7 @@ package data.repository
 import data.mapper.Mapper
 import data.model.PerformanceRaw
 import data.dataSource.DataSource
+import data.exception.mapCsvErrorToDomain
 import domain.model.PerformanceSubmission
 import domain.model.SubmissionType
 import domain.repository.PerformanceRepo
@@ -15,14 +16,15 @@ class PerformanceRepoImpl(
 
     private val cache: Result<List<PerformanceSubmission>> by lazy {
         runCatching { mapper.toDomain(dataSource.getAllPerformance()) }
+            .mapCsvErrorToDomain()
     }
 
     private val byMenteeId: Map<String, List<PerformanceSubmission>> by lazy {
-        cache.getOrDefault(emptyList()).groupBy { it.menteeId }
+        cache.getOrThrow().groupBy { it.menteeId }
     }
 
     private val byType: Map<SubmissionType, List<PerformanceSubmission>> by lazy {
-        cache.getOrDefault(emptyList()).groupBy { it.type }
+        cache.getOrThrow().groupBy { it.type }
     }
 
     override fun getAll(): Result<List<PerformanceSubmission>> = cache

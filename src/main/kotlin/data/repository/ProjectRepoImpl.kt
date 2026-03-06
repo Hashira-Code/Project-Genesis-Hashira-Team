@@ -1,6 +1,7 @@
 package data.repository
 
 import data.dataSource.DataSource
+import data.exception.mapCsvErrorToDomain
 import domain.model.Project
 import domain.repository.ProjectRepo
 import data.mapper.Mapper
@@ -12,9 +13,10 @@ class ProjectRepoImpl(
 ) : ProjectRepo {
     private val cache: Result<List<Project>> by lazy {
         runCatching { mapper.toDomain(dataSource.getAllProjects()) }
+            .mapCsvErrorToDomain()
     }
     private val byTeamId: Map<String, List<Project>> by lazy {
-        cache.getOrDefault(emptyList()).groupBy { it.teamId }
+        cache.getOrThrow().groupBy { it.teamId }
     }
 
     override fun getAll(): Result<List<Project>> = cache
