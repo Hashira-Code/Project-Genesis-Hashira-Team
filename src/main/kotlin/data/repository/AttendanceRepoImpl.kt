@@ -11,23 +11,23 @@ class AttendanceRepoImpl(
     private val mapper: Mapper<AttendanceRaw, Attendance>
 ) : AttendanceRepo {
 
-    private val cache: List<Attendance> by lazy {
-        mapper.toDomain(dataSource.getAllAttendance())
+    private val cache: Result<List<Attendance>> by lazy {
+        runCatching { mapper.toDomain(dataSource.getAllAttendance()) }
     }
 
     private val byMenteeId: Map<String, List<Attendance>> by lazy {
-        cache.groupBy { it.menteeId }
+        cache.getOrDefault(emptyList()).groupBy { it.menteeId }
     }
 
     private val byWeekNumber: Map<Int, List<Attendance>> by lazy {
-        cache.groupBy { it.weekNumber }
+        cache.getOrDefault(emptyList()).groupBy { it.weekNumber }
     }
 
-    override fun getAll(): List<Attendance> = cache
+    override fun getAll(): Result<List<Attendance>> = cache
 
-    override fun getByMenteeId(menteeId: String): List<Attendance> =
-        byMenteeId[menteeId].orEmpty()
+    override fun getByMenteeId(menteeId: String): Result<List<Attendance>> =
+        cache.map { byMenteeId[menteeId].orEmpty() }
 
-    override fun getByWeekNumber(weekNumber: Int): List<Attendance> =
-        byWeekNumber[weekNumber].orEmpty()
+    override fun getByWeekNumber(weekNumber: Int): Result<List<Attendance>> =
+        cache.map { byWeekNumber[weekNumber].orEmpty() }
 }

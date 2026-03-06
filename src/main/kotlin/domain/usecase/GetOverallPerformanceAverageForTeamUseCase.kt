@@ -16,7 +16,7 @@ class GetOverallPerformanceAverageForTeamUseCase(
         return teamIdValidator.validate(request.id).fold(
             onSuccess = { teamId ->
                 val menteeIds = menteeRepo
-                    .getByTeamId(teamId)
+                    .getByTeamId(teamId).getOrThrow()
                     .asSequence()
                     .map { it.id }
                     .toSet()
@@ -25,7 +25,7 @@ class GetOverallPerformanceAverageForTeamUseCase(
                     Result.failure(DataNotFoundException(NO_DATA_MSG))
                 } else {
                     val average = performanceRepo
-                        .getAll()
+                        .getAll().getOrThrow()
                         .asSequence()
                         .filter { it.menteeId in menteeIds }
                         .map { it.score }

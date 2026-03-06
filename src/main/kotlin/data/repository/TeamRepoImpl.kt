@@ -1,4 +1,5 @@
 package data.repository
+
 import data.mapper.Mapper
 import domain.model.Team
 import data.model.TeamRaw
@@ -11,15 +12,15 @@ class TeamRepoImpl(
     private val mapper: Mapper<TeamRaw, Team>
 ) : TeamRepo {
 
-    private val cache: List<Team> by lazy {
-        mapper.toDomain(dataSource.getAllTeams())
+    private val cache: Result<List<Team>> by lazy {
+        runCatching { mapper.toDomain(dataSource.getAllTeams()) }
     }
 
     private val byId: Map<String, Team> by lazy {
-        cache.associateBy { it.id }
+        cache.getOrDefault(emptyList()).associateBy { it.id }
     }
 
-    override fun getAll(): List<Team> = cache
+    override fun getAll(): Result<List<Team>> = cache
 
-    override fun getById(id: String): Team? = byId[id]
+    override fun getById(id: String): Result<Team?> = cache.map { byId[id] }
 }

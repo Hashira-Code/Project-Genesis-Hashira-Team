@@ -1,4 +1,5 @@
 package domain.usecase
+
 import domain.model.Mentee
 import domain.model.PerformanceSubmission
 import domain.repository.MenteeRepo
@@ -10,8 +11,8 @@ class GetMenteesWithoutAnySubmissionUseCase(
 ) {
 
     operator fun invoke(): List<String> {
-        val allMentees = menteeRepo.getAll()
-        val allSubmissions = performanceRepo.getAll()
+        val allMentees = menteeRepo.getAll().getOrThrow()
+        val allSubmissions = performanceRepo.getAll().getOrThrow()
 
         val menteesWhoSubmittedWork =
             extractMenteesWhoSubmittedWork(allSubmissions)

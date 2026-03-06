@@ -13,10 +13,10 @@ class EvaluateTeamHealthUseCase(
     private val attendanceRepo: AttendanceRepo
 ) {
     operator fun invoke(): Map<String, TeamHealthStatus> {
-        val teams = teamRepo.getAll()
-        val mentees = menteeRepo.getAll()
-        val performances = performanceRepo.getAll()
-        val attendances = attendanceRepo.getAll()
+        val teams = teamRepo.getAll().getOrThrow()
+        val mentees = menteeRepo.getAll().getOrThrow()
+        val performances = performanceRepo.getAll().getOrThrow()
+        val attendances = attendanceRepo.getAll().getOrThrow()
         return teams.associate { team ->
             val teamMenteeIds = getTeamMenteeIds(team.id, mentees)
             val avgPerformance =
@@ -57,7 +57,7 @@ class EvaluateTeamHealthUseCase(
         attendanceRate: Double
     ): TeamHealthStatus =
         when {
-            avgPerformance >= EXCELLENT_PERFORMANCE_THRESHOLD && attendanceRate >= EXCELENT_ATTENDANCE_THRESHOLD ->
+            avgPerformance >= EXCELLENT_PERFORMANCE_THRESHOLD && attendanceRate >= EXCELLENT_ATTENDANCE_THRESHOLD ->
                 TeamHealthStatus.EXCELLENT
             avgPerformance >= GOOD_PERFORMANCE_THRESHOLD && attendanceRate >= GOOD_ATTENDANCE_THRESHOLD ->
                 TeamHealthStatus.GOOD
@@ -67,6 +67,6 @@ class EvaluateTeamHealthUseCase(
     companion object {
         private const val EXCELLENT_PERFORMANCE_THRESHOLD=80.0
         private const val GOOD_PERFORMANCE_THRESHOLD=60.0
-        private const val EXCELENT_ATTENDANCE_THRESHOLD=0.9
+        private const val EXCELLENT_ATTENDANCE_THRESHOLD=0.9
         private const val GOOD_ATTENDANCE_THRESHOLD=0.7}
 }

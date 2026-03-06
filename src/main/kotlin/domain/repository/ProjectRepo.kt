@@ -3,6 +3,6 @@ package domain.repository
 import domain.model.Project
 
 interface ProjectRepo {
-    fun getAll(): List<Project>
-    fun getByTeamId(teamId: String): List<Project>
+    fun getAll(): Result<List<Project>>
+    fun getByTeamId(teamId: String): Result<List<Project>>
 }

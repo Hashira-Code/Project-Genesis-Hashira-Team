@@ -1,7 +1,9 @@
 package domain.usecase
+
 import domain.model.Mentee
 import domain.repository.PerformanceRepo
 import domain.repository.MenteeRepo
+
 class FindTopScoringMenteeOverallUseCase(
     private val performanceRepo: PerformanceRepo,
     private val menteeRepo: MenteeRepo
@@ -10,8 +12,9 @@ class FindTopScoringMenteeOverallUseCase(
         val topMenteeId = findTopMenteeId()
         return getMenteeById(topMenteeId)
     }
+
     private fun findTopMenteeId(): String? {
-        val performances = performanceRepo.getAll()
+        val performances = performanceRepo.getAll().getOrThrow()
         var topMenteeId: String? = null
         var highestAverage = 0.0
 
@@ -26,10 +29,11 @@ class FindTopScoringMenteeOverallUseCase(
             }
         return topMenteeId
     }
+
     private fun getMenteeById(menteeId: String?): Mentee? {
         if (menteeId == null) return null
         var result: Mentee? = null
-        menteeRepo.getAll().forEach { mentee ->
+        menteeRepo.getAll().getOrThrow().forEach { mentee ->
             if (mentee.id == menteeId) {
                 result = mentee
             }

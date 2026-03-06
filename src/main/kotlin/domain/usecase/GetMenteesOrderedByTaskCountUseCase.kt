@@ -12,8 +12,8 @@ class GetMenteesOrderedByTaskCountUseCase(
 ) {
 
     operator fun invoke(): List<String> {
-        val allMentees = menteeRepo.getAll()
-        val allSubmissions = performanceRepo.getAll()
+        val allMentees = menteeRepo.getAll().getOrThrow()
+        val allSubmissions = performanceRepo.getAll().getOrThrow()
 
         val taskCountPerMentee =
             calculateTaskCount(allSubmissions)
