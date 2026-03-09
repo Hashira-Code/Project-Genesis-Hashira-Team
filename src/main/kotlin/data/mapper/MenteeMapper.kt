@@ -7,10 +7,10 @@ class MenteeMapper() : Mapper<MenteeRaw, Mentee> {
 
     override fun toDomain(rawList: List<MenteeRaw>): List<Mentee> {
         return rawList.map { raw ->
-            Mentee(
+            Mentee.create(
                 id = raw.id,
                 name = raw.name,
-                teamId = raw.teamId
+                teamId = raw.teamId,
             )
         }
     }
