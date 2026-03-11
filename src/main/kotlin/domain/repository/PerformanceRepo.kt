@@ -1,7 +1,7 @@
 package domain.repository
 
-import domain.model.PerformanceSubmission
-import domain.model.SubmissionType
+import domain.model.entity.PerformanceSubmission
+import domain.model.entity.SubmissionType
 
 interface PerformanceRepo {
     fun getAll(): Result<List<PerformanceSubmission>>
@@ -9,3 +9,5 @@ interface PerformanceRepo {
     fun getByType(type: SubmissionType): Result<List<PerformanceSubmission>>
 
 }
+
+

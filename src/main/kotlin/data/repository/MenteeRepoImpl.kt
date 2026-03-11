@@ -2,7 +2,7 @@ package data.repository
 
 import data.dataSource.DataSource
 import data.exception.mapCsvErrorToDomain
-import domain.model.Mentee
+import domain.model.entity.Mentee
 import domain.repository.MenteeRepo
 import data.mapper.*
 import data.model.MenteeRaw
@@ -32,3 +32,5 @@ class MenteeRepoImpl(
 
     override fun getByTeamId(teamId: String): Result<List<Mentee>> = cache.map { byTeamId[teamId].orEmpty() }
 }
+
+

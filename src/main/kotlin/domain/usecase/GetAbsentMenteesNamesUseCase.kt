@@ -1,6 +1,6 @@
 package domain.usecase
 
-import domain.model.AttendanceStatus
+import domain.model.entity.AttendanceStatus
 import domain.repository.MenteeRepo
 import domain.repository.AttendanceRepo
 import domain.model.request.WeekNumberRequest
@@ -36,3 +36,4 @@ class GetAbsentMenteesNamesUseCase(
             )
     }
 }
+

@@ -1,6 +1,6 @@
 package domain.usecase
 
-import domain.model.Project
+import domain.model.entity.Project
 import domain.repository.ProjectRepo
 import domain.model.request.TeamIdRequest
 import domain.model.exception.ValidationException.EntityNotFoundException
@@ -28,3 +28,5 @@ class FindProjectsAssignedToTeamUseCase(
     }
 
 }
+
+

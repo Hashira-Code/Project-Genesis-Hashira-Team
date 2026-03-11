@@ -2,7 +2,7 @@ package data.repository
 
 import data.dataSource.DataSource
 import data.exception.mapCsvErrorToDomain
-import domain.model.Attendance
+import domain.model.entity.Attendance
 import domain.repository.AttendanceRepo
 import data.mapper.Mapper
 import data.model.AttendanceRaw
@@ -33,3 +33,5 @@ class AttendanceRepoImpl(
     override fun getByWeekNumber(weekNumber: Int): Result<List<Attendance>> =
         cache.map { byWeekNumber[weekNumber].orEmpty() }
 }
+
+

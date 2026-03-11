@@ -2,8 +2,8 @@ package domain.usecase
 
 import domain.repository.MenteeRepo
 import domain.repository.TeamRepo
-import domain.model.Mentee
-import domain.model.Team
+import domain.model.entity.Mentee
+import domain.model.entity.Team
 
 class GetMenteesPerTeamUseCase(
     private val menteeRepo: MenteeRepo,
@@ -24,5 +24,7 @@ class GetMenteesPerTeamUseCase(
         }
     }
 }
+
+
 
 

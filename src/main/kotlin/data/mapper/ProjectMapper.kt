@@ -1,7 +1,7 @@
 package data.mapper
 
 import data.model.ProjectRaw
-import domain.model.Project
+import domain.model.entity.Project
 
 class ProjectMapper : Mapper<ProjectRaw, Project> {
     override fun toDomain(rawList: List<ProjectRaw>): List<Project> {
@@ -14,3 +14,4 @@ class ProjectMapper : Mapper<ProjectRaw, Project> {
         }
     }
 }
+

@@ -1,6 +1,6 @@
 package domain.usecase
 
-import domain.model.Team
+import domain.model.entity.Team
 import domain.repository.ProjectRepo
 import domain.repository.TeamRepo
 
@@ -26,3 +26,5 @@ class FindTeamsWithNoProjectUseCase(
         }
     }
 }
+
+

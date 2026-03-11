@@ -4,8 +4,8 @@ import data.mapper.Mapper
 import data.model.PerformanceRaw
 import data.dataSource.DataSource
 import data.exception.mapCsvErrorToDomain
-import domain.model.PerformanceSubmission
-import domain.model.SubmissionType
+import domain.model.entity.PerformanceSubmission
+import domain.model.entity.SubmissionType
 import domain.repository.PerformanceRepo
 
 
@@ -36,3 +36,5 @@ class PerformanceRepoImpl(
         cache.map { byType[type].orEmpty() }
 
 }
+
+

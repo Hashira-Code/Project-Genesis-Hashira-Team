@@ -2,8 +2,8 @@ package data.mapper
 
 import data.exception.CsvException
 import data.model.AttendanceRaw
-import domain.model.Attendance
-import domain.model.AttendanceStatus
+import domain.model.entity.Attendance
+import domain.model.entity.AttendanceStatus
 
 class AttendanceMapper : Mapper<AttendanceRaw, Attendance> {
     override fun toDomain(rawList: List<AttendanceRaw>): List<Attendance> {
@@ -26,3 +26,5 @@ private fun String.toAttendanceStatus(): AttendanceStatus =
         "LATE" -> AttendanceStatus.LATE
         else -> throw CsvException.InvalidEnumException("Invalid attendance status: $this")
     }
+
+

@@ -1,7 +1,7 @@
 package data.mapper
 
 import data.model.TeamRaw
-import domain.model.Team
+import domain.model.entity.Team
 
 class TeamMapper : Mapper<TeamRaw, Team> {
     override fun toDomain(rawList: List<TeamRaw>): List<Team> {
@@ -14,3 +14,4 @@ class TeamMapper : Mapper<TeamRaw, Team> {
         }
     }
 }
+

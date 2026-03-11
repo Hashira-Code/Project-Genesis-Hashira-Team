@@ -1,6 +1,6 @@
 package domain.usecase
 
-import domain.model.Mentee
+import domain.model.entity.Mentee
 import domain.repository.PerformanceRepo
 import domain.repository.MenteeRepo
 
@@ -41,3 +41,4 @@ class FindTopScoringMenteeOverallUseCase(
         return result
     }
 }
+

@@ -1,7 +1,7 @@
 package domain.usecase
 
 import domain.repository.AttendanceRepo
-import domain.model.AttendanceStatus
+import domain.model.entity.AttendanceStatus
 import domain.repository.MenteeRepo
 
 class CalculatingMenteeAttendanceTimesUseCase(
@@ -18,3 +18,4 @@ class CalculatingMenteeAttendanceTimesUseCase(
               mentee.id to AttendanceTimes
     }
 }}
+

@@ -1,6 +1,6 @@
 package domain.usecase
 
-import domain.model.SubmissionType
+import domain.model.entity.SubmissionType
 import domain.repository.PerformanceRepo
 import domain.model.request.MenteeIdRequest
 import domain.validation.Validator
@@ -38,3 +38,4 @@ class GetPerformanceBreakdownForMenteeUseCase(
     }
 
 }
+
