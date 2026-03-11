@@ -1,44 +1,33 @@
 package domain.usecase
 
 import domain.model.entity.Mentee
-import domain.repository.PerformanceRepo
 import domain.repository.MenteeRepo
+import domain.repository.PerformanceRepo
 
 class FindTopScoringMenteeOverallUseCase(
     private val performanceRepo: PerformanceRepo,
     private val menteeRepo: MenteeRepo
 ) {
-    operator fun invoke(): Mentee? {
-        val topMenteeId = findTopMenteeId()
-        return getMenteeById(topMenteeId)
-    }
-
-    private fun findTopMenteeId(): String? {
-        val performances = performanceRepo.getAll().getOrThrow()
-        var topMenteeId: String? = null
-        var highestAverage = 0.0
-
-        performances
-            .groupBy { it.menteeId }
-            .forEach { (menteeId, submissions) ->
-                val averageScore = submissions.map { it.score }.average()
-                if (averageScore > highestAverage) {
-                    highestAverage = averageScore
-                    topMenteeId = menteeId
-                }
-            }
-        return topMenteeId
-    }
-
-    private fun getMenteeById(menteeId: String?): Mentee? {
-        if (menteeId == null) return null
-        var result: Mentee? = null
-        menteeRepo.getAll().getOrThrow().forEach { mentee ->
-            if (mentee.id == menteeId) {
-                result = mentee
-            }
+    operator fun invoke(): Result<Mentee?> {
+        val mentees = menteeRepo.getAll().getOrElse {
+            return Result.failure(it)
         }
-        return result
+
+        val performances = performanceRepo.getAll().getOrElse {
+            return Result.failure(it)
+        }
+
+        val topMenteeId = performances
+            .groupBy { it.menteeId }
+            .maxByOrNull { (_, submissions) ->
+                submissions.map { it.score }.average()
+            }
+            ?.key
+
+        val topMentee = mentees.find { mentee ->
+            mentee.id == topMenteeId
+        }
+
+        return Result.success(topMentee)
     }
 }
-
