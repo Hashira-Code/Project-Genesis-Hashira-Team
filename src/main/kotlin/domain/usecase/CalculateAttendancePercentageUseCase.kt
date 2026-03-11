@@ -1,7 +1,7 @@
 package domain.usecase
 
-import domain.model.Attendance
-import domain.model.Mentee
+import domain.model.entity.Attendance
+import domain.model.entity.Mentee
 import domain.repository.AttendanceRepo
 import domain.repository.MenteeRepo
 
@@ -30,5 +30,7 @@ class CalculateAttendancePercentageUseCase(
     }
 
 }
+
+
 
 

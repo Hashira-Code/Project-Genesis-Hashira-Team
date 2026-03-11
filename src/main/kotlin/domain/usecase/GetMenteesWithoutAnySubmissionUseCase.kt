@@ -1,7 +1,7 @@
 package domain.usecase
 
-import domain.model.Mentee
-import domain.model.PerformanceSubmission
+import domain.model.entity.Mentee
+import domain.model.entity.PerformanceSubmission
 import domain.repository.MenteeRepo
 import domain.repository.PerformanceRepo
 
@@ -38,3 +38,5 @@ class GetMenteesWithoutAnySubmissionUseCase(
             .filter { it.id !in menteesWhoSubmittedWork }
             .map { it.name }
 }
+
+

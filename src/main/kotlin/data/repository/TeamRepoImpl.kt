@@ -1,7 +1,7 @@
 package data.repository
 
 import data.mapper.Mapper
-import domain.model.Team
+import domain.model.entity.Team
 import data.model.TeamRaw
 import data.dataSource.DataSource
 import data.exception.mapCsvErrorToDomain
@@ -26,3 +26,5 @@ class TeamRepoImpl(
 
     override fun getById(id: String): Result<Team?> = cache.map { byId[id] }
 }
+
+

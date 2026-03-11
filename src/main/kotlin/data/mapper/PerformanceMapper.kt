@@ -2,8 +2,8 @@ package data.mapper
 
 import data.exception.CsvException
 import data.model.PerformanceRaw
-import domain.model.PerformanceSubmission
-import domain.model.SubmissionType
+import domain.model.entity.PerformanceSubmission
+import domain.model.entity.SubmissionType
 
 
 class PerformanceMapper : Mapper<PerformanceRaw, PerformanceSubmission> {
@@ -29,3 +29,5 @@ fun String.toSubmissionType(): SubmissionType =
         "WORKSHOP" -> SubmissionType.WORKSHOP
         else -> throw CsvException.InvalidEnumException("Invalid submission type: $this")
     }
+
+

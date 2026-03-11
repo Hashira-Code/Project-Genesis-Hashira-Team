@@ -1,7 +1,7 @@
 package data.mapper
 
 import data.model.MenteeRaw
-import domain.model.Mentee
+import domain.model.entity.Mentee
 
 class MenteeMapper() : Mapper<MenteeRaw, Mentee> {
 
@@ -15,5 +15,7 @@ class MenteeMapper() : Mapper<MenteeRaw, Mentee> {
         }
     }
 }
+
+
 
 

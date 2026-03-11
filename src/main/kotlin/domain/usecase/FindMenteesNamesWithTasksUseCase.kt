@@ -1,6 +1,6 @@
 import domain.repository.PerformanceRepo
 import domain.repository.MenteeRepo
-import domain.model.SubmissionType
+import domain.model.entity.SubmissionType
 
 class FindMenteesNamesWithTasksUseCase(
     private val menteeRepo: MenteeRepo,
@@ -26,3 +26,5 @@ class FindMenteesNamesWithTasksUseCase(
             .toList()
     }
 }
+
+

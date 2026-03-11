@@ -2,7 +2,7 @@ package data.repository
 
 import data.dataSource.DataSource
 import data.exception.mapCsvErrorToDomain
-import domain.model.Project
+import domain.model.entity.Project
 import domain.repository.ProjectRepo
 import data.mapper.Mapper
 import data.model.ProjectRaw
@@ -22,3 +22,5 @@ class ProjectRepoImpl(
     override fun getAll(): Result<List<Project>> = cache
     override fun getByTeamId(teamId: String): Result<List<Project>> = cache.map { byTeamId[teamId].orEmpty() }
 }
+
+

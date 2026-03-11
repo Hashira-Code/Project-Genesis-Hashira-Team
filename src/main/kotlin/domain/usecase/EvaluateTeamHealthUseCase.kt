@@ -1,6 +1,6 @@
 package domain.usecase
-import domain.model.AttendanceStatus
-import domain.model.TeamHealthStatus
+import domain.model.entity.AttendanceStatus
+import domain.model.entity.TeamHealthStatus
 import domain.repository.AttendanceRepo
 import domain.repository.MenteeRepo
 import domain.repository.PerformanceRepo
@@ -28,14 +28,14 @@ class EvaluateTeamHealthUseCase(
     }
     private fun getTeamMenteeIds(
         teamId: String,
-        mentees: List<domain.model.Mentee>
+        mentees: List<domain.model.entity.Mentee>
     ): List<String> =
         mentees
             .filter { it.teamId == teamId }
             .map { it.id }
     private fun calculateAveragePerformance(
         menteeIds: List<String>,
-        performances: List<domain.model.PerformanceSubmission>
+        performances: List<domain.model.entity.PerformanceSubmission>
     ): Double =
         performances
             .filter { it.menteeId in menteeIds }
@@ -43,7 +43,7 @@ class EvaluateTeamHealthUseCase(
             .average()
     private fun calculateAttendanceRate(
         menteeIds: List<String>,
-        attendances: List<domain.model.Attendance>
+        attendances: List<domain.model.entity.Attendance>
     ): Double {
         val teamAttendances =
             attendances.filter { it.menteeId in menteeIds }
@@ -70,3 +70,4 @@ class EvaluateTeamHealthUseCase(
         private const val EXCELLENT_ATTENDANCE_THRESHOLD=0.9
         private const val GOOD_ATTENDANCE_THRESHOLD=0.7}
 }
+

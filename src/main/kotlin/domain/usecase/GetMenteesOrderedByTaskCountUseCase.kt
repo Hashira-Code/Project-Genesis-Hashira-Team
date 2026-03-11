@@ -1,8 +1,8 @@
 package domain.usecase
 
-import domain.model.Mentee
-import domain.model.PerformanceSubmission
-import domain.model.SubmissionType
+import domain.model.entity.Mentee
+import domain.model.entity.PerformanceSubmission
+import domain.model.entity.SubmissionType
 import domain.repository.MenteeRepo
 import domain.repository.PerformanceRepo
 
@@ -41,3 +41,5 @@ class GetMenteesOrderedByTaskCountUseCase(
             .sortedByDescending { taskCountPerMentee[it.id] }
             .map { it.name }
 }
+
+

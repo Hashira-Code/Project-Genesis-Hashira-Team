@@ -1,7 +1,7 @@
 package domain.usecase
 
-import domain.model.Mentee
-import domain.model.PerformanceSubmission
+import domain.model.entity.Mentee
+import domain.model.entity.PerformanceSubmission
 import domain.repository.MenteeRepo
 import domain.repository.PerformanceRepo
 
@@ -40,3 +40,5 @@ class GetAverageScorePerMenteeUseCase(
             .filter { it.id in averageScorePerMentee.keys }
             .map { it.name to averageScorePerMentee[it.id]!! }
 }
+
+

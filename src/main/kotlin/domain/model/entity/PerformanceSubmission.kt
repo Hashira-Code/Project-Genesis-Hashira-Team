@@ -1,4 +1,4 @@
-package domain.model
+package domain.model.entity
 
 data class PerformanceSubmission(
     val id: String,
@@ -6,3 +6,5 @@ data class PerformanceSubmission(
     val type: SubmissionType,
     val score: Double
 )
+
+

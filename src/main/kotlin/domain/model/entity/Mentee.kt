@@ -1,4 +1,4 @@
-package domain.model
+package domain.model.entity
 
 import domain.model.exception.ValidationException.EmptyFieldException
 import domain.model.exception.ValidationException.InvalidFormatException
@@ -48,3 +48,5 @@ data class Mentee private constructor(
 
     }
 }
+
+
