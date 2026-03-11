@@ -1,33 +1,33 @@
 package data.exception
 
-import domain.model.exception.DomainDataException
+import domain.model.exception.DomainDataSourceException
 
-fun CsvException.toDomain(): DomainDataException = when (this) {
-    is CsvException.FileNotFoundException -> DomainDataException.FileNotFound(
+fun CsvException.toDomain(): DomainDataSourceException = when (this) {
+    is CsvException.FileNotFoundException -> DomainDataSourceException.FileNotFound(
         message ?: CsvException.FILE_NOT_FOUND
     )
 
-    is CsvException.FileNotValidException -> DomainDataException.InvalidFile(
+    is CsvException.FileNotValidException -> DomainDataSourceException.InvalidFile(
         message ?: CsvException.FILE_NOT_VALID
     )
 
-    is CsvException.EmptyLineException -> DomainDataException.EmptyLine(
+    is CsvException.EmptyLineException -> DomainDataSourceException.EmptyLine(
         message ?: CsvException.EMPTY_LINE
     )
 
-    is CsvException.MissingColumnsException -> DomainDataException.MissingColumns(
+    is CsvException.MissingColumnsException -> DomainDataSourceException.MissingColumns(
         message ?: CsvException.MISSING_COLUMNS
     )
 
-    is CsvException.EmptyFieldException -> DomainDataException.EmptyField(
+    is CsvException.EmptyFieldException -> DomainDataSourceException.EmptyField(
         message ?: CsvException.EMPTY_FIELD
     )
 
-    is CsvException.InvalidEnumException -> DomainDataException.InvalidEnum(
+    is CsvException.InvalidEnumException -> DomainDataSourceException.InvalidEnum(
         message ?: CsvException.INVALID_ENUM
     )
 
-    else -> DomainDataException.Unknown(
+    else -> DomainDataSourceException.Unknown(
         message ?: CsvException.DEFAULT_MESSAGE
     )
 }
@@ -39,7 +39,7 @@ fun <T> Result<T>.mapCsvErrorToDomain(): Result<T> =
             Result.failure(
                 when (error) {
                     is CsvException -> error.toDomain()
-                    else -> DomainDataException.Unknown(error.message ?: "Unknown error")
+                    else -> DomainDataSourceException.Unknown(error.message ?: "Unknown error")
                 }
             )
         }
