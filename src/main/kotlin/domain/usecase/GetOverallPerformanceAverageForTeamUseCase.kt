@@ -13,30 +13,29 @@ class GetOverallPerformanceAverageForTeamUseCase(
 ) {
 
     operator fun invoke(request: TeamIdRequest): Result<Double> {
-        return teamIdValidator.validate(request.id).fold(
-            onSuccess = { teamId ->
-                val menteeIds = menteeRepo
-                    .getByTeamId(teamId).getOrThrow()
-                    .asSequence()
-                    .map { it.id }
-                    .toSet()
+        val teamId = teamIdValidator.validate(request.id).getOrElse {
+            return Result.failure(it)
+        }
+        val menteeIds = menteeRepo
+            .getByTeamId(teamId).getOrElse {
+                return Result.failure(it)
+            }.map { it.id }.toSet()
 
-                if (menteeIds.isEmpty()) {
-                    Result.failure(DataNotFoundException(NO_DATA_MSG))
-                } else {
-                    val average = performanceRepo
-                        .getAll().getOrThrow()
-                        .asSequence()
-                        .filter { it.menteeId in menteeIds }
-                        .map { it.score }
-                        .toList()
-                        .averageOrZero()
+        if (menteeIds.isEmpty()) {
+            return Result.failure(DataNotFoundException(NO_DATA_MSG))
+        }
+        val allSubmissions = performanceRepo.getAll().getOrElse {
+            return Result.failure(it)
+        }
+        val average = allSubmissions
+            .asSequence()
+            .filter { it.menteeId in menteeIds }
+            .map { it.score }
+            .toList()
+            .averageOrZero()
 
-                    Result.success(average)
-                }
-            },
-            onFailure = { error -> Result.failure(error) }
-        )
+        return Result.success(average)
+
     }
 
     private fun List<Double>.averageOrZero(): Double {

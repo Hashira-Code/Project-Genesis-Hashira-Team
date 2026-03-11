@@ -10,18 +10,19 @@ class GetMenteesPerTeamUseCase(
     private val teamRepo: TeamRepo
 ) {
 
-    operator fun invoke(): Map<Team, List<Mentee>> {
+    operator fun invoke(): Result<Map<Team, List<Mentee>>> {
 
-        val teams = teamRepo.getAll().getOrThrow()
-        val mentees = menteeRepo.getAll().getOrThrow()
+        val teams = teamRepo.getAll().getOrElse({return Result.failure(it)})
+        val mentees = menteeRepo.getAll().getOrElse { return Result.failure(it) }
 
-        if (teams.isEmpty()) return emptyMap()
+        if (teams.isEmpty()) return Result.success(emptyMap())
 
         val menteesByTeamId = mentees.groupBy { it.teamId }
 
-        return teams.associateWith { team ->
+        val result = teams.associateWith { team ->
             menteesByTeamId[team.id].orEmpty()
         }
+        return Result.success(result)
     }
 }
 

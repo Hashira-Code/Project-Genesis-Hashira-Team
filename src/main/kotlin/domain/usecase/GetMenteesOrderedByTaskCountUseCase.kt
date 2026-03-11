@@ -11,17 +11,22 @@ class GetMenteesOrderedByTaskCountUseCase(
     private val performanceRepo: PerformanceRepo
 ) {
 
-    operator fun invoke(): List<String> {
-        val allMentees = menteeRepo.getAll().getOrThrow()
-        val allSubmissions = performanceRepo.getAll().getOrThrow()
+    operator fun invoke(): Result<List<String>> {
+        val allMentees = menteeRepo.getAll().getOrElse {
+            return Result.failure(it)
+        }
+        val allSubmissions = performanceRepo.getAll().getOrElse {
+            return Result.failure(it)
+        }
 
         val taskCountPerMentee =
             calculateTaskCount(allSubmissions)
 
-        return orderMenteesByTaskCount(
+        val result = orderMenteesByTaskCount(
             allMentees,
             taskCountPerMentee
         )
+        return Result.success(result)
     }
 
     private fun calculateTaskCount(
@@ -38,7 +43,7 @@ class GetMenteesOrderedByTaskCountUseCase(
     ): List<String> =
         mentees
             .filter { it.id in taskCountPerMentee.keys }
-            .sortedByDescending { taskCountPerMentee[it.id] }
+            .sortedByDescending { taskCountPerMentee[it.id] ?: 0 }
             .map { it.name }
 }
 

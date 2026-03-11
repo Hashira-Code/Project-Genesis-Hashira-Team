@@ -8,14 +8,19 @@ class GetTeamsWithMenteesCountUseCase(
     private val menteeRepo: MenteeRepo
 ) {
 
-    operator fun invoke(): List<Pair<String, Int>> {
+    operator fun invoke(): Result<List<Pair<String, Int>>> {
+        val mentees = menteeRepo.getAll().getOrElse {
+            return Result.failure(it)
+        }
         val menteesCountPerTeam =
-            menteeRepo.getAll().getOrThrow()
-                .groupingBy { it.teamId }
-                .eachCount()
-        return teamRepo.getAll().getOrThrow()
-            .map { team ->
-                team.name to (menteesCountPerTeam[team.id] ?: 0)
-            }
+            mentees.groupingBy { it.teamId }.eachCount()
+        val teams = teamRepo.getAll().getOrElse {
+            return Result.failure(it)
+        }
+        val result = teams.map { team ->
+            team.name to (menteesCountPerTeam[team.id] ?: 0)
+        }
+        return Result.success(result)
     }
+
 }

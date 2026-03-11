@@ -10,17 +10,21 @@ class GetMenteesWithoutAnySubmissionUseCase(
     private val performanceRepo: PerformanceRepo
 ) {
 
-    operator fun invoke(): List<String> {
-        val allMentees = menteeRepo.getAll().getOrThrow()
-        val allSubmissions = performanceRepo.getAll().getOrThrow()
-
+    operator fun invoke(): Result<List<String>> {
+        val allMentees = menteeRepo.getAll().getOrElse {
+            return Result.failure(it)
+        }
+        val allSubmissions = performanceRepo.getAll().getOrElse {
+            return Result.failure(it)
+        }
         val menteesWhoSubmittedWork =
             extractMenteesWhoSubmittedWork(allSubmissions)
 
-        return filterMenteesWhoNeverSubmitted(
+        val result = filterMenteesWhoNeverSubmitted(
             allMentees,
             menteesWhoSubmittedWork
         )
+        return Result.success(result)
     }
 
     private fun extractMenteesWhoSubmittedWork(
