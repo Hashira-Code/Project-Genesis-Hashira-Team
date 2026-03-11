@@ -12,25 +12,22 @@ class GetPerformanceBreakdownForMenteeUseCase(
 ) {
 
     operator fun invoke(request: MenteeIdRequest): Result<Map<SubmissionType, Double>> {
-        return menteeIdValidator.validate(request.id).fold(
-            onSuccess = { menteeId ->
-                val submissions = performanceRepo
-                    .getByMenteeId(menteeId).getOrThrow()
-                    .asSequence()
+        val menteeId = menteeIdValidator.validate(request.id).getOrElse {
+            return Result.failure(it)
+        }
+        val submissions = performanceRepo.getByMenteeId(menteeId).getOrElse {
+            return Result.failure(it)
+        }
+        if (submissions.isEmpty()) {
+            return Result.failure(DataNotFoundException(NO_DATA_MSG))
+        }
+        val breakdown = submissions
+            .groupBy { it.type }
+            .mapValues { entry ->
+                entry.value.map { it.score }.average()
+            }
 
-                if (submissions.none()) {
-                    Result.failure(DataNotFoundException(NO_DATA_MSG))
-                } else {
-                    val breakdown = submissions
-                        .groupBy { it.type }
-                        .mapValues { entry ->
-                            entry.value.map { it.score }.average()
-                        }
-                    Result.success(breakdown)
-                }
-            },
-            onFailure = { error -> Result.failure(error) }
-        )
+        return Result.success(breakdown)
     }
 
     companion object {

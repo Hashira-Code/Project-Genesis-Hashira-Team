@@ -7,18 +7,23 @@ class GetMenteesWithMultipleSubmissionsUseCase(
     private val menteeRepo: MenteeRepo,
     private val performanceRepo: PerformanceRepo
 ) {
-    operator fun invoke(): List<String> {
-        val mentees = menteeRepo.getAll().getOrThrow()
-        val submissions = performanceRepo.getAll().getOrThrow()
+    operator fun invoke(): Result<List<String>> {
+        val mentees = menteeRepo.getAll().getOrElse {
+            return Result.failure(it)
+        }
+        val submissions = performanceRepo.getAll().getOrElse {
+            return Result.failure(it)
+        }
         val menteeIdsWithMultipleSubmissions =
             submissions
                 .groupingBy { it.menteeId }
                 .eachCount()
                 .filter { it.value > MINIMUM_MULTIPLE_SUBMISSIONS }
                 .keys
-        return mentees
+        val result = mentees
             .filter { it.id in menteeIdsWithMultipleSubmissions }
             .map { it.name }
+        return Result.success(result)
     }
 
     companion object {
