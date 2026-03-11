@@ -12,17 +12,17 @@ class FindLeadMentorForMenteeUseCase(
     private val menteeIdValidator: Validator<String, String>
 ) {
     operator fun invoke(request: MenteeIdRequest): Result<String> {
-        menteeIdValidator.validate(request.id)
-            .onFailure { return Result.failure(it) }
+        val menteeId = menteeIdValidator.validate(request.id).getOrElse {
+            return Result.failure(it)
+        }
 
-        val mentee = menteeRepo.getById(request.id).getOrElse {
+        val mentee = menteeRepo.getById(menteeId).getOrElse {
             return Result.failure(it)
         } ?: return Result.failure(EntityNotFoundException(MENTEE_NOT_FOUND_MSG))
 
         val team = teamRepo.getById(mentee.teamId).getOrElse {
             return Result.failure(it)
         } ?: return Result.failure(EntityNotFoundException(TEAM_NOT_FOUND_MSG))
-
 
         return Result.success(team.mentorLead)
     }
@@ -31,5 +31,4 @@ class FindLeadMentorForMenteeUseCase(
         const val MENTEE_NOT_FOUND_MSG = "Mentee not found"
         const val TEAM_NOT_FOUND_MSG = "Team not found"
     }
-
 }

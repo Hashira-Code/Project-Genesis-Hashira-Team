@@ -10,12 +10,15 @@ class FindProjectsAssignedToTeamUseCase(
     private val projectRepo: ProjectRepo,
     private val teamIdValidator: Validator<String, String>
 ) {
-
     operator fun invoke(request: TeamIdRequest): Result<List<Project>> {
-        teamIdValidator.validate(request.id)
-            .onFailure { return Result.failure(it) }
+        val teamId = teamIdValidator.validate(request.id).getOrElse {
+            return Result.failure(it)
+        }
 
-        val projects = projectRepo.getByTeamId(request.id).getOrThrow()
+        val projects = projectRepo.getByTeamId(teamId).getOrElse {
+            return Result.failure(it)
+        }
+
         return if (projects.isNotEmpty()) {
             Result.success(projects)
         } else {
@@ -26,7 +29,5 @@ class FindProjectsAssignedToTeamUseCase(
     companion object {
         const val NO_PROJECTS_FOUND_MSG = "No projects found for the team"
     }
-
 }
-
 
