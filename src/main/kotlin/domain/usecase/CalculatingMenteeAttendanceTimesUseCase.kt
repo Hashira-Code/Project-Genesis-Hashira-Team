@@ -7,15 +7,22 @@ import domain.repository.MenteeRepo
 class CalculatingMenteeAttendanceTimesUseCase(
     private val menteeRepo: MenteeRepo,
     private val attendanceRepo: AttendanceRepo
-)  {
-    operator fun invoke():Map<String,Int> {
-        val attendance=attendanceRepo.getAll().getOrThrow()
+) {
+    operator fun invoke(): Result<Map<String, Int>> {
+        val mentees = menteeRepo.getAll().getOrElse {
+            return Result.failure(it)
+        }
 
-        return menteeRepo.getAll().getOrThrow().associate{ mentee ->
-                val AttendanceTimes=attendance.count{
-                    it.menteeId==mentee.id && it.status==AttendanceStatus.PRESENT
-                }
-              mentee.id to AttendanceTimes
+        val attendanceTimes = mentees.associate { mentee ->
+            val attendances = attendanceRepo.getByMenteeId(mentee.id).getOrElse {
+                return Result.failure(it)
+            }
+
+            val presentCount = attendances.count { it.status == AttendanceStatus.PRESENT }
+            mentee.id to presentCount
+        }
+
+        return Result.success(attendanceTimes)
     }
-}}
+}
 
