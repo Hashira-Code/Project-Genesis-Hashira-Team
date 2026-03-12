@@ -9,15 +9,11 @@ import domain.model.exception.ValidationException.DataNotFoundException
 class GetOverallPerformanceAverageForTeamUseCase(
     private val menteeRepo: MenteeRepo,
     private val performanceRepo: PerformanceRepo,
-    private val teamIdValidator: Validator<String, String>
 ) {
 
     operator fun invoke(request: TeamIdRequest): Result<Double> {
-        val teamId = teamIdValidator.validate(request.id).getOrElse {
-            return Result.failure(it)
-        }
         val menteeIds = menteeRepo
-            .getByTeamId(teamId).getOrElse {
+            .getByTeamId(request.id).getOrElse {
                 return Result.failure(it)
             }.map { it.id }.toSet()
 
