@@ -8,14 +8,9 @@ import domain.validation.Validator
 
 class FindProjectsAssignedToTeamUseCase(
     private val projectRepo: ProjectRepo,
-    private val teamIdValidator: Validator<String, String>
 ) {
     operator fun invoke(request: TeamIdRequest): Result<List<Project>> {
-        val teamId = teamIdValidator.validate(request.id).getOrElse {
-            return Result.failure(it)
-        }
-
-        val projects = projectRepo.getByTeamId(teamId).getOrElse {
+        val projects = projectRepo.getByTeamId(request.id).getOrElse {
             return Result.failure(it)
         }
 
