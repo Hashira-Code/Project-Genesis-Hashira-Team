@@ -8,14 +8,10 @@ import domain.model.exception.ValidationException.DataNotFoundException
 
 class GetPerformanceBreakdownForMenteeUseCase(
     private val performanceRepo: PerformanceRepo,
-    private val menteeIdValidator: Validator<String, String>
 ) {
 
     operator fun invoke(request: MenteeIdRequest): Result<Map<SubmissionType, Double>> {
-        val menteeId = menteeIdValidator.validate(request.id).getOrElse {
-            return Result.failure(it)
-        }
-        val submissions = performanceRepo.getByMenteeId(menteeId).getOrElse {
+        val submissions = performanceRepo.getByMenteeId(request.id).getOrElse {
             return Result.failure(it)
         }
         if (submissions.isEmpty()) {

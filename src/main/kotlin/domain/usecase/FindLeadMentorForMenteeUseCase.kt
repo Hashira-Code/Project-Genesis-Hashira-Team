@@ -9,14 +9,9 @@ import domain.validation.Validator
 class FindLeadMentorForMenteeUseCase(
     private val menteeRepo: MenteeRepo,
     private val teamRepo: TeamRepo,
-    private val menteeIdValidator: Validator<String, String>
 ) {
     operator fun invoke(request: MenteeIdRequest): Result<String> {
-        val menteeId = menteeIdValidator.validate(request.id).getOrElse {
-            return Result.failure(it)
-        }
-
-        val mentee = menteeRepo.getById(menteeId).getOrElse {
+        val mentee = menteeRepo.getById(request.id).getOrElse {
             return Result.failure(it)
         } ?: return Result.failure(EntityNotFoundException(MENTEE_NOT_FOUND_MSG))
 
