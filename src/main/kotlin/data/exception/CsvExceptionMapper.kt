@@ -1,33 +1,33 @@
 package data.exception
 
-import domain.model.exception.DomainDataSourceException
+import domain.model.exception.DataSourceException
 
-fun CsvException.toDomain(): DomainDataSourceException = when (this) {
-    is CsvException.FileNotFoundException -> DomainDataSourceException.DataSourceNotFound(
+fun CsvException.toDomain(): DataSourceException = when (this) {
+    is CsvException.FileNotFoundException -> DataSourceException.DataSourceNotFound(
         message ?: CsvException.FILE_NOT_FOUND
     )
 
-    is CsvException.FileNotValidException -> DomainDataSourceException.InvalidDataSource(
+    is CsvException.FileNotValidException -> DataSourceException.InvalidDataSource(
         message ?: CsvException.FILE_NOT_VALID
     )
 
-    is CsvException.EmptyLineException -> DomainDataSourceException.InvalidDataSource(
+    is CsvException.EmptyLineException -> DataSourceException.InvalidDataSource(
         message ?: CsvException.EMPTY_LINE
     )
 
-    is CsvException.MissingColumnsException -> DomainDataSourceException.InvalidDataSource(
+    is CsvException.MissingColumnsException -> DataSourceException.InvalidDataSource(
         message ?: CsvException.MISSING_COLUMNS
     )
 
-    is CsvException.EmptyFieldException -> DomainDataSourceException.InvalidDataSource(
+    is CsvException.EmptyFieldException -> DataSourceException.InvalidDataSource(
         message ?: CsvException.EMPTY_FIELD
     )
 
-    is CsvException.InvalidEnumException -> DomainDataSourceException.InvalidDataSource(
+    is CsvException.InvalidEnumException -> DataSourceException.InvalidDataSource(
         message ?: CsvException.INVALID_ENUM
     )
 
-    else -> DomainDataSourceException.InvalidDataSource(
+    else -> DataSourceException.InvalidDataSource(
         message ?: CsvException.DEFAULT_MESSAGE
     )
 }
@@ -39,7 +39,7 @@ fun <T> Result<T>.mapCsvErrorToDomain(): Result<T> =
             Result.failure(
                 when (error) {
                     is CsvException -> error.toDomain()
-                    else -> DomainDataSourceException.InvalidDataSource(error.message ?: CsvException.DEFAULT_MESSAGE)
+                    else -> DataSourceException.InvalidDataSource(error.message ?: CsvException.DEFAULT_MESSAGE)
                 }
             )
         }
