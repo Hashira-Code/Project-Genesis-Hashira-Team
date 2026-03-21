@@ -1,6 +1,7 @@
 package domain.usecase
 
 import domain.model.Mentee
+import domain.model.MenteeAverageScore
 import domain.model.PerformanceSubmission
 import domain.repository.MenteeRepo
 import domain.repository.PerformanceRepo
@@ -10,23 +11,23 @@ class GetAverageScorePerMenteeUseCase(
     private val performanceRepo: PerformanceRepo
 ) {
 
-    operator fun invoke(): List<Pair<String, Double>> {
+    operator fun invoke(): List<MenteeAverageScore> {
         val allMentees = menteeRepo.getAll()
         val allSubmissions = performanceRepo.getAll()
 
-        val averageScorePerMentee =
+        val averageScoreByMenteeId =
             calculateAverageScore(allSubmissions)
 
         return mapMenteesToAverageScore(
             allMentees,
-            averageScorePerMentee
+            averageScoreByMenteeId
         )
     }
 
     private fun calculateAverageScore(
         submissions: List<PerformanceSubmission>
     ): Map<String, Double> =
-        submissions
+        submissions.asSequence()
             .groupBy { it.menteeId }
             .mapValues { entry ->
                 entry.value.map { it.score }.average()
@@ -34,9 +35,10 @@ class GetAverageScorePerMenteeUseCase(
 
     private fun mapMenteesToAverageScore(
         mentees: List<Mentee>,
-        averageScorePerMentee: Map<String, Double>
-    ): List<Pair<String, Double>> =
-        mentees
-            .filter { it.id in averageScorePerMentee.keys }
-            .map { it.name to averageScorePerMentee[it.id]!! }
+        averageScoreByMenteeId: Map<String, Double>
+    ): List<MenteeAverageScore> =
+        mentees.asSequence()
+            .filter { it.id in averageScoreByMenteeId.keys }
+            .map { MenteeAverageScore(it.name, averageScoreByMenteeId[it.id]!!) }
+            .toList()
 }
