@@ -15,7 +15,7 @@ class FindTopScoringMenteeOverallUseCase(
         var topMenteeId: String? = null
         var highestAverage = 0.0
 
-        performances.asSequence()
+        performances
             .groupBy { it.menteeId }
             .forEach { (menteeId, submissions) ->
                 val averageScore = submissions.map { it.score }.average()
@@ -26,9 +26,14 @@ class FindTopScoringMenteeOverallUseCase(
             }
         return topMenteeId
     }
-
     private fun getMenteeById(menteeId: String?): Mentee? {
         if (menteeId == null) return null
-        return menteeRepo.getById(menteeId)
+        var result: Mentee? = null
+        menteeRepo.getAll().forEach { mentee ->
+            if (mentee.id == menteeId) {
+                result = mentee
+            }
+        }
+        return result
     }
 }
