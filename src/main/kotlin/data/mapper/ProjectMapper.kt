@@ -6,7 +6,7 @@ import domain.model.entity.Project
 class ProjectMapper : Mapper<ProjectRaw, Project> {
     override fun toDomain(rawList: List<ProjectRaw>): List<Project> {
         return rawList.map { raw ->
-            Project(
+            Project.create(
                 id = raw.id,
                 name = raw.name,
                 teamId = raw.teamId
