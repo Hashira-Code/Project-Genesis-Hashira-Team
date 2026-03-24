@@ -9,10 +9,9 @@ import org.koin.dsl.module
 import java.io.File
 import domain.validation.Validator as DomainValidator
 
-
-    val validatorModule = module {
-        single<Validator<File>> { FileValidator() }
-        single<Validator<String>> { LineIsNotEmptyValidator() }
-        single<Validator<List<String>>> { EmptyFieldValidator() }
-        single<DomainValidator<Int, Int>> { WeekNumberValidator() }
-    }
+val validatorModule = module {
+    single<Validator<File>> { FileValidator() }
+    single<Validator<String>> { LineIsNotEmptyValidator() }
+    single<Validator<List<String>>> { EmptyFieldValidator() }
+    single<DomainValidator<Int, Int>> { WeekNumberValidator() }
+}
