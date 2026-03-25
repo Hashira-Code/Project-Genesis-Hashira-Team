@@ -5,7 +5,6 @@ import data.model.PerformanceRaw
 import domain.model.entity.PerformanceSubmission
 import domain.model.entity.SubmissionType
 
-
 class PerformanceMapper : Mapper<PerformanceRaw, PerformanceSubmission> {
     override fun toDomain(rawList: List<PerformanceRaw>): List<PerformanceSubmission> {
         return rawList.map { raw ->
@@ -17,8 +16,6 @@ class PerformanceMapper : Mapper<PerformanceRaw, PerformanceSubmission> {
                 score = raw.score
             )
         }
-
-
     }
 }
 
@@ -29,5 +26,3 @@ fun String.toSubmissionType(): SubmissionType =
         "WORKSHOP" -> SubmissionType.WORKSHOP
         else -> throw CsvException.InvalidEnumException("Invalid submission type: $this")
     }
-
-
