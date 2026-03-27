@@ -1,5 +1,6 @@
 package domain.usecase
 
+import domain.model.entity.Project
 import domain.model.entity.Team
 import domain.model.exception.ValidationException.DataNotFoundException
 import domain.model.request.ProjectIdRequest
@@ -11,22 +12,31 @@ class FindTeamWorkingOnProjectUseCase(
     private val teamRepo: TeamRepo
 ) {
     operator fun invoke(request: ProjectIdRequest): Result<Team> {
-        val projects = projectRepo.getAll().getOrElse {
-           return Result.failure(it)
+        val project = findProjectById(request.id).getOrElse {
+            return Result.failure(it)
         }
-
-        val project = projects.find { it.id == request.id }
-            ?: return Result.failure(DataNotFoundException(PROJECT_NOT_FOUND_MESSAGE))
 
         val team = teamRepo.getById(project.teamId).getOrElse {
             return Result.failure(it)
-        } ?: TODO("Handle missing team after writing the next failing test")
+        } ?: return Result.failure(DataNotFoundException(TEAM_NOT_FOUND_MESSAGE))
 
         return Result.success(team)
     }
 
+    private fun findProjectById(projectId: String): Result<Project> {
+        val projects = projectRepo.getAll().getOrElse {
+            return Result.failure(it)
+        }
+
+        val project = projects.find { it.id == projectId }
+            ?: return Result.failure(DataNotFoundException(PROJECT_NOT_FOUND_MESSAGE))
+
+        return Result.success(project)
+    }
+
     private companion object {
         const val PROJECT_NOT_FOUND_MESSAGE = "Project not found"
+        const val TEAM_NOT_FOUND_MESSAGE = "Team not found"
     }
 }
 

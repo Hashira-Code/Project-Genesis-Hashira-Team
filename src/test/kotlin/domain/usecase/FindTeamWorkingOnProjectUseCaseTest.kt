@@ -47,6 +47,22 @@ class FindTeamWorkingOnProjectUseCaseTest {
         assertIs<ValidationException.DataNotFoundException>(result.exceptionOrNull())
     }
 
+    @Test
+    fun `returns failure when team assigned to project does not exist`() {
+        // Given: a project exists, but its assigned team does not exist
+        val useCase = FindTeamWorkingOnProjectUseCase(
+            projectRepo = FakeProjectRepo(listOf(createProject())),
+            teamRepo = FakeTeamRepo(emptyList())
+        )
+
+        // When: searching for the team working on an existing project
+        val result = useCase(ProjectIdRequest("p01"))
+
+        // Then: the use case should return failure
+        assertTrue(result.isFailure)
+        assertIs<ValidationException.DataNotFoundException>(result.exceptionOrNull())
+    }
+
     private fun createProject(
         id: String = "p01",
         name: String = "Helios Initiative",
