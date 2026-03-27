@@ -1,6 +1,7 @@
 package domain.usecase
 
 import domain.model.entity.Team
+import domain.model.exception.ValidationException.DataNotFoundException
 import domain.model.request.ProjectIdRequest
 import domain.repository.ProjectRepo
 import domain.repository.TeamRepo
@@ -15,7 +16,7 @@ class FindTeamWorkingOnProjectUseCase(
         }
 
         val project = projects.find { it.id == request.id }
-            ?: TODO("Handle missing project after writing the next failing test")
+            ?: return Result.failure(DataNotFoundException("Project not found"))
 
         val team = teamRepo.getById(project.teamId).getOrElse {
             return Result.failure(it)
