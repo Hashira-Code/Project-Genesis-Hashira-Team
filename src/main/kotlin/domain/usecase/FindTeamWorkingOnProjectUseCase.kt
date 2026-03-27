@@ -16,13 +16,17 @@ class FindTeamWorkingOnProjectUseCase(
         }
 
         val project = projects.find { it.id == request.id }
-            ?: return Result.failure(DataNotFoundException("Project not found"))
+            ?: return Result.failure(DataNotFoundException(PROJECT_NOT_FOUND_MESSAGE))
 
         val team = teamRepo.getById(project.teamId).getOrElse {
             return Result.failure(it)
         } ?: TODO("Handle missing team after writing the next failing test")
 
         return Result.success(team)
+    }
+
+    private companion object {
+        const val PROJECT_NOT_FOUND_MESSAGE = "Project not found"
     }
 }
 
