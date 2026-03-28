@@ -22,9 +22,26 @@ class GetTopPerformingMenteesBySubmissionTypeUseCaseTest {
             menteeRepo = FakeMenteeRepo(listOf(createMentee())
             )
         )
-
         // When
         val result = useCase(SubmissionType.TASK)
+        assertTrue(result.isSuccess)
+        assertEquals("m01", result.getOrNull()?.id)
+    }
+
+    @Test
+    fun `returns the first mentee when scores are tied`() {
+        // Given
+        val useCase = GetTopPerformingMenteesBySubmissionTypeUseCase(
+            performanceRepo = FakePerformanceRepo(
+                listOf(createSubmission())
+            ),
+            menteeRepo = FakeMenteeRepo(
+                listOf(createMentee()))
+        )
+        // When
+        val result = useCase(SubmissionType.TASK)
+
+        // Then
         assertTrue(result.isSuccess)
         assertEquals("m01", result.getOrNull()?.id)
     }
