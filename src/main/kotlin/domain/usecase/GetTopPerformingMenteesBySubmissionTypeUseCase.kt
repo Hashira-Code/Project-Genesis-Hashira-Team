@@ -19,4 +19,5 @@ class GetTopPerformingMenteesBySubmissionTypeUseCase(
                         menteeRepo.getById(top.menteeId).getOrNull()
                     }
             }
+
 }
