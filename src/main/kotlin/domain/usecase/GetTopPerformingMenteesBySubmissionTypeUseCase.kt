@@ -10,6 +10,15 @@ class GetTopPerformingMenteesBySubmissionTypeUseCase(
     private val menteeRepo: MenteeRepo
 ) {
     operator fun invoke(type: SubmissionType): Result<Mentee?> {
-        TODO("Implement logic to find top mentee and filter negative scores")
+        val submissions = performanceRepo.getAll().getOrNull() ?: emptyList()
+        val mentees = menteeRepo.getAll().getOrNull() ?: emptyList()
+
+        val topSubmission = submissions
+            .filter { it.type == type && it.score >= 0 }
+            .maxByOrNull { it.score }
+
+        val topMentee = mentees.find { it.id == topSubmission?.menteeId }
+
+        return Result.success(topMentee)
     }
 }
