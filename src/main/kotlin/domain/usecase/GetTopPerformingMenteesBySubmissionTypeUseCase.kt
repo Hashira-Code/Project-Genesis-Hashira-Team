@@ -1,4 +1,3 @@
-
 package domain.usecase
 
 import domain.model.entity.Mentee
@@ -11,6 +10,6 @@ class GetTopPerformingMenteesBySubmissionTypeUseCase(
     private val menteeRepo: MenteeRepo
 ) {
     operator fun invoke(type: SubmissionType): Result<Mentee?> {
-        return TODO("TDD")
+        TODO("Implement logic to find top mentee and filter negative scores")
     }
 }
