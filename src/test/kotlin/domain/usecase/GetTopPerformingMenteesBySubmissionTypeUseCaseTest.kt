@@ -46,6 +46,23 @@ class GetTopPerformingMenteesBySubmissionTypeUseCaseTest {
         assertEquals("m01", result.getOrNull()?.id)
     }
 
+    @Test
+    fun `returns null when no submissions match the required type`() {
+        // Given
+        val useCase = GetTopPerformingMenteesBySubmissionTypeUseCase(
+            performanceRepo = FakePerformanceRepo(
+                listOf(createSubmission(type = SubmissionType.WORKSHOP))
+            ),
+            menteeRepo = FakeMenteeRepo(listOf(createMentee()))
+        )
+        // When
+        val result = useCase(SubmissionType.TASK)
+
+        // Then
+        assertTrue(result.isSuccess)
+        assertEquals(null, result.getOrNull())
+    }
+
 
 
     private fun createMentee(
