@@ -14,8 +14,7 @@ class GetTopPerformingMenteesBySubmissionTypeUseCase(
                 submissions
                     .asSequence()
                     .filter { it.type == type && it.score >= 0 }
-                    .sortedByDescending { it.score }
-                    .firstOrNull()
+                    .maxByOrNull { it.score }
                     ?.let { top ->
                         menteeRepo.getById(top.menteeId).getOrNull()
                     }
