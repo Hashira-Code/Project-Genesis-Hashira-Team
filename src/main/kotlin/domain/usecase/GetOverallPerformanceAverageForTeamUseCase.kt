@@ -1,5 +1,6 @@
 package domain.usecase
 
+import domain.model.entity.PerformanceSubmission
 import domain.repository.MenteeRepo
 import domain.repository.PerformanceRepo
 import domain.model.request.TeamIdRequest
@@ -12,26 +13,37 @@ class GetOverallPerformanceAverageForTeamUseCase(
 ) {
 
     operator fun invoke(request: TeamIdRequest): Result<Double> {
-        val menteeIds = menteeRepo
-            .getByTeamId(request.id).getOrElse {
-                return Result.failure(it)
-            }.map { it.id }.toSet()
-
+        val menteeIds = getMenteeIdsByTeam(request.id).getOrElse {
+            return Result.failure(it)
+        }
         if (menteeIds.isEmpty()) {
             return Result.failure(DataNotFoundException(NO_DATA_MSG))
         }
         val allSubmissions = performanceRepo.getAll().getOrElse {
             return Result.failure(it)
         }
-        val average = allSubmissions
+        val average = calculateTeamAverage(allSubmissions, menteeIds)
+
+        return Result.success(average)
+
+    }
+
+    private fun getMenteeIdsByTeam(teamId: String): Result<Set<String>> {
+        return menteeRepo.getByTeamId(teamId).map { mentees ->
+            mentees.map { it.id }.toSet()
+        }
+    }
+
+    private fun calculateTeamAverage(
+        submissions: List<PerformanceSubmission>,
+        menteeIds: Set<String>
+    ): Double {
+        return submissions
             .asSequence()
             .filter { it.menteeId in menteeIds }
             .map { it.score }
             .toList()
             .averageOrZero()
-
-        return Result.success(average)
-
     }
 
     private fun List<Double>.averageOrZero(): Double {

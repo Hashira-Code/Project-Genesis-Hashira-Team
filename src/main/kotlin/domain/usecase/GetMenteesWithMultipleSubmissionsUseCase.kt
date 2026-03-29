@@ -1,5 +1,6 @@
 package domain.usecase
 
+import domain.model.entity.PerformanceSubmission
 import domain.repository.MenteeRepo
 import domain.repository.PerformanceRepo
 
@@ -14,16 +15,21 @@ class GetMenteesWithMultipleSubmissionsUseCase(
         val submissions = performanceRepo.getAll().getOrElse {
             return Result.failure(it)
         }
-        val menteeIdsWithMultipleSubmissions =
-            submissions
-                .groupingBy { it.menteeId }
-                .eachCount()
-                .filter { it.value > MINIMUM_MULTIPLE_SUBMISSIONS }
-                .keys
+        val ids = getMenteeIdsWithMultipleSubmissions(submissions)
         val result = mentees
-            .filter { it.id in menteeIdsWithMultipleSubmissions }
+            .filter { it.id in ids }
             .map { it.name }
+
         return Result.success(result)
+    }
+
+    private fun getMenteeIdsWithMultipleSubmissions(submissions: List<PerformanceSubmission>): Set<String> {
+        return submissions
+            .groupingBy { it.menteeId }
+            .eachCount()
+            .filter { it.value > MINIMUM_MULTIPLE_SUBMISSIONS }
+            .keys
+
     }
 
     companion object {
