@@ -1,21 +1,28 @@
 package domain.usecase
 
-class MenteesWithPerfectAttendanceUseCase(
-    private val calculateAttendancePercentageUseCase: CalculateAttendancePercentageUseCase) {
+import domain.model.entity.Mentee
 
-    operator fun invoke(): Result<List<String>>{
+class MenteesWithPerfectAttendanceUseCase(
+    private val calculateAttendancePercentageUseCase: CalculateAttendancePercentageUseCase
+) {
+
+    operator fun invoke(): Result<List<String>> {
         val attendancePercentages = calculateAttendancePercentageUseCase().getOrElse {
             return Result.failure(it)
         }
-        val perfectAttendanceMentees = attendancePercentages
+        val perfectAttendanceNames = filterPerfectAttendanceMentees(attendancePercentages)
+        return Result.success(perfectAttendanceNames)
+    }
+
+    private fun filterPerfectAttendanceMentees(attendancePercentages: Map<Mentee, Double>): List<String> {
+        return attendancePercentages
             .filterValues { percentage -> percentage == PERFECT_ATTENDANCE_PERCENTAGE }
             .keys
             .map { mentee -> mentee.name }
-
-        return Result.success(perfectAttendanceMentees)
     }
+
     companion object {
-        private const val PERFECT_ATTENDANCE_PERCENTAGE=100.0
+        private const val PERFECT_ATTENDANCE_PERCENTAGE = 100.0
 
     }
 
