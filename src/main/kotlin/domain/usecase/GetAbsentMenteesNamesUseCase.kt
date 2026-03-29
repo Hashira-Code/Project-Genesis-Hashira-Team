@@ -16,23 +16,29 @@ class GetAbsentMenteesNamesUseCase(
             return Result.failure(it)
         }
 
-        val absentIds = attendanceRepo.getByWeekNumber(weekNumber).getOrElse {
+        val absentIds = getAbsentMenteeIds(weekNumber).getOrElse {
             return Result.failure(it)
         }
-            .asSequence()
-            .filter { it.status == AttendanceStatus.ABSENT }
-            .map { it.menteeId }
-            .toSet()
 
-        val names = menteeRepo.getAll().getOrElse {
-            return Result.failure(it)
+        return getMenteeNamesByIds(absentIds)
+    }
+
+    private fun getAbsentMenteeIds(weekNumber: Int): Result<Set<Any>> {
+        return attendanceRepo.getByWeekNumber(weekNumber).map { attendanceList ->
+            attendanceList.asSequence()
+                .filter { it.status == AttendanceStatus.ABSENT }
+                .map { it.menteeId }
+                .toSet()
         }
-            .asSequence()
-            .filter { it.id in absentIds }
-            .map { it.name }
-            .toList()
+    }
 
-        return Result.success(names)
+    private fun getMenteeNamesByIds(absentIds: Set<Any>): Result<List<String>> {
+        return menteeRepo.getAll().map { mentees ->
+            mentees.asSequence()
+                .filter { it.id in absentIds }
+                .map { it.name }
+                .toList()
+        }
     }
 }
 

@@ -1,5 +1,7 @@
 package domain.usecase
 
+import domain.model.entity.Mentee
+
 class MenteeWithPoorAttendanceUseCase(
     private val calculateAttendancePercentageUseCase: CalculateAttendancePercentageUseCase
 ) {
@@ -9,12 +11,18 @@ class MenteeWithPoorAttendanceUseCase(
             return Result.failure(it)
         }
 
-        val poorAttendanceMentees = attendancePercentages
+        val poorAttendanceMentees = filterPoorAttendanceMentees(attendancePercentages)
+
+        return Result.success(poorAttendanceMentees)
+    }
+
+    private fun filterPoorAttendanceMentees(
+        attendancePercentages: Map<Mentee, Double>
+    ): List<String> {
+        return attendancePercentages
             .filterValues { percentage -> percentage < POOR_ATTENDANCE_PERCENTAGE }
             .keys
             .map { mentee -> mentee.name }
-
-        return Result.success(poorAttendanceMentees)
     }
 
     companion object {

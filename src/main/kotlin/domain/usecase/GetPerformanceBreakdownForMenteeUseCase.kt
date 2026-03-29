@@ -1,5 +1,6 @@
 package domain.usecase
 
+import domain.model.entity.PerformanceSubmission
 import domain.model.entity.SubmissionType
 import domain.repository.PerformanceRepo
 import domain.model.request.MenteeIdRequest
@@ -9,7 +10,6 @@ import domain.model.exception.ValidationException.DataNotFoundException
 class GetPerformanceBreakdownForMenteeUseCase(
     private val performanceRepo: PerformanceRepo,
 ) {
-
     operator fun invoke(request: MenteeIdRequest): Result<Map<SubmissionType, Double>> {
         val submissions = performanceRepo.getByMenteeId(request.id).getOrElse {
             return Result.failure(it)
@@ -17,13 +17,13 @@ class GetPerformanceBreakdownForMenteeUseCase(
         if (submissions.isEmpty()) {
             return Result.failure(DataNotFoundException(NO_DATA_MSG))
         }
-        val breakdown = submissions
-            .groupBy { it.type }
-            .mapValues { entry ->
-                entry.value.map { it.score }.average()
-            }
+        val breakdown = calculateBreakdown(submissions)
 
         return Result.success(breakdown)
+    }
+
+    private fun calculateBreakdown(submissions: List<PerformanceSubmission>): Map<SubmissionType, Double> {
+        return submissions.groupBy { it.type }.mapValues { entry -> entry.value.map { it.score }.average() }
     }
 
     companion object {
