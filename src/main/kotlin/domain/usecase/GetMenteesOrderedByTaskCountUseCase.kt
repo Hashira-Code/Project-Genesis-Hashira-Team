@@ -46,5 +46,3 @@ class GetMenteesOrderedByTaskCountUseCase(
             .sortedByDescending { taskCountPerMentee[it.id] ?: 0 }
             .map { it.name }
 }
-
-
