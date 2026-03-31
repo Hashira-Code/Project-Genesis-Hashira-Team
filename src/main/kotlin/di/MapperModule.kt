@@ -16,12 +16,13 @@ import domain.model.entity.Project
 import domain.model.entity.Mentee
 import domain.model.entity.Attendance
 import domain.model.entity.PerformanceSubmission
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val mapperModule = module {
-    single<Mapper<AttendanceRaw, Attendance>> { AttendanceMapper() }
-    single<Mapper<ProjectRaw, Project>> { ProjectMapper() }
-    single<Mapper<TeamRaw, Team>> { TeamMapper() }
-    single<Mapper<MenteeRaw, Mentee>> { MenteeMapper() }
-    single<Mapper<PerformanceRaw, PerformanceSubmission>> { PerformanceMapper() }
+    single<Mapper<AttendanceRaw, Attendance>>(named("attendanceMapper")) { AttendanceMapper() }
+    single<Mapper<ProjectRaw, Project>>(named("projectMapper")) { ProjectMapper() }
+    single<Mapper<TeamRaw, Team>>(named("teamMapper")) { TeamMapper() }
+    single<Mapper<MenteeRaw, Mentee>>(named("menteeMapper")) { MenteeMapper() }
+    single<Mapper<PerformanceRaw, PerformanceSubmission>>(named("performanceMapper")) { PerformanceMapper() }
 }
