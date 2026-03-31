@@ -1,5 +1,8 @@
 package support
 
+import domain.model.entity.Attendance
+import domain.model.entity.AttendanceStatus
+import domain.model.entity.Mentee
 import domain.model.entity.Project
 import domain.model.entity.Team
 
@@ -15,4 +18,16 @@ object Fixture {
         name: String = "Helios Initiative",
         teamId: String = "alpha"
     ) = Project.create(id, name, teamId)
+
+    fun createMentee(
+        id: String = "M1",
+        name: String = "Ali",
+        teamId: String = "alpha"
+    ) = Mentee.create(id, name, teamId)
+
+    fun createAttendance(
+        menteeId: String = "M1",
+        weekNumber: Int = 1,
+        status: AttendanceStatus = AttendanceStatus.ABSENT
+    ) = Attendance(menteeId, weekNumber, status)
 }
