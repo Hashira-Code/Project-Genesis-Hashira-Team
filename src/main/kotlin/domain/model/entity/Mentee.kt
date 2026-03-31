@@ -1,9 +1,9 @@
 package domain.model.entity
 
-import domain.model.exception.ValidationException.EmptyFieldException
-import domain.model.exception.ValidationException.InvalidFormatException
-import domain.model.exception.ValidationException.InvalidNameLengthException
-import domain.model.exception.ValidationException.MenteeIdEmptyException
+import domain.model.exception.ValidationExeption.EmptyFieldExeption
+import domain.model.exception.ValidationExeption.InvalidFormatExeption
+import domain.model.exception.ValidationExeption.InvalidNameLengthExeption
+import domain.model.exception.ValidationExeption.MenteeIdEmptyExeption
 
 
 data class Mentee private constructor(
@@ -35,13 +35,13 @@ data class Mentee private constructor(
         }
 
         private fun validateIdFormat(menteeId: String): String {
-            if (menteeId.isBlank()) throw MenteeIdEmptyException(EMPTY_MSG)
-            if (!VALID_PATTERN.matches(menteeId)) throw InvalidFormatException(INVALID_FORMAT_MSG)
+            if (menteeId.isBlank()) throw MenteeIdEmptyExeption(EMPTY_MSG)
+            if (!VALID_PATTERN.matches(menteeId)) throw InvalidFormatExeption(INVALID_FORMAT_MSG)
             return menteeId
         }
         private fun validateNameFormat(name: String): String {
-            if (name.isBlank()) throw EmptyFieldException(NAME_EMPTY_MSG)
-            if (name.length < MIN_NAME_LENGTH) throw InvalidNameLengthException(NAME_LENGTH_MSG)
+            if (name.isBlank()) throw EmptyFieldExeption(NAME_EMPTY_MSG)
+            if (name.length < MIN_NAME_LENGTH) throw InvalidNameLengthExeption(NAME_LENGTH_MSG)
             return name
         }
 

@@ -1,7 +1,7 @@
 package domain.model.entity
 
-import domain.model.exception.ValidationException.EmptyFieldException
-import domain.model.exception.ValidationException.InvalidFormatException
+import domain.model.exception.ValidationExeption.EmptyFieldExeption
+import domain.model.exception.ValidationExeption.InvalidFormatExeption
 
 data class Team private constructor(
     val id: String,
@@ -22,10 +22,10 @@ data class Team private constructor(
 
         private fun validateIdPattern(teamId: String): String {
             if (teamId.isBlank()) {
-                throw EmptyFieldException(EMPTY_MSG)
+                throw EmptyFieldExeption(EMPTY_MSG)
             }
             if (!VALID_PATTERN.matches(teamId)) {
-                throw InvalidFormatException(INVALID_CHAR_MSG)
+                throw InvalidFormatExeption(INVALID_CHAR_MSG)
             }
             return teamId
         }
