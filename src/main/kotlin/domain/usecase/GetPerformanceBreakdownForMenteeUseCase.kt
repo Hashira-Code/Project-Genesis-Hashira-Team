@@ -4,8 +4,7 @@ import domain.model.entity.PerformanceSubmission
 import domain.model.entity.SubmissionType
 import domain.repository.PerformanceRepo
 import domain.model.request.MenteeIdRequest
-import domain.validation.Validator
-import domain.model.exception.ValidationException.DataNotFoundException
+import domain.model.exception.ValidationExeption.DataNotFoundExeption
 
 class GetPerformanceBreakdownForMenteeUseCase(
     private val performanceRepo: PerformanceRepo,
@@ -15,7 +14,7 @@ class GetPerformanceBreakdownForMenteeUseCase(
             return Result.failure(it)
         }
         if (submissions.isEmpty()) {
-            return Result.failure(DataNotFoundException(NO_DATA_MSG))
+            return Result.failure(DataNotFoundExeption(NO_DATA_MSG))
         }
         val breakdown = calculateBreakdown(submissions)
 

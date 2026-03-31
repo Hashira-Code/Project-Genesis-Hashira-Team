@@ -5,8 +5,7 @@ import domain.model.entity.Team
 import domain.repository.MenteeRepo
 import domain.repository.TeamRepo
 import domain.model.request.MenteeIdRequest
-import domain.model.exception.ValidationException.EntityNotFoundException
-import domain.validation.Validator
+import domain.model.exception.ValidationExeption.EntityNotFoundExeption
 
 class FindLeadMentorForMenteeUseCase(
     private val menteeRepo: MenteeRepo,
@@ -15,7 +14,7 @@ class FindLeadMentorForMenteeUseCase(
     operator fun invoke(request: MenteeIdRequest): Result<String> {
         val mentee = menteeRepo.getById(request.id).getOrElse {
             return Result.failure(it)
-        } ?: return Result.failure(EntityNotFoundException(MENTEE_NOT_FOUND_MSG))
+        } ?: return Result.failure(EntityNotFoundExeption(MENTEE_NOT_FOUND_MSG))
 
         val team = fetchTeamForMentee(mentee).getOrElse {
             return Result.failure(it)
@@ -26,7 +25,7 @@ class FindLeadMentorForMenteeUseCase(
     private fun fetchTeamForMentee(mentee: Mentee): Result<Team> {
         val team = teamRepo.getById(mentee.teamId).getOrElse {
             return Result.failure(it)
-        } ?: return Result.failure(EntityNotFoundException(TEAM_NOT_FOUND_MSG))
+        } ?: return Result.failure(EntityNotFoundExeption(TEAM_NOT_FOUND_MSG))
 
         return Result.success(team)
     }

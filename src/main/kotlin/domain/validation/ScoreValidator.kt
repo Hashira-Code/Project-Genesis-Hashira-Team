@@ -1,14 +1,14 @@
 package domain.validation
 
-import domain.model.exception.ValidationException.ValueOutOfRangeException
+import domain.model.exception.ValidationExeption.ValueOutOfRangeExeption
 
 class ScoreValidator : Validator<Double, Double> {
     override fun validate(value: Double): Result<Double> {
         if (value < 0) {
-            return Result.failure(ValueOutOfRangeException(NEGATIVE_SCORE_MSG))
+            return Result.failure(ValueOutOfRangeExeption(NEGATIVE_SCORE_MSG))
         }
         if (value > MAX_SCORE) {
-            return Result.failure(ValueOutOfRangeException(EXCEED_SCORE_MSG))
+            return Result.failure(ValueOutOfRangeExeption(EXCEED_SCORE_MSG))
         }
         return Result.success(value)
     }

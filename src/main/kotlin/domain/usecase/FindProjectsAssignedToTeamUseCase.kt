@@ -3,8 +3,7 @@ package domain.usecase
 import domain.model.entity.Project
 import domain.repository.ProjectRepo
 import domain.model.request.TeamIdRequest
-import domain.model.exception.ValidationException.EntityNotFoundException
-import domain.validation.Validator
+import domain.model.exception.ValidationExeption.EntityNotFoundExeption
 
 class FindProjectsAssignedToTeamUseCase(
     private val projectRepo: ProjectRepo,
@@ -20,7 +19,7 @@ class FindProjectsAssignedToTeamUseCase(
         return if (projects.isNotEmpty()) {
             Result.success(projects)
         } else {
-            Result.failure(EntityNotFoundException(NO_PROJECTS_FOUND_MSG))
+            Result.failure(EntityNotFoundExeption(NO_PROJECTS_FOUND_MSG))
         }
     }
 
