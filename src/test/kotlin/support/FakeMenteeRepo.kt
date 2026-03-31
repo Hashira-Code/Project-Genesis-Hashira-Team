@@ -1,4 +1,4 @@
-package testsupport.fake.repo
+package support
 
 import domain.model.entity.Mentee
 import domain.repository.MenteeRepo
