@@ -6,7 +6,7 @@ import domain.usecase.EvaluateTeamHealthUseCase
 import domain.usecase.FindLeadMentorForMenteeUseCase
 import domain.usecase.FindProjectsAssignedToTeamUseCase
 import domain.usecase.FindTeamsWithNoProjectUseCase
-import domain.usecase.FindTeamsWorkingOnProjectUseCase
+import domain.usecase.FindTeamWorkingOnProjectUseCase
 import domain.usecase.GetOverallPerformanceAverageForTeamUseCase
 import domain.usecase.GetTopPerformingMenteesBySubmissionTypeUseCase
 import domain.usecase.MenteesWithPerfectAttendanceUseCase
@@ -23,7 +23,7 @@ import domain.usecase.GetMenteesWithoutAnySubmissionUseCase
 import domain.usecase.GetPerformanceBreakdownForMenteeUseCase
 import domain.usecase.GetTeamsWithMenteesCountUseCase
 
-val UseCaseModule = module {
+val useCaseModule = module {
     single { CalculateAttendancePercentageUseCase(get(),get(),get()) }
     single { CalculatingMenteeAttendanceTimesUseCase(get(), get()) }
     single { EvaluateTeamHealthUseCase(get(),get(),get(),get()) }
@@ -31,7 +31,7 @@ val UseCaseModule = module {
     single { FindMenteesNamesWithTasksUseCase(get(),get()) }
     single { FindProjectsAssignedToTeamUseCase(get()) }
     single { FindTeamsWithNoProjectUseCase(get(), get()) }
-    single { FindTeamsWorkingOnProjectUseCase(get(),get()) }
+    single { FindTeamWorkingOnProjectUseCase(get(), get()) }
     single { FindTopScoringMenteeOverallUseCase(get(),get()) }
     single { GetAbsentMenteesNamesUseCase(get(), get(), get()) }
     single { GetAverageScorePerMenteeUseCase(get(), get()) }
