@@ -4,8 +4,7 @@ import domain.model.entity.PerformanceSubmission
 import domain.repository.MenteeRepo
 import domain.repository.PerformanceRepo
 import domain.model.request.TeamIdRequest
-import domain.validation.Validator
-import domain.model.exception.ValidationException.DataNotFoundException
+import domain.model.exception.ValidationExeption.DataNotFoundExeption
 
 class GetOverallPerformanceAverageForTeamUseCase(
     private val menteeRepo: MenteeRepo,
@@ -17,7 +16,7 @@ class GetOverallPerformanceAverageForTeamUseCase(
             return Result.failure(it)
         }
         if (menteeIds.isEmpty()) {
-            return Result.failure(DataNotFoundException(NO_DATA_MSG))
+            return Result.failure(DataNotFoundExeption(NO_DATA_MSG))
         }
         val allSubmissions = performanceRepo.getAll().getOrElse {
             return Result.failure(it)

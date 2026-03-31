@@ -4,8 +4,8 @@ import domain.model.entity.Mentee
 import domain.model.entity.PerformanceSubmission
 import domain.model.entity.SubmissionType
 import org.junit.jupiter.api.DisplayName
-import testsupport.fake.repo.FakeMenteeRepo
-import testsupport.fake.repo.FakePerformanceRepo
+import support.FakeMenteeRepo
+import support.FakePerformanceRepo
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue

@@ -1,7 +1,7 @@
 package domain.model.entity
 
-import domain.model.exception.ValidationException.EmptyFieldException
-import domain.model.exception.ValidationException.InvalidFormatException
+import domain.model.exception.ValidationExeption.EmptyFieldExeption
+import domain.model.exception.ValidationExeption.InvalidFormatExeption
 
 data class Project private constructor(
     val id: String,
@@ -30,10 +30,10 @@ data class Project private constructor(
 
         private fun validateIdFormat(value: String): String {
             if (value.isBlank()) {
-                throw EmptyFieldException(EMPTY_PROJECT_ID_MSG)
+                throw EmptyFieldExeption(EMPTY_PROJECT_ID_MSG)
             }
             if (!PROJECT_ID_PATTERN.matches(value)) {
-                throw InvalidFormatException(INVALID_PROJECT_ID_MSG)
+                throw InvalidFormatExeption(INVALID_PROJECT_ID_MSG)
             }
             return value
         }
@@ -44,10 +44,10 @@ data class Project private constructor(
 
         private fun validateTeamIdFormat(value: String): String {
             if (value.isBlank()) {
-                throw EmptyFieldException(EMPTY_TEAM_ID_MSG)
+                throw EmptyFieldExeption(EMPTY_TEAM_ID_MSG)
             }
             if (!TEAM_ID_PATTERN.matches(value)) {
-                throw InvalidFormatException(INVALID_TEAM_ID_MSG)
+                throw InvalidFormatExeption(INVALID_TEAM_ID_MSG)
             }
             return value
         }

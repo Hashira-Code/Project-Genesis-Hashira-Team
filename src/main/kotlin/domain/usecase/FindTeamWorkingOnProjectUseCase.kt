@@ -2,7 +2,7 @@ package domain.usecase
 
 import domain.model.entity.Project
 import domain.model.entity.Team
-import domain.model.exception.ValidationException.DataNotFoundException
+import domain.model.exception.ValidationExeption.DataNotFoundExeption
 import domain.model.request.ProjectIdRequest
 import domain.repository.ProjectRepo
 import domain.repository.TeamRepo
@@ -18,7 +18,7 @@ class FindTeamWorkingOnProjectUseCase(
 
         val team = teamRepo.getById(project.teamId).getOrElse {
             return Result.failure(it)
-        } ?: return Result.failure(DataNotFoundException(TEAM_NOT_FOUND_MESSAGE))
+        } ?: return Result.failure(DataNotFoundExeption(TEAM_NOT_FOUND_MESSAGE))
 
         return Result.success(team)
     }
@@ -29,7 +29,7 @@ class FindTeamWorkingOnProjectUseCase(
         }
 
         val project = projects.find { it.id == projectId }
-            ?: return Result.failure(DataNotFoundException(PROJECT_NOT_FOUND_MESSAGE))
+            ?: return Result.failure(DataNotFoundExeption(PROJECT_NOT_FOUND_MESSAGE))
 
         return Result.success(project)
     }

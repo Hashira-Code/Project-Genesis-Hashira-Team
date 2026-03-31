@@ -1,4 +1,4 @@
-package testsupport.fake.repo
+package support
 
 import domain.model.entity.PerformanceSubmission
 import domain.model.entity.SubmissionType

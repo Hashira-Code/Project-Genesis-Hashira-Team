@@ -1,12 +1,12 @@
-package domain.usecase
-
-import domain.model.entity.Project
-import domain.model.entity.Team
-import domain.model.exception.ValidationException
+package domain.usecase.tdd
+import support.Fixture.createTeam
+import domain.model.exception.ValidationExeption
 import domain.model.request.ProjectIdRequest
+import domain.usecase.FindTeamWorkingOnProjectUseCase
 import org.junit.jupiter.api.DisplayName
-import testsupport.fake.repo.FakeProjectRepo
-import testsupport.fake.repo.FakeTeamRepo
+import support.Fixture.createProject
+import support.fake.FakeProjectRepo
+import support.fake.FakeTeamRepo
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
@@ -44,7 +44,7 @@ class FindTeamWorkingOnProjectUseCaseTest {
 
         // Then: the use case should return failure
         assertTrue(result.isFailure)
-        assertIs<ValidationException.DataNotFoundException>(result.exceptionOrNull())
+        assertIs<ValidationExeption.DataNotFoundExeption>(result.exceptionOrNull())
     }
 
     @Test
@@ -60,19 +60,10 @@ class FindTeamWorkingOnProjectUseCaseTest {
 
         // Then: the use case should return failure
         assertTrue(result.isFailure)
-        assertIs<ValidationException.DataNotFoundException>(result.exceptionOrNull())
+        assertIs<ValidationExeption.DataNotFoundExeption>(result.exceptionOrNull())
     }
 
-    private fun createProject(
-        id: String = "p01",
-        name: String = "Helios Initiative",
-        teamId: String = "alpha"
-    ) = Project.create(id, name, teamId)
 
-    private fun createTeam(
-        id: String = "alpha",
-        name: String = "Alpha Team",
-        mentorLead: String = "Sarah"
-    ) = Team.create(id, name, mentorLead)
+
+
 }
-

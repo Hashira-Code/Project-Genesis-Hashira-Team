@@ -1,4 +1,4 @@
-package testsupport.fake.repo
+package support.fake
 
 import domain.model.entity.Team
 import domain.repository.TeamRepo
