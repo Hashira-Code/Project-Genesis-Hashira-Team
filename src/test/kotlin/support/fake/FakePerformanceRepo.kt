@@ -1,17 +1,17 @@
-package support
+package support.fake
 
 import domain.model.entity.PerformanceSubmission
 import domain.model.entity.SubmissionType
 import domain.repository.PerformanceRepo
 
 class FakePerformanceRepo(
-    private val Submissions: List<PerformanceSubmission> = emptyList()
+    private val submissions: List<PerformanceSubmission> = emptyList()
 ) : PerformanceRepo {
-    override fun getAll(): Result<List<PerformanceSubmission>> = Result.success(Submissions)
+    override fun getAll(): Result<List<PerformanceSubmission>> = Result.success(submissions)
 
     override fun getByMenteeId(menteeId: String): Result<List<PerformanceSubmission>> =
-        Result.success(Submissions.filter { it.menteeId == menteeId })
+        Result.success(submissions.filter { it.menteeId == menteeId })
 
     override fun getByType(type: SubmissionType): Result<List<PerformanceSubmission>> =
-        Result.success(Submissions.filter { it.type == type })
+        Result.success(submissions.filter { it.type == type })
 }

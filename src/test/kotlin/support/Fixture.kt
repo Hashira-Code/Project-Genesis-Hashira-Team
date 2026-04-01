@@ -3,7 +3,9 @@ package support
 import domain.model.entity.Attendance
 import domain.model.entity.AttendanceStatus
 import domain.model.entity.Mentee
+import domain.model.entity.PerformanceSubmission
 import domain.model.entity.Project
+import domain.model.entity.SubmissionType
 import domain.model.entity.Team
 
 object Fixture {
@@ -20,13 +22,13 @@ object Fixture {
     ) = Project.create(id, name, teamId)
 
     fun createMentee(
-        id: String = "m001",
-        name: String = "Ali",
+        id: String = "m01",
+        name: String = "Aisha",
         teamId: String = "alpha"
     ) = Mentee.create(id, name, teamId)
 
     fun createAttendance(
-        menteeId: String = "m001",
+        menteeId: String = "M1",
         weekNumber: Int = 1,
         status: AttendanceStatus = AttendanceStatus.ABSENT
     ) = Attendance(menteeId, weekNumber, status)
