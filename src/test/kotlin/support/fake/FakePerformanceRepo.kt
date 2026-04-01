@@ -1,4 +1,4 @@
-package support
+package support.fake
 
 import domain.model.entity.PerformanceSubmission
 import domain.model.entity.SubmissionType
