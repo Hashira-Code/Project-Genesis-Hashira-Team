@@ -1,10 +1,10 @@
 package domain.usecase.tdd
 
-import domain.model.entity.Mentee
-import domain.model.entity.PerformanceSubmission
 import domain.model.entity.SubmissionType
 import domain.usecase.GetTopPerformingMenteesBySubmissionTypeUseCase
 import org.junit.jupiter.api.DisplayName
+import support.Fixture.createMentee
+import support.Fixture.createSubmission
 import support.fake.FakeMenteeRepo
 import support.fake.FakePerformanceRepo
 import kotlin.test.Test
@@ -65,19 +65,4 @@ class GetTopPerformingMenteesBySubmissionTypeUseCaseTest {
         assertTrue(result.isSuccess)
         assertEquals(null, result.getOrNull())
     }
-
-
-
-    private fun createMentee(
-        id: String = "m01",
-        name: String = "Aisha",
-        teamId: String = "alpha"
-    ) = Mentee.Companion.create(id, name, teamId)
-
-    private fun createSubmission(
-        id: String = "s01",
-        menteeId: String = "m01",
-        type: SubmissionType = SubmissionType.TASK,
-        score: Double = 90.0
-    ) = PerformanceSubmission(id, menteeId, type, score)
 }
