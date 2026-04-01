@@ -8,7 +8,7 @@ import domain.validation.WeekNumberValidator
 import org.koin.dsl.module
 import support.Fixture.createAttendance
 import support.Fixture.createMentee
-import support.Fixture.createSubmission
+import support.Fixture.createPerformanceSubmission
 import support.Fixture.createProject
 import support.Fixture.createTeam
 import support.fake.FakePerformanceRepo
@@ -20,7 +20,7 @@ val repoTestModule = module {
     single<TeamRepo> { FakeTeamRepo(listOf(createTeam())) }
     single<ProjectRepo> { FakeProjectRepo(listOf(createProject())) }
     single<AttendanceRepo> { FakeAttendanceRepo(listOf(createAttendance())) }
-    single<PerformanceRepo> { FakePerformanceRepo(listOf(createSubmission())) }
+    single<PerformanceRepo> { FakePerformanceRepo(listOf(createPerformanceSubmission())) }
     single<MenteeRepo> { FakeMenteeRepo(listOf(createMentee())) }
 }
 
