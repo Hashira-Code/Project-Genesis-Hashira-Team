@@ -28,7 +28,7 @@ object Fixture {
     ) = Mentee.create(id, name, teamId)
 
     fun createAttendance(
-        menteeId: String = "M1",
+        menteeId: String = "m01",
         weekNumber: Int = 1,
         status: AttendanceStatus = AttendanceStatus.ABSENT
     ) = Attendance(menteeId, weekNumber, status)
