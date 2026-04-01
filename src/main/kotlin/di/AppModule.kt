@@ -1,10 +1,14 @@
 package di
 
-val appModules = listOf(
-    configModule,
-    dataSourceModule,
-    mapperModule,
-    repoModule,
-    useCaseModule,
-    validatorModule
-)
+import org.koin.dsl.module
+
+val appModules = module {
+    includes(
+        configModule,
+        dataSourceModule,
+        mapperModule,
+        repoModule,
+        useCaseModule,
+        validatorModule
+    )
+}
