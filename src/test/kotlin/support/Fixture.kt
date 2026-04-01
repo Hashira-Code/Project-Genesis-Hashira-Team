@@ -20,13 +20,13 @@ object Fixture {
     ) = Project.create(id, name, teamId)
 
     fun createMentee(
-        id: String = "M1",
+        id: String = "m001",
         name: String = "Ali",
         teamId: String = "alpha"
     ) = Mentee.create(id, name, teamId)
 
     fun createAttendance(
-        menteeId: String = "M1",
+        menteeId: String = "m001",
         weekNumber: Int = 1,
         status: AttendanceStatus = AttendanceStatus.ABSENT
     ) = Attendance(menteeId, weekNumber, status)
