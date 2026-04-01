@@ -4,7 +4,7 @@ import domain.model.entity.SubmissionType
 import domain.usecase.GetTopPerformingMenteesBySubmissionTypeUseCase
 import org.junit.jupiter.api.DisplayName
 import support.Fixture.createMentee
-import support.Fixture.createSubmission
+import support.Fixture.createPerformanceSubmission
 import support.fake.FakeMenteeRepo
 import support.fake.FakePerformanceRepo
 import kotlin.test.Test
@@ -18,7 +18,7 @@ class GetTopPerformingMenteesBySubmissionTypeUseCaseTest {
     fun `returns top performing mentee and ignores negative scores`() {
         val useCase = GetTopPerformingMenteesBySubmissionTypeUseCase(
             performanceRepo = FakePerformanceRepo(
-                listOf(createSubmission())
+                listOf(createPerformanceSubmission())
             ),
             menteeRepo = FakeMenteeRepo(
                 listOf(createMentee())
@@ -35,7 +35,7 @@ class GetTopPerformingMenteesBySubmissionTypeUseCaseTest {
         // Given
         val useCase = GetTopPerformingMenteesBySubmissionTypeUseCase(
             performanceRepo = FakePerformanceRepo(
-                listOf(createSubmission())
+                listOf(createPerformanceSubmission())
             ),
             menteeRepo = FakeMenteeRepo(
                 listOf(createMentee())
@@ -54,7 +54,7 @@ class GetTopPerformingMenteesBySubmissionTypeUseCaseTest {
         // Given
         val useCase = GetTopPerformingMenteesBySubmissionTypeUseCase(
             performanceRepo = FakePerformanceRepo(
-                listOf(createSubmission(type = SubmissionType.WORKSHOP))
+                listOf(createPerformanceSubmission(type = SubmissionType.WORKSHOP))
             ),
             menteeRepo = FakeMenteeRepo(listOf(createMentee()))
         )
