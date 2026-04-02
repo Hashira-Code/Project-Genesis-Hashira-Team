@@ -2,10 +2,34 @@ package support
 
 import domain.model.entity.Attendance
 import domain.model.entity.AttendanceStatus
+import domain.model.entity.Mentee
 import domain.model.entity.PerformanceSubmission
+import domain.model.entity.Project
 import domain.model.entity.SubmissionType
+import domain.model.entity.Team
 
 object Fixture {
+
+    fun teamList() = listOf(
+        Team.create("alpha", "Alpha Team", "Sarah"),
+        Team.create("beta", "Beta Team", "Omar")
+    )
+
+    fun projectList() = listOf(
+        Project.create("p01", "Helios Initiative", "alpha"),
+        Project.create("p02", "Nova Platform", "beta")
+    )
+
+    fun menteeList() = listOf(
+        Mentee.create("m01", "Aisha", "alpha"),
+        Mentee.create("m02", "Sara", "alpha")
+    )
+
+    fun attendanceList() = listOf(
+        Attendance("m01", 1, AttendanceStatus.ABSENT),
+        Attendance("m02", 1, AttendanceStatus.PRESENT)
+    )
+
     fun  performanceSubmissionList() = listOf(
         PerformanceSubmission("s01", "m01", SubmissionType.TASK, 90.0),
         PerformanceSubmission("s02", "m02", SubmissionType.TASK, 90.0)
