@@ -52,8 +52,8 @@ class EvaluateTeamHealthUseCaseTest : KoinComponent {
     @Test
     fun `should return EXCELLENT when both performance and attendance are above thresholds`() {
         startTestKoin(
-            attendance = Fixture.perfectAttendanceList(),
-            performance = Fixture.performanceSubmissionList()
+            Fixture.perfectAttendanceList(),
+             Fixture.performanceSubmissionList()
         )
         val result = evaluateTeamHealth()
         assertTrue(result.isSuccess)
@@ -65,8 +65,8 @@ class EvaluateTeamHealthUseCaseTest : KoinComponent {
     @Test
     fun `should return GOOD when performance is average and attendance is acceptable`() {
         startTestKoin(
-            attendance = Fixture.attendanceList(),
-            performance = Fixture.averagePerformanceSubmissionList()
+            Fixture.perfectAttendanceList(),
+             Fixture.averagePerformanceSubmissionList()
         )
         val evaluateTeamHealth = getKoin().get<EvaluateTeamHealthUseCase>()
         val result = evaluateTeamHealth()
@@ -78,8 +78,8 @@ class EvaluateTeamHealthUseCaseTest : KoinComponent {
     @Test
     fun `should return NEEDS_ATTENTION when performance falls below threshold`() {
         startTestKoin(
-            attendance = Fixture.lowAttendanceList(),
-            performance = Fixture.poorPerformanceSubmissionList()
+             Fixture.lowAttendanceList(),
+             Fixture.poorPerformanceSubmissionList()
         )
         val evaluateTeamHealth = getKoin().get<EvaluateTeamHealthUseCase>()
         val result = evaluateTeamHealth()
