@@ -44,15 +44,15 @@ object Fixture {
         Attendance("m03", 1, AttendanceStatus.PRESENT)
     )
 
-  /*  fun excellentTeamAttendance() = listOf(
-        Attendance("m01", 1, AttendanceStatus.PRESENT),
-        Attendance("m02", 1, AttendanceStatus.PRESENT)
-    )*/
+    /*  fun excellentTeamAttendance() = listOf(
+          Attendance("m01", 1, AttendanceStatus.PRESENT),
+          Attendance("m02", 1, AttendanceStatus.PRESENT)
+      )*/
 
-   /* fun poorTeamAttendance() = listOf(
-        Attendance("m01", 1, AttendanceStatus.ABSENT),
-        Attendance("m02", 1, AttendanceStatus.ABSENT)
-    )*/
+    /* fun poorTeamAttendance() = listOf(
+         Attendance("m01", 1, AttendanceStatus.ABSENT),
+         Attendance("m02", 1, AttendanceStatus.ABSENT)
+     )*/
 
     fun performances() = listOf(
         PerformanceSubmission("s01", "m01", SubmissionType.TASK, 90.0),
@@ -61,27 +61,27 @@ object Fixture {
 
     fun attendanceWeekOneWithOneAbsent() = attendance()
 
-   /* fun tiedTaskSubmissions() = performances()*/
+    /* fun tiedTaskSubmissions() = performances()*/
 
-  /*  fun topTaskSubmissions() = listOf(
-        PerformanceSubmission("s01", "m01", SubmissionType.TASK, 95.0),
-        PerformanceSubmission("s02", "m02", SubmissionType.TASK, 80.0)
-    )*/
+    /*  fun topTaskSubmissions() = listOf(
+          PerformanceSubmission("s01", "m01", SubmissionType.TASK, 95.0),
+          PerformanceSubmission("s02", "m02", SubmissionType.TASK, 80.0)
+      )*/
 
-   /* fun taskSubmissionsWithNegativeScore() = listOf(
-        PerformanceSubmission("s01", "m01", SubmissionType.TASK, -10.0),
-        PerformanceSubmission("s02", "m02", SubmissionType.TASK, 88.0)
-    )*/
+    /* fun taskSubmissionsWithNegativeScore() = listOf(
+         PerformanceSubmission("s01", "m01", SubmissionType.TASK, -10.0),
+         PerformanceSubmission("s02", "m02", SubmissionType.TASK, 88.0)
+     )*/
 
 
-   /* fun averageTaskSubmissions() = listOf(
-        PerformanceSubmission("s05", "m01", SubmissionType.TASK, 70.0),
-        PerformanceSubmission("s06", "m02", SubmissionType.TASK, 72.0)
-    )*/
+    /* fun averageTaskSubmissions() = listOf(
+         PerformanceSubmission("s05", "m01", SubmissionType.TASK, 70.0),
+         PerformanceSubmission("s06", "m02", SubmissionType.TASK, 72.0)
+     )*/
 
-   /* fun poorTaskSubmissions() = listOf(
-        PerformanceSubmission("s07", "m01", SubmissionType.TASK, 45.0),
-        PerformanceSubmission("s08", "m02", SubmissionType.TASK, 30.0)
-    )
-    */
+    /* fun poorTaskSubmissions() = listOf(
+         PerformanceSubmission("s07", "m01", SubmissionType.TASK, 45.0),
+         PerformanceSubmission("s08", "m02", SubmissionType.TASK, 30.0)
+     )
+     */
 }
