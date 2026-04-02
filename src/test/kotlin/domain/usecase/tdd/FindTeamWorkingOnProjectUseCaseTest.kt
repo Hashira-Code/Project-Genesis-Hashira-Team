@@ -1,10 +1,11 @@
 package domain.usecase.tdd
-import support.Fixture.createTeam
+
 import domain.model.exception.ValidationExeption
 import domain.model.request.ProjectIdRequest
 import domain.usecase.FindTeamWorkingOnProjectUseCase
 import org.junit.jupiter.api.DisplayName
-import support.Fixture.createProject
+import support.Fixture.projectList
+import support.Fixture.teamList
 import support.fake.FakeProjectRepo
 import support.fake.FakeTeamRepo
 import kotlin.test.Test
@@ -18,17 +19,18 @@ class FindTeamWorkingOnProjectUseCaseTest {
     @Test
     fun `returns team when project and assigned team both exist`() {
         // Given: a project exists and its assigned team also exists
-        val team = createTeam()
+        val teams = teamList()
+        val expectedTeam = teams.first()
         val useCase = FindTeamWorkingOnProjectUseCase(
-            projectRepo = FakeProjectRepo(listOf(createProject())),
-            teamRepo = FakeTeamRepo(listOf(team))
+            projectRepo = FakeProjectRepo(projectList()),
+            teamRepo = FakeTeamRepo(teams)
         )
         //When: searching for the team working on an existing project
         val result = useCase(ProjectIdRequest("p01"))
 
         // Then: the use case should succeed and return the assigned team
         assertTrue(result.isSuccess)
-        assertEquals(team, result.getOrNull())
+        assertEquals(expectedTeam, result.getOrNull())
     }
 
     @Test
@@ -51,7 +53,7 @@ class FindTeamWorkingOnProjectUseCaseTest {
     fun `returns failure when team assigned to project does not exist`() {
         // Given: a project exists, but its assigned team does not exist
         val useCase = FindTeamWorkingOnProjectUseCase(
-            projectRepo = FakeProjectRepo(listOf(createProject())),
+            projectRepo = FakeProjectRepo(projectList()),
             teamRepo = FakeTeamRepo(emptyList())
         )
 
