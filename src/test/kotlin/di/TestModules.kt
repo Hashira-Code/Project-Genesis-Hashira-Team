@@ -1,36 +1,27 @@
-import domain.repository.AttendanceRepo
-import domain.repository.MenteeRepo
-import domain.repository.PerformanceRepo
-import domain.repository.ProjectRepo
-import domain.repository.TeamRepo
-import domain.validation.Validator
-import domain.validation.WeekNumberValidator
-import org.koin.dsl.module
-import support.fake.FakeAttendanceRepo
-import support.fake.FakeMenteeRepo
-import support.fake.FakePerformanceRepo
-import support.fake.FakeProjectRepo
-import support.fake.FakeTeamRepo
-import support.Fixture.attendanceList
-import support.Fixture.menteeList
-import support.Fixture.performanceSubmissionList
-import support.Fixture.projectList
-import support.Fixture.teamList
-val repoTestModule = module {
-    single<TeamRepo> { FakeTeamRepo(teamList()) }
-    single<ProjectRepo> { FakeProjectRepo(projectList()) }
-    single<AttendanceRepo> { FakeAttendanceRepo(attendanceList()) }
-    single<PerformanceRepo> { FakePerformanceRepo(performanceSubmissionList()) }
-    single<MenteeRepo> { FakeMenteeRepo(menteeList()) }
-}
+package di
 
-val validatorTestModule = module {
-    single<Validator<Int, Int>> { WeekNumberValidator() }
-}
+import domain.model.entity.Attendance
+import domain.model.entity.Mentee
+import domain.model.entity.PerformanceSubmission
+import domain.model.entity.Project
+import domain.model.entity.Team
+import org.koin.core.module.Module
+import support.Fixture
 
-val testModules = module {
-    includes(
-        repoTestModule,
-        validatorTestModule
-    )
-}
+fun defaultTestModules(
+    teams: List<Team> = Fixture.teams(),
+    projects: List<Project> = Fixture.projects(),
+    attendances: List<Attendance> = Fixture.attendance(),
+    performances: List<PerformanceSubmission> = Fixture.performances(),
+    mentees: List<Mentee> = Fixture.mentees()
+): Array<Module> = arrayOf(
+    repoTestModule(
+        teams = teams,
+        projects = projects,
+        attendances = attendances,
+        performances = performances,
+        mentees = mentees
+    ),
+    validatorTestModule(),
+    useCaseTestModule()
+)
