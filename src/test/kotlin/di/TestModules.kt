@@ -6,22 +6,22 @@ import domain.repository.TeamRepo
 import domain.validation.Validator
 import domain.validation.WeekNumberValidator
 import org.koin.dsl.module
-import support.Fixture.createAttendance
-import support.Fixture.createMentee
-import support.Fixture.createPerformanceSubmission
-import support.Fixture.createProject
-import support.Fixture.createTeam
-import support.fake.FakePerformanceRepo
 import support.fake.FakeAttendanceRepo
+import support.fake.FakeMenteeRepo
+import support.fake.FakePerformanceRepo
 import support.fake.FakeProjectRepo
 import support.fake.FakeTeamRepo
-import support.fake.FakeMenteeRepo
+import support.Fixture.attendanceList
+import support.Fixture.menteeList
+import support.Fixture.performanceSubmissionList
+import support.Fixture.projectList
+import support.Fixture.teamList
 val repoTestModule = module {
-    single<TeamRepo> { FakeTeamRepo(listOf(createTeam())) }
-    single<ProjectRepo> { FakeProjectRepo(listOf(createProject())) }
-    single<AttendanceRepo> { FakeAttendanceRepo(listOf(createAttendance())) }
-    single<PerformanceRepo> { FakePerformanceRepo(listOf(createPerformanceSubmission())) }
-    single<MenteeRepo> { FakeMenteeRepo(listOf(createMentee())) }
+    single<TeamRepo> { FakeTeamRepo(teamList()) }
+    single<ProjectRepo> { FakeProjectRepo(projectList()) }
+    single<AttendanceRepo> { FakeAttendanceRepo(attendanceList()) }
+    single<PerformanceRepo> { FakePerformanceRepo(performanceSubmissionList()) }
+    single<MenteeRepo> { FakeMenteeRepo(menteeList()) }
 }
 
 val validatorTestModule = module {
