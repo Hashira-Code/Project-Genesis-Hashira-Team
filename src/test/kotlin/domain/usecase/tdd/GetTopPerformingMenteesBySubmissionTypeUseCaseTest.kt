@@ -1,10 +1,10 @@
 package domain.usecase.tdd
 
+import domain.model.entity.PerformanceSubmission
 import domain.model.entity.SubmissionType
 import domain.usecase.GetTopPerformingMenteesBySubmissionTypeUseCase
 import org.junit.jupiter.api.DisplayName
-import support.Fixture.createMentee
-import support.Fixture.createPerformanceSubmission
+import support.Fixture
 import support.fake.FakeMenteeRepo
 import support.fake.FakePerformanceRepo
 import kotlin.test.Test
@@ -17,12 +17,10 @@ class GetTopPerformingMenteesBySubmissionTypeUseCaseTest {
     @Test
     fun `returns top performing mentee and ignores negative scores`() {
         val useCase = GetTopPerformingMenteesBySubmissionTypeUseCase(
-            performanceRepo = FakePerformanceRepo(
-                listOf(createPerformanceSubmission())
-            ),
-            menteeRepo = FakeMenteeRepo(
-                listOf(createMentee())
-            )
+           FakePerformanceRepo(
+               Fixture.performanceSubmissionList()),
+            FakeMenteeRepo(
+                 Fixture.menteeList())
         )
         // When
         val result = useCase(SubmissionType.TASK)
@@ -34,12 +32,10 @@ class GetTopPerformingMenteesBySubmissionTypeUseCaseTest {
     fun `returns the first mentee when scores are tied`() {
         // Given
         val useCase = GetTopPerformingMenteesBySubmissionTypeUseCase(
-            performanceRepo = FakePerformanceRepo(
-                listOf(createPerformanceSubmission())
-            ),
-            menteeRepo = FakeMenteeRepo(
-                listOf(createMentee())
-            )
+            FakePerformanceRepo(
+                Fixture.performanceSubmissionList()),
+           FakeMenteeRepo(
+               Fixture.menteeList())
         )
         // When
         val result = useCase(SubmissionType.TASK)
@@ -53,10 +49,10 @@ class GetTopPerformingMenteesBySubmissionTypeUseCaseTest {
     fun `returns null when no submissions match the required type`() {
         // Given
         val useCase = GetTopPerformingMenteesBySubmissionTypeUseCase(
-            performanceRepo = FakePerformanceRepo(
-                listOf(createPerformanceSubmission(type = SubmissionType.WORKSHOP))
+           FakePerformanceRepo(
+                emptyList<PerformanceSubmission>()
             ),
-            menteeRepo = FakeMenteeRepo(listOf(createMentee()))
+            FakeMenteeRepo(Fixture.menteeList())
         )
         // When
         val result = useCase(SubmissionType.TASK)
