@@ -18,6 +18,7 @@ abstract class BaseKoinTest : KoinComponent {
         }
     }
 
+
     protected inline fun <reified T> resolve(): T = get()
 
     @AfterEach
