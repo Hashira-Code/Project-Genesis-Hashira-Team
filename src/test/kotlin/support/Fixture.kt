@@ -32,4 +32,11 @@ object Fixture {
         weekNumber: Int = 1,
         status: AttendanceStatus = AttendanceStatus.ABSENT
     ) = Attendance(menteeId, weekNumber, status)
+
+    fun createPerformanceSubmission(
+        id: String = "s01",
+        menteeId: String = "m01",
+        type: SubmissionType = SubmissionType.TASK,
+        score: Double = 90.0
+    ) = PerformanceSubmission(id, menteeId, type, score)
 }
