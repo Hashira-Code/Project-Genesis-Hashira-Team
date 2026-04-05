@@ -12,19 +12,19 @@ import domain.repository.ProjectRepo
 import domain.repository.TeamRepo
 import org.koin.core.module.Module
 import org.koin.dsl.module
-import support.Fixture
 import support.fake.FakeAttendanceRepo
 import support.fake.FakeMenteeRepo
 import support.fake.FakePerformanceRepo
 import support.fake.FakeProjectRepo
 import support.fake.FakeTeamRepo
+import support.fixture.TestDataFactory
 
 fun repoTestModule(
-    teams: List<Team> = Fixture.teams(),
-    projects: List<Project> = Fixture.projects(),
-    attendances: List<Attendance> = Fixture.attendance(),
-    performances: List<PerformanceSubmission> = Fixture.performances(),
-    mentees: List<Mentee> = Fixture.mentees()
+    teams: List<Team> = TestDataFactory.defaultTeams(),
+    projects: List<Project> = TestDataFactory.defaultProjects(),
+    attendances: List<Attendance> = TestDataFactory.defaultAttendances(),
+    performances: List<PerformanceSubmission> = TestDataFactory.defaultPerformanceSubmissions(),
+    mentees: List<Mentee> = TestDataFactory.defaultMentees()
 ): Module = module {
     single<TeamRepo> { FakeTeamRepo(teams) }
     single<ProjectRepo> { FakeProjectRepo(projects) }
