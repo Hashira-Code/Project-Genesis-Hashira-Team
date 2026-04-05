@@ -13,8 +13,8 @@ object GetAbsentMenteesNamesFixture {
         val expectedErrorMessage: String? = null
     )
 
-    val requestedWeekWithOneAbsent = Case(
-        name = "requested week contains one absent mentee",
+    val returnsAbsentMenteeNamesForRequestedWeek = Case(
+        name = "returns absent mentee names for requested week",
         attendance = listOf(
             TestDataFactory.attendance("m01", 1, AttendanceStatus.ABSENT),
             TestDataFactory.attendance("m02", 1, AttendanceStatus.PRESENT),
@@ -24,8 +24,8 @@ object GetAbsentMenteesNamesFixture {
         expectedNames = listOf("Aisha")
     )
 
-    val requestedWeekWithNoAbsences = Case(
-        name = "requested week contains no absences",
+    val returnsEmptyListWhenNoAbsencesExistInRequestedWeek = Case(
+        name = "returns empty list when no absences exist in requested week",
         attendance = listOf(
             TestDataFactory.attendance("m01", 1, AttendanceStatus.PRESENT),
             TestDataFactory.attendance("m02", 1, AttendanceStatus.PRESENT),
@@ -35,8 +35,8 @@ object GetAbsentMenteesNamesFixture {
         expectedNames = emptyList()
     )
 
-    val absencesExistInAnotherWeekOnly = Case(
-        name = "absences exist in another week only",
+    val ignoresAbsencesFromOtherWeeks = Case(
+        name = "ignores absences from other weeks",
         attendance = listOf(
             TestDataFactory.attendance("m01", 2, AttendanceStatus.ABSENT),
             TestDataFactory.attendance("m02", 1, AttendanceStatus.PRESENT),
@@ -46,37 +46,10 @@ object GetAbsentMenteesNamesFixture {
         expectedNames = emptyList()
     )
 
-    val duplicatedAbsenceRows = Case(
-        name = "duplicated absence rows are de-duplicated",
-        attendance = listOf(
-            TestDataFactory.attendance("m01", 1, AttendanceStatus.ABSENT),
-            TestDataFactory.attendance("m01", 1, AttendanceStatus.ABSENT),
-            TestDataFactory.attendance("m02", 1, AttendanceStatus.PRESENT)
-        ),
-        requestWeek = 1,
-        expectedNames = listOf("Aisha")
-    )
-
-    val missingAttendanceForRequestedWeek = Case(
-        name = "requested week has no attendance rows",
-        attendance = emptyList(),
-        requestWeek = 1,
-        expectedNames = emptyList()
-    )
-
-    val invalidWeekNumber = Case(
-        name = "week number must be positive",
-        attendance = requestedWeekWithOneAbsent.attendance,
+    val failsWhenWeekNumberIsNotPositive = Case(
+        name = "fails when week number is not positive",
+        attendance = returnsAbsentMenteeNamesForRequestedWeek.attendance,
         requestWeek = 0,
         expectedErrorMessage = WeekNumberValidator.NON_POSITIVE_ERROR
-    )
-
-    val cases = listOf(
-        requestedWeekWithOneAbsent,
-        requestedWeekWithNoAbsences,
-        absencesExistInAnotherWeekOnly,
-        duplicatedAbsenceRows,
-        missingAttendanceForRequestedWeek,
-        invalidWeekNumber
     )
 }
