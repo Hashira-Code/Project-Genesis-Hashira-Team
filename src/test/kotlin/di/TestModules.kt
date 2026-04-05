@@ -6,14 +6,14 @@ import domain.model.entity.PerformanceSubmission
 import domain.model.entity.Project
 import domain.model.entity.Team
 import org.koin.core.module.Module
-import support.Fixture
+import support.fixture.TestDataFactory
 
 fun defaultTestModules(
-    teams: List<Team> = Fixture.teams(),
-    projects: List<Project> = Fixture.projects(),
-    attendances: List<Attendance> = Fixture.attendance(),
-    performances: List<PerformanceSubmission> = Fixture.performances(),
-    mentees: List<Mentee> = Fixture.mentees()
+    teams: List<Team> = TestDataFactory.defaultTeams(),
+    projects: List<Project> = TestDataFactory.defaultProjects(),
+    attendances: List<Attendance> = TestDataFactory.defaultAttendances(),
+    performances: List<PerformanceSubmission> = TestDataFactory.defaultPerformanceSubmissions(),
+    mentees: List<Mentee> = TestDataFactory.defaultMentees()
 ): Array<Module> = arrayOf(
     repoTestModule(
         teams = teams,
