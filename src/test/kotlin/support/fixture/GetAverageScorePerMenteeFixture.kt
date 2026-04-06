@@ -12,8 +12,8 @@ object GetAverageScorePerMenteeFixture {
         val expectedAverages: List<Pair<String, Double>>
     )
 
-    val multipleSubmissionsPerMentee = Case(
-        name = "calculates average score per mentee and preserves mentee order",
+    val calculatesAverageScorePerMentee = Case(
+        name = "calculates average score per mentee",
         mentees = TestDataFactory.defaultMentees(),
         submissions = listOf(
             TestDataFactory.submission("s01", "m01", SubmissionType.TASK, 80.0),
@@ -28,8 +28,8 @@ object GetAverageScorePerMenteeFixture {
         )
     )
 
-    val menteesWithoutSubmissionsAreExcluded = Case(
-        name = "excludes mentees who have no submissions",
+    val excludesMenteesWithoutSubmissions = Case(
+        name = "excludes mentees without submissions",
         mentees = TestDataFactory.defaultMentees(),
         submissions = listOf(
             TestDataFactory.submission("s01", "m01", SubmissionType.TASK, 80.0)
@@ -37,16 +37,10 @@ object GetAverageScorePerMenteeFixture {
         expectedAverages = listOf("Aisha" to 80.0)
     )
 
-    val emptySubmissionListReturnsEmptyResult = Case(
+    val returnsEmptyListWhenThereAreNoSubmissions = Case(
         name = "returns empty list when there are no submissions",
         mentees = TestDataFactory.defaultMentees(),
         submissions = emptyList(),
         expectedAverages = emptyList()
-    )
-
-    val cases = listOf(
-        multipleSubmissionsPerMentee,
-        menteesWithoutSubmissionsAreExcluded,
-        emptySubmissionListReturnsEmptyResult
     )
 }
