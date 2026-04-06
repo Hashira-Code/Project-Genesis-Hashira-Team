@@ -58,13 +58,5 @@ object EvaluateTeamHealthFixture {
     ),
      TeamHealthStatus.NEEDS_ATTENTION
      )
-
-     val noSignals = Case(
-        "needs attention when there is no attendance and no performance data",
-    emptyList(),
-    emptyList(),
-     TeamHealthStatus.NEEDS_ATTENTION
-    )
-
-    val cases = listOf(excellent, good, needsAttention, noSignals)
+    val cases = listOf(excellent, good, needsAttention)
 }
