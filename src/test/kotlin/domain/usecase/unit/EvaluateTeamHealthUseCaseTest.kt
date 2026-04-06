@@ -1,6 +1,6 @@
-package domain.usecase.unit.test
+package domain.usecase.unit
 
-import com.google.common.truth.Truth.assertThat
+import com.google.common.truth.Truth
 import di.defaultTestModules
 import domain.usecase.EvaluateTeamHealthUseCase
 import org.junit.jupiter.api.DisplayName
@@ -30,8 +30,8 @@ class EvaluateTeamHealthUseCaseTest: BaseKoinTest()   {
         val result = resolve<EvaluateTeamHealthUseCase>()()
         assertTrue(result.isSuccess)
         val report = result.getOrNull()
-        assertThat(report).isNotNull()
-        assertThat(report!!["Alpha Team"]).isEqualTo(case.expectedAlphaTeamStatus)
+        Truth.assertThat(report).isNotNull()
+        Truth.assertThat(report!!["Alpha Team"]).isEqualTo(case.expectedAlphaTeamStatus)
 
     }
 
@@ -42,7 +42,7 @@ class EvaluateTeamHealthUseCaseTest: BaseKoinTest()   {
         val result = resolve<EvaluateTeamHealthUseCase>()()
         assertTrue(result.isSuccess)
         val report = result.getOrNull()
-        assertThat(report!!["Alpha Team"]).isEqualTo(case.expectedAlphaTeamStatus)
+        Truth.assertThat(report!!["Alpha Team"]).isEqualTo(case.expectedAlphaTeamStatus)
 
     }
 
@@ -55,6 +55,6 @@ class EvaluateTeamHealthUseCaseTest: BaseKoinTest()   {
 
         assertTrue(result.isSuccess)
         val report = result.getOrNull()
-        assertThat(report!!["Alpha Team"]).isEqualTo(case.expectedAlphaTeamStatus)
+        Truth.assertThat(report!!["Alpha Team"]).isEqualTo(case.expectedAlphaTeamStatus)
     }
 }
