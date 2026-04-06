@@ -1,12 +1,10 @@
 package domain.usecase.tdd
 
-import domain.model.entity.PerformanceSubmission
-import domain.model.entity.SubmissionType
 import domain.usecase.GetTopPerformingMenteesBySubmissionTypeUseCase
 import org.junit.jupiter.api.DisplayName
-import support.Fixture
 import support.fake.FakeMenteeRepo
 import support.fake.FakePerformanceRepo
+import support.fixture.GetTopPerformingMenteesBySubmissionTypeFixture
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -16,49 +14,47 @@ class GetTopPerformingMenteesBySubmissionTypeUseCaseTest {
 
     @Test
     fun `returns top performing mentee and ignores negative scores`() {
+        // Given
+        val case = GetTopPerformingMenteesBySubmissionTypeFixture.highestValidTaskScoreWins
         val useCase = GetTopPerformingMenteesBySubmissionTypeUseCase(
-           FakePerformanceRepo(
-               Fixture.performanceSubmissionList()),
-            FakeMenteeRepo(
-                 Fixture.menteeList())
+            FakePerformanceRepo(case.submissions),
+            FakeMenteeRepo(case.mentees)
         )
         // When
-        val result = useCase(SubmissionType.TASK)
+        val result = useCase(case.submissionType)
+        // Then
         assertTrue(result.isSuccess)
-        assertEquals("m01", result.getOrNull()?.id)
+        assertEquals(case.expectedMenteeId, result.getOrNull()?.id)
     }
 
     @Test
     fun `returns the first mentee when scores are tied`() {
         // Given
+        val case = GetTopPerformingMenteesBySubmissionTypeFixture.tiedScoresReturnFirstEncounteredMentee
         val useCase = GetTopPerformingMenteesBySubmissionTypeUseCase(
-            FakePerformanceRepo(
-                Fixture.performanceSubmissionList()),
-           FakeMenteeRepo(
-               Fixture.menteeList())
+            FakePerformanceRepo(case.submissions),
+            FakeMenteeRepo(case.mentees)
         )
         // When
-        val result = useCase(SubmissionType.TASK)
-
+        val result = useCase(case.submissionType)
         // Then
         assertTrue(result.isSuccess)
-        assertEquals("m01", result.getOrNull()?.id)
+        assertEquals(case.expectedMenteeId, result.getOrNull()?.id)
     }
 
     @Test
     fun `returns null when no submissions match the required type`() {
         // Given
+        val case = GetTopPerformingMenteesBySubmissionTypeFixture.noMatchingSubmissionType
         val useCase = GetTopPerformingMenteesBySubmissionTypeUseCase(
-           FakePerformanceRepo(
-                emptyList<PerformanceSubmission>()
-            ),
-            FakeMenteeRepo(Fixture.menteeList())
+            FakePerformanceRepo(case.submissions),
+            FakeMenteeRepo(case.mentees)
         )
         // When
-        val result = useCase(SubmissionType.TASK)
+        val result = useCase(case.submissionType)
 
         // Then
         assertTrue(result.isSuccess)
-        assertEquals(null, result.getOrNull())
+        assertEquals(case.expectedMenteeId, result.getOrNull()?.id)
     }
 }
