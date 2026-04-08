@@ -1,6 +1,5 @@
-package domain.usecase.tdd
+package domain.usecase
 
-import domain.usecase.GetTopPerformingMenteesBySubmissionTypeUseCase
 import org.junit.jupiter.api.DisplayName
 import support.fake.FakeMenteeRepo
 import support.fake.FakePerformanceRepo

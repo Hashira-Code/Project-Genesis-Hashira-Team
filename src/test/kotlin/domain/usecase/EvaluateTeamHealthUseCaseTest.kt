@@ -1,8 +1,7 @@
-package domain.usecase.unit
+package domain.usecase
 
 import com.google.common.truth.Truth
 import di.defaultTestModules
-import domain.usecase.EvaluateTeamHealthUseCase
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.koin.core.context.stopKoin
