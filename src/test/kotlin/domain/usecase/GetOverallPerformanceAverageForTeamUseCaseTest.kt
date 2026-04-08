@@ -1,10 +1,9 @@
-package domain.usecase.unit
+package domain.usecase
 
 import com.google.common.truth.Truth.assertThat
 import di.defaultTestModules
 import domain.model.exception.ValidationExeption
 import domain.model.request.TeamIdRequest
-import domain.usecase.GetOverallPerformanceAverageForTeamUseCase
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import support.BaseKoinTest
@@ -25,7 +24,7 @@ class GetOverallPerformanceAverageForTeamUseCaseTest : BaseKoinTest() {
     }
 
     @Test
-    fun `should return the overall performance average for the requested team`() {
+    fun `returns success with overall performance average when requested team has scored mentees`() {
         val case = GetOverallPerformanceAverageForTeamFixture.teamWithScoredMentees
         startTestKoin(case)
 
@@ -36,7 +35,7 @@ class GetOverallPerformanceAverageForTeamUseCaseTest : BaseKoinTest() {
     }
 
     @Test
-    fun `should fail when the requested team has no mentees`() {
+    fun `returns failure with DataNotFoundExeption when requested team has no mentees`() {
         val case = GetOverallPerformanceAverageForTeamFixture.teamWithNoMentees
         startTestKoin(case)
 
@@ -48,7 +47,7 @@ class GetOverallPerformanceAverageForTeamUseCaseTest : BaseKoinTest() {
     }
 
     @Test
-    fun `should return zero when team mentees have no submissions`() {
+    fun `returns success with zero when requested team mentees have no submissions`() {
         val case = GetOverallPerformanceAverageForTeamFixture.teamWithMenteesButNoSubmissions
         startTestKoin(case)
 
