@@ -1,15 +1,13 @@
-package domain.usecase.unit
+package domain.usecase
 
 import com.google.common.truth.Truth
+import di.defaultTestModules
 import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
+import org.koin.core.context.stopKoin
 import support.BaseKoinTest
 import support.fixture.GetAverageScorePerMenteeFixture
-import org.koin.core.context.stopKoin
-import di.defaultTestModules
-import domain.usecase.GetAverageScorePerMenteeUseCase
-import org.junit.jupiter.api.Test
 import kotlin.test.assertTrue
-
 
 @DisplayName("GetAverageScorePerMenteeUseCase")
 class GetAverageScorePerMenteeUseCaseTest : BaseKoinTest() {
