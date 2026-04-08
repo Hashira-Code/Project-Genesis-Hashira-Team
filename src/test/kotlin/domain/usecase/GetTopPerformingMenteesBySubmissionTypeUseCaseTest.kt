@@ -1,15 +1,27 @@
 package domain.usecase
 
+import di.defaultTestModules
 import org.junit.jupiter.api.DisplayName
+import support.BaseKoinTest
 import support.fake.FakeMenteeRepo
 import support.fake.FakePerformanceRepo
 import support.fixture.GetTopPerformingMenteesBySubmissionTypeFixture
 import kotlin.test.Test
+import org.koin.core.context.stopKoin
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 @DisplayName("GetTopPerformingMenteesBySubmissionTypeUseCase")
-class GetTopPerformingMenteesBySubmissionTypeUseCaseTest {
+class GetTopPerformingMenteesBySubmissionTypeUseCaseTest : BaseKoinTest(){
+    private fun startTestKoin(case: GetTopPerformingMenteesBySubmissionTypeFixture.Case) {
+        stopKoin()
+        startKoinWith(
+            *defaultTestModules(
+                performances = case.submissions,
+                mentees = case.mentees
+            )
+        )
+    }
 
     @Test
     fun `returns top performing mentee and ignores negative scores`() {
