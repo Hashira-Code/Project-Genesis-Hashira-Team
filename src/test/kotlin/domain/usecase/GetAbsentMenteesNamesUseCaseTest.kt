@@ -1,10 +1,9 @@
-package domain.usecase.unit
+package domain.usecase
 
 import com.google.common.truth.Truth
 import di.defaultTestModules
 import domain.model.exception.ValidationExeption
 import domain.model.request.WeekNumberRequest
-import domain.usecase.GetAbsentMenteesNamesUseCase
 import domain.validation.WeekNumberValidator
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -23,7 +22,7 @@ class GetAbsentMenteesNamesUseCaseTest : BaseKoinTest() {
     }
 
     @Test
-    fun `should return absent mentee names for the requested week`() {
+    fun `returns success with absent mentee names when requested week has absences`() {
         val case = GetAbsentMenteesNamesFixture.returnsAbsentMenteeNamesForRequestedWeek
         startTestKoin(case)
 
@@ -34,7 +33,7 @@ class GetAbsentMenteesNamesUseCaseTest : BaseKoinTest() {
     }
 
     @Test
-    fun `should return empty list when no mentees are absent in the requested week`() {
+    fun `returns success with empty list when requested week has no absences`() {
         val case = GetAbsentMenteesNamesFixture.returnsEmptyListWhenNoAbsencesExistInRequestedWeek
         startTestKoin(case)
 
@@ -45,7 +44,7 @@ class GetAbsentMenteesNamesUseCaseTest : BaseKoinTest() {
     }
 
     @Test
-    fun `should fail when week number is not positive`() {
+    fun `returns failure with ValueOutOfRangeExeption when week number is not positive`() {
         val case = GetAbsentMenteesNamesFixture.failsWhenWeekNumberIsNotPositive
         startTestKoin(case)
 
@@ -54,11 +53,11 @@ class GetAbsentMenteesNamesUseCaseTest : BaseKoinTest() {
         assertTrue(result.isFailure)
         assertIs<ValidationExeption.ValueOutOfRangeExeption>(result.exceptionOrNull())
         Truth.assertThat(result.exceptionOrNull()?.message)
-            .isEqualTo(case.expectedErrorMessage ?: WeekNumberValidator.Companion.NON_POSITIVE_ERROR)
+            .isEqualTo(case.expectedErrorMessage ?: WeekNumberValidator.NON_POSITIVE_ERROR)
     }
 
     @Test
-    fun `should ignore absences for other weeks`() {
+    fun `returns success with empty list when absences exist only in other weeks`() {
         val case = GetAbsentMenteesNamesFixture.ignoresAbsencesFromOtherWeeks
         startTestKoin(case)
 
