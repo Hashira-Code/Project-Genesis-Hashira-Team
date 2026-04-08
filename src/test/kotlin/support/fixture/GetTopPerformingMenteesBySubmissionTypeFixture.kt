@@ -46,6 +46,4 @@ object GetTopPerformingMenteesBySubmissionTypeFixture {
         submissionType = SubmissionType.TASK,
         expectedMenteeId = null
     )
-
-
 }

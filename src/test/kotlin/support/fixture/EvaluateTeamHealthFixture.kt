@@ -58,5 +58,4 @@ object EvaluateTeamHealthFixture {
     ),
      TeamHealthStatus.NEEDS_ATTENTION
      )
-    val cases = listOf(excellent, good, needsAttention)
 }

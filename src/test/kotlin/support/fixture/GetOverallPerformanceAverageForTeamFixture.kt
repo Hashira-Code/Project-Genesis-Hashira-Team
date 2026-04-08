@@ -43,6 +43,4 @@ object GetOverallPerformanceAverageForTeamFixture {
          "alpha",
         0.0
     )
-
-    val cases = listOf(teamWithScoredMentees, teamWithNoMentees, teamWithMenteesButNoSubmissions)
 }
