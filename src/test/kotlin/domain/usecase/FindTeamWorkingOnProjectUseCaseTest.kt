@@ -1,13 +1,12 @@
-package domain.usecase.tdd
+package domain.usecase
 
 import domain.model.exception.ValidationExeption
 import domain.model.request.ProjectIdRequest
-import domain.usecase.FindTeamWorkingOnProjectUseCase
 import org.junit.jupiter.api.DisplayName
-import support.Fixture.projects
-import support.Fixture.teams
 import support.fake.FakeProjectRepo
 import support.fake.FakeTeamRepo
+import support.fixture.TestDataFactory.defaultProjects
+import support.fixture.TestDataFactory.defaultTeams
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
@@ -17,15 +16,16 @@ import kotlin.test.assertTrue
 class FindTeamWorkingOnProjectUseCaseTest {
 
     @Test
-    fun `returns team when project and assigned team both exist`() {
+    fun `returns success with team when project and assigned team exist`() {
         // Given: a project exists and its assigned team also exists
-        val teams = teams()
+        val teams = defaultTeams()
         val expectedTeam = teams.first()
         val useCase = FindTeamWorkingOnProjectUseCase(
-            projectRepo = FakeProjectRepo(projects()),
+            projectRepo = FakeProjectRepo(defaultProjects()),
             teamRepo = FakeTeamRepo(teams)
         )
-        //When: searching for the team working on an existing project
+
+        // When: searching for the team working on an existing project
         val result = useCase(ProjectIdRequest("p01"))
 
         // Then: the use case should succeed and return the assigned team
@@ -34,7 +34,7 @@ class FindTeamWorkingOnProjectUseCaseTest {
     }
 
     @Test
-    fun `returns failure when project does not exist`() {
+    fun `returns failure with DataNotFoundExeption when project does not exist`() {
         // Given: there are no projects in the project repository
         val useCase = FindTeamWorkingOnProjectUseCase(
             projectRepo = FakeProjectRepo(emptyList()),
@@ -50,10 +50,10 @@ class FindTeamWorkingOnProjectUseCaseTest {
     }
 
     @Test
-    fun `returns failure when team assigned to project does not exist`() {
+    fun `returns failure with DataNotFoundExeption when assigned team does not exist`() {
         // Given: a project exists, but its assigned team does not exist
         val useCase = FindTeamWorkingOnProjectUseCase(
-            projectRepo = FakeProjectRepo(projects()),
+            projectRepo = FakeProjectRepo(defaultProjects()),
             teamRepo = FakeTeamRepo(emptyList())
         )
 
@@ -64,8 +64,4 @@ class FindTeamWorkingOnProjectUseCaseTest {
         assertTrue(result.isFailure)
         assertIs<ValidationExeption.DataNotFoundExeption>(result.exceptionOrNull())
     }
-
-
-
-
 }
