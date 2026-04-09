@@ -12,12 +12,12 @@ import domain.repository.ProjectRepo
 import domain.repository.TeamRepo
 import org.koin.core.module.Module
 import org.koin.dsl.module
-import support.fake.FakeAttendanceRepo
-import support.fake.FakeMenteeRepo
-import support.fake.FakePerformanceRepo
-import support.fake.FakeProjectRepo
-import support.fake.FakeTeamRepo
-import support.fixture.TestDataFactory
+import data.fake.FakeAttendanceRepo
+import data.fake.FakeMenteeRepo
+import data.fake.FakePerformanceRepo
+import data.fake.FakeProjectRepo
+import data.fake.FakeTeamRepo
+import data.fixture.TestDataFactory
 
 fun repoTestModule(
     teams: List<Team> = TestDataFactory.defaultTeams(),

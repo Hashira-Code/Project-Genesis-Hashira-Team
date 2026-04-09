@@ -7,8 +7,8 @@ import domain.model.request.WeekNumberRequest
 import domain.validation.WeekNumberValidator
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
-import support.BaseKoinTest
-import support.fixture.GetAbsentMenteesNamesFixture
+import data.BaseKoinTest
+import data.fixture.GetAbsentMenteesNamesFixture
 import kotlin.test.assertIs
 import kotlin.test.assertTrue
 

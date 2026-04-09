@@ -1,4 +1,4 @@
-package support.fake
+package data.fake
 
 import domain.model.entity.Attendance
 import domain.repository.AttendanceRepo

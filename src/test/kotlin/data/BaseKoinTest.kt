@@ -1,4 +1,4 @@
-package support
+package data
 
 import org.junit.jupiter.api.AfterEach
 import org.koin.core.component.KoinComponent

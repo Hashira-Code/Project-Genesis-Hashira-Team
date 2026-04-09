@@ -3,10 +3,10 @@ package domain.usecase
 import domain.model.exception.ValidationExeption
 import domain.model.request.ProjectIdRequest
 import org.junit.jupiter.api.DisplayName
-import support.fake.FakeProjectRepo
-import support.fake.FakeTeamRepo
-import support.fixture.TestDataFactory.defaultProjects
-import support.fixture.TestDataFactory.defaultTeams
+import data.fake.FakeProjectRepo
+import data.fake.FakeTeamRepo
+import data.fixture.TestDataFactory.defaultProjects
+import data.fixture.TestDataFactory.defaultTeams
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs

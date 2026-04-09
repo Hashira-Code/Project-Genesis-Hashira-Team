@@ -2,10 +2,10 @@ package domain.usecase
 
 import di.defaultTestModules
 import org.junit.jupiter.api.DisplayName
-import support.BaseKoinTest
-import support.fake.FakeMenteeRepo
-import support.fake.FakePerformanceRepo
-import support.fixture.GetTopPerformingMenteesBySubmissionTypeFixture
+import data.BaseKoinTest
+import data.fake.FakeMenteeRepo
+import data.fake.FakePerformanceRepo
+import data.fixture.GetTopPerformingMenteesBySubmissionTypeFixture
 import kotlin.test.Test
 import org.koin.core.context.stopKoin
 import kotlin.test.assertEquals
@@ -25,46 +25,50 @@ class GetTopPerformingMenteesBySubmissionTypeUseCaseTest : BaseKoinTest(){
 
     @Test
     fun `returns top performing mentee and ignores negative scores`() {
-        // Given
+
+        // Given: mentees with various scores, including negative values that should be ignored
         val case = GetTopPerformingMenteesBySubmissionTypeFixture.highestValidTaskScoreWins
-        val useCase = GetTopPerformingMenteesBySubmissionTypeUseCase(
+        val getTopPerformingMenteesBySubmissionTypeUseCase = GetTopPerformingMenteesBySubmissionTypeUseCase(
             FakePerformanceRepo(case.submissions),
-            FakeMenteeRepo(case.mentees)
-        )
-        // When
-        val result = useCase(case.submissionType)
-        // Then
+            FakeMenteeRepo(case.mentees))
+
+        // When: retrieving the top performer for a specific submission type
+        val result = getTopPerformingMenteesBySubmissionTypeUseCase(case.submissionType)
+
+        // Then: the result should be success and return the mentee with the highest valid score
         assertTrue(result.isSuccess)
         assertEquals(case.expectedMenteeId, result.getOrNull()?.id)
     }
 
     @Test
     fun `returns the first mentee when scores are tied`() {
-        // Given
+
+        // Given: multiple mentees having the same highest score for a submission type
         val case = GetTopPerformingMenteesBySubmissionTypeFixture.tiedScoresReturnFirstEncounteredMentee
-        val useCase = GetTopPerformingMenteesBySubmissionTypeUseCase(
+        val getTopPerformingMenteesBySubmissionTypeUseCase = GetTopPerformingMenteesBySubmissionTypeUseCase(
             FakePerformanceRepo(case.submissions),
-            FakeMenteeRepo(case.mentees)
-        )
-        // When
-        val result = useCase(case.submissionType)
-        // Then
+            FakeMenteeRepo(case.mentees))
+
+        // When: retrieving the top performer during a score tie
+        val result = getTopPerformingMenteesBySubmissionTypeUseCase(case.submissionType)
+
+        // Then: the result should return the first mentee encountered in the list
         assertTrue(result.isSuccess)
         assertEquals(case.expectedMenteeId, result.getOrNull()?.id)
     }
 
     @Test
     fun `returns null when no submissions match the required type`() {
-        // Given
+        // Given: a repository where no submissions match the requested submission type
         val case = GetTopPerformingMenteesBySubmissionTypeFixture.noMatchingSubmissionType
-        val useCase = GetTopPerformingMenteesBySubmissionTypeUseCase(
+        val getTopPerformingMenteesBySubmissionTypeUseCase = GetTopPerformingMenteesBySubmissionTypeUseCase(
             FakePerformanceRepo(case.submissions),
-            FakeMenteeRepo(case.mentees)
-        )
-        // When
-        val result = useCase(case.submissionType)
+            FakeMenteeRepo(case.mentees))
 
-        // Then
+        // When: attempting to find the top performer for that missing type
+        val result = getTopPerformingMenteesBySubmissionTypeUseCase(case.submissionType)
+
+        // Then: the result should be success but the contained data should be null
         assertTrue(result.isSuccess)
         assertEquals(case.expectedMenteeId, result.getOrNull()?.id)
     }

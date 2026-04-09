@@ -6,7 +6,7 @@ import domain.model.entity.PerformanceSubmission
 import domain.model.entity.Project
 import domain.model.entity.Team
 import org.koin.core.module.Module
-import support.fixture.TestDataFactory
+import data.fixture.TestDataFactory
 
 fun defaultTestModules(
     teams: List<Team> = TestDataFactory.defaultTeams(),
