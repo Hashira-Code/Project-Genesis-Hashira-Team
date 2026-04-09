@@ -1,4 +1,4 @@
-package support.fixture
+package data.fixture
 
 import domain.model.entity.Attendance
 import domain.model.entity.AttendanceStatus

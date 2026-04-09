@@ -1,4 +1,4 @@
-package support.fixture
+package data.fixture
 
 import domain.model.entity.Mentee
 import domain.model.entity.PerformanceSubmission

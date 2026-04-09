@@ -6,8 +6,8 @@ import domain.model.exception.ValidationExeption
 import domain.model.request.TeamIdRequest
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
-import support.BaseKoinTest
-import support.fixture.GetOverallPerformanceAverageForTeamFixture
+import data.BaseKoinTest
+import data.fixture.GetOverallPerformanceAverageForTeamFixture
 import kotlin.test.assertIs
 import kotlin.test.assertTrue
 

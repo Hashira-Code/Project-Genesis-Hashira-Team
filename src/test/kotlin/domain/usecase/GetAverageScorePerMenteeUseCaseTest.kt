@@ -5,8 +5,8 @@ import di.defaultTestModules
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.koin.core.context.stopKoin
-import support.BaseKoinTest
-import support.fixture.GetAverageScorePerMenteeFixture
+import data.BaseKoinTest
+import data.fixture.GetAverageScorePerMenteeFixture
 import kotlin.test.assertTrue
 
 @DisplayName("GetAverageScorePerMenteeUseCase")

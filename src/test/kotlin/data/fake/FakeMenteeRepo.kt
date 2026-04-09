@@ -1,4 +1,4 @@
-package support.fake
+package data.fake
 
 import domain.model.entity.Mentee
 import domain.repository.MenteeRepo

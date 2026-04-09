@@ -2,10 +2,10 @@ package domain.usecase
 
 import di.defaultTestModules
 import org.junit.jupiter.api.DisplayName
-import support.BaseKoinTest
-import support.fake.FakeMenteeRepo
-import support.fake.FakePerformanceRepo
-import support.fixture.GetTopPerformingMenteesBySubmissionTypeFixture
+import data.BaseKoinTest
+import data.fake.FakeMenteeRepo
+import data.fake.FakePerformanceRepo
+import data.fixture.GetTopPerformingMenteesBySubmissionTypeFixture
 import kotlin.test.Test
 import org.koin.core.context.stopKoin
 import kotlin.test.assertEquals

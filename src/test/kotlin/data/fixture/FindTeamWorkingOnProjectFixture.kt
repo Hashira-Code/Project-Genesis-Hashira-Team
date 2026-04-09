@@ -1,4 +1,4 @@
-package support.fixture
+package data.fixture
 
 import domain.model.entity.Project
 import domain.model.entity.Team
