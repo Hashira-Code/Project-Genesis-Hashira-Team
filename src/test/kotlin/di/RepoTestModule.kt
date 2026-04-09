@@ -15,9 +15,9 @@ import data.fake.FakeTeamRepo
 import data.fixture.TestDataFactory
 
 val repoTestModule: Module = module {
-    single<TeamRepo> { FakeTeamRepo(TestDataFactory.defaultTeams()) }
-    single<ProjectRepo> { FakeProjectRepo(TestDataFactory.defaultProjects()) }
-    single<AttendanceRepo> { FakeAttendanceRepo(TestDataFactory.defaultAttendances()) }
-    single<PerformanceRepo> { FakePerformanceRepo(TestDataFactory.defaultPerformanceSubmissions()) }
-    single<MenteeRepo> { FakeMenteeRepo(TestDataFactory.defaultMentees()) }
+    single<TeamRepo> { FakeTeamRepo(TestDataFactory.currentTeams) }
+    single<ProjectRepo> { FakeProjectRepo(TestDataFactory.currentProjects) }
+    single<AttendanceRepo> { FakeAttendanceRepo(TestDataFactory.currentAttendances) }
+    single<PerformanceRepo> { FakePerformanceRepo(TestDataFactory.currentPerformances) }
+    single<MenteeRepo> { FakeMenteeRepo(TestDataFactory.currentMentees) }
 }
