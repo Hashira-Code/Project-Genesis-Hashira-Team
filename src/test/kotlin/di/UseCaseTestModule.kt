@@ -6,9 +6,8 @@ import domain.usecase.GetAverageScorePerMenteeUseCase
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
-fun useCaseTestModule(): Module = module {
-    single { GetAbsentMenteesNamesUseCase(get(), get(), get()) }
-    single { GetAverageScorePerMenteeUseCase(get(), get()) }
-    single { EvaluateTeamHealthUseCase(get(),get(),get(),get()) }
-
+val useCaseTestModule: Module = module {
+    factory { GetAbsentMenteesNamesUseCase(get(), get(), get()) }
+    factory { GetAverageScorePerMenteeUseCase(get(), get()) }
+    factory { EvaluateTeamHealthUseCase(get(), get(), get(), get()) }
 }

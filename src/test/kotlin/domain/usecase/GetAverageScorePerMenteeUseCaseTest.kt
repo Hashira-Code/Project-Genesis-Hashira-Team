@@ -5,20 +5,22 @@ import di.defaultTestModules
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.koin.core.context.stopKoin
+import data.fixture.TestDataFactory
 import data.BaseKoinTest
 import data.fixture.GetAverageScorePerMenteeFixture
 import kotlin.test.assertTrue
+import org.koin.core.context.startKoin
 
 @DisplayName("GetAverageScorePerMenteeUseCase")
 class GetAverageScorePerMenteeUseCaseTest : BaseKoinTest() {
     private fun startTestKoin(case: GetAverageScorePerMenteeFixture.Case) {
+        TestDataFactory.currentMentees = case.mentees
+        TestDataFactory.currentPerformances = case.submissions
+
         stopKoin()
-        startKoinWith(
-            *defaultTestModules(
-                mentees = case.mentees,
-                performances = case.submissions
-            )
-        )
+        startKoin {
+            modules(defaultTestModules)
+        }
     }
 
     @Test

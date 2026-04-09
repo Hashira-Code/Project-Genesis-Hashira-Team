@@ -7,19 +7,21 @@ import org.junit.jupiter.api.Test
 import org.koin.core.context.stopKoin
 import data.BaseKoinTest
 import data.fixture.EvaluateTeamHealthFixture
+import data.fixture.TestDataFactory
 import kotlin.test.assertTrue
+import org.koin.core.context.startKoin
 
 @DisplayName("EvaluateTeamHealthUseCase")
 class EvaluateTeamHealthUseCaseTest: BaseKoinTest()   {
 
     private fun startTestKoin(case: EvaluateTeamHealthFixture.Case) {
+        TestDataFactory.currentAttendances = case.attendance
+        TestDataFactory.currentPerformances = case.performances
+
         stopKoin()
-        startKoinWith(
-            *defaultTestModules(
-                attendances = case.attendance,
-                performances = case.performances
-            )
-        )
+        startKoin {
+            modules(defaultTestModules)
+        }
     }
 
     @Test

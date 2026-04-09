@@ -9,6 +9,12 @@ import domain.model.entity.SubmissionType
 import domain.model.entity.Team
 
 object TestDataFactory {
+    var currentAttendances = defaultAttendances()
+    var currentPerformances = defaultPerformanceSubmissions()
+    var currentProjects = defaultProjects()
+    var currentTeams = defaultTeams()
+    var currentMentees = defaultMentees()
+
     fun team(
         id: String = "alpha",
         name: String = "Alpha Team",

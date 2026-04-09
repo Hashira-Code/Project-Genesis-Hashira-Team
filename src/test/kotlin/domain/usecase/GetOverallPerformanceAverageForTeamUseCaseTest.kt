@@ -8,6 +8,9 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import data.BaseKoinTest
 import data.fixture.GetOverallPerformanceAverageForTeamFixture
+import data.fixture.TestDataFactory
+import org.koin.core.context.startKoin
+import org.koin.core.context.stopKoin
 import kotlin.test.assertIs
 import kotlin.test.assertTrue
 
@@ -15,12 +18,13 @@ import kotlin.test.assertTrue
 class GetOverallPerformanceAverageForTeamUseCaseTest : BaseKoinTest() {
 
     private fun startTestKoin(case: GetOverallPerformanceAverageForTeamFixture.Case) {
-        startKoinWith(
-            *defaultTestModules(
-                mentees = case.mentees,
-                performances = case.submissions
-            )
-        )
+        TestDataFactory.currentMentees = case.mentees
+        TestDataFactory.currentPerformances = case.submissions
+
+        stopKoin()
+        startKoin {
+            modules(defaultTestModules)
+        }
     }
 
     @Test

@@ -6,6 +6,8 @@ import data.BaseKoinTest
 import data.fake.FakeMenteeRepo
 import data.fake.FakePerformanceRepo
 import data.fixture.GetTopPerformingMenteesBySubmissionTypeFixture
+import data.fixture.TestDataFactory
+import org.koin.core.context.startKoin
 import kotlin.test.Test
 import org.koin.core.context.stopKoin
 import kotlin.test.assertEquals
@@ -14,13 +16,13 @@ import kotlin.test.assertTrue
 @DisplayName("GetTopPerformingMenteesBySubmissionTypeUseCase")
 class GetTopPerformingMenteesBySubmissionTypeUseCaseTest : BaseKoinTest(){
     private fun startTestKoin(case: GetTopPerformingMenteesBySubmissionTypeFixture.Case) {
+        TestDataFactory.currentMentees = case.mentees
+        TestDataFactory.currentPerformances = case.submissions
+
         stopKoin()
-        startKoinWith(
-            *defaultTestModules(
-                performances = case.submissions,
-                mentees = case.mentees
-            )
-        )
+        startKoin {
+            modules(defaultTestModules)
+        }
     }
 
     @Test
