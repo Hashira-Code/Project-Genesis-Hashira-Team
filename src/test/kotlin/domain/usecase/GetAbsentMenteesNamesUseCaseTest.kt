@@ -9,6 +9,9 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import data.BaseKoinTest
 import data.fixture.GetAbsentMenteesNamesFixture
+import data.fixture.TestDataFactory
+import org.koin.core.context.startKoin
+import org.koin.core.context.stopKoin
 import kotlin.test.assertIs
 import kotlin.test.assertTrue
 
@@ -16,9 +19,11 @@ import kotlin.test.assertTrue
 class GetAbsentMenteesNamesUseCaseTest : BaseKoinTest() {
 
     private fun startTestKoin(testCase: GetAbsentMenteesNamesFixture.Case) {
-        startKoinWith(
-            *defaultTestModules(attendances = testCase.attendance)
-        )
+        TestDataFactory.currentAttendances = testCase.attendance
+        stopKoin()
+        startKoin {
+            modules(defaultTestModules)
+        }
     }
 
     @Test
