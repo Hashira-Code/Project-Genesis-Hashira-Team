@@ -5,6 +5,6 @@ import domain.validation.WeekNumberValidator
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
-fun validatorTestModule(): Module = module {
+val validatorTestModule: Module = module {
     single<Validator<Int, Int>> { WeekNumberValidator() }
 }
