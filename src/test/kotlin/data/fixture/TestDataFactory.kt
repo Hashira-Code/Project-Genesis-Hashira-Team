@@ -15,14 +15,6 @@ object TestDataFactory {
     var currentTeams = defaultTeams()
     var currentMentees = defaultMentees()
 
-    fun reset() {
-        currentAttendances = defaultAttendances()
-        currentPerformances = defaultPerformanceSubmissions()
-        currentProjects = defaultProjects()
-        currentTeams = defaultTeams()
-        currentMentees = defaultMentees()
-    }
-
     fun team(
         id: String = "alpha",
         name: String = "Alpha Team",
