@@ -1,7 +1,10 @@
 package di
 
-val defaultTestModules = listOf(
-    repoTestModule,
-    validatorTestModule,
-    useCaseTestModule
-)
+import org.koin.dsl.module
+
+val testModule = module {
+        repoTestModule
+        validatorTestModule
+        useCaseTestModule
+}
+
