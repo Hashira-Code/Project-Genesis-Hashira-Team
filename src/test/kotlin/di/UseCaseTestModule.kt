@@ -10,4 +10,5 @@ val useCaseTestModule: Module = module {
     factory { GetAbsentMenteesNamesUseCase(get(), get(), get()) }
     factory { GetAverageScorePerMenteeUseCase(get(), get()) }
     factory { EvaluateTeamHealthUseCase(get(), get(), get(), get()) }
+    factory { GetAbsentMenteesNamesUseCase(get(), get(),get()) }
 }
