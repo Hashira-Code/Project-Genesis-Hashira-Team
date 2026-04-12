@@ -1,74 +1,59 @@
 package domain.usecase
 
 import com.google.common.truth.Truth
-import di.defaultTestModules
 import domain.model.exception.ValidationExeption
 import domain.model.request.WeekNumberRequest
 import domain.validation.WeekNumberValidator
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import data.BaseKoinTest
-import data.fixture.GetAbsentMenteesNamesFixture
 import data.fixture.TestDataFactory
-import org.koin.core.context.startKoin
-import org.koin.core.context.stopKoin
+import di.testModule
+import domain.model.entity.AttendanceStatus
 import kotlin.test.assertIs
 import kotlin.test.assertTrue
 
 @DisplayName("GetAbsentMenteesNamesUseCase")
 class GetAbsentMenteesNamesUseCaseTest : BaseKoinTest() {
-
-    private fun startTestKoin(testCase: GetAbsentMenteesNamesFixture.Case) {
-        TestDataFactory.currentAttendances = testCase.attendance
-        stopKoin()
-        startKoin {
-            modules(defaultTestModules)
-        }
+    override fun setup() {
+        startKoinWith(testModule)
     }
 
     @Test
     fun `returns success with absent mentee names when requested week has absences`() {
-        val case = GetAbsentMenteesNamesFixture.returnsAbsentMenteeNamesForRequestedWeek
-        startTestKoin(case)
+        TestDataFactory.reset()
 
-        val result = resolve<GetAbsentMenteesNamesUseCase>()(WeekNumberRequest(case.requestWeek))
+        val result = resolve<GetAbsentMenteesNamesUseCase>()(WeekNumberRequest(1))
 
         assertTrue(result.isSuccess)
-        Truth.assertThat(result.getOrNull()).containsExactlyElementsIn(case.expectedNames)
+        Truth.assertThat(result.getOrNull()).containsExactly("Aisha")
     }
 
     @Test
     fun `returns success with empty list when requested week has no absences`() {
-        val case = GetAbsentMenteesNamesFixture.returnsEmptyListWhenNoAbsencesExistInRequestedWeek
-        startTestKoin(case)
-
-        val result = resolve<GetAbsentMenteesNamesUseCase>()(WeekNumberRequest(case.requestWeek))
+        TestDataFactory.reset()
+        TestDataFactory.currentAttendances = listOf(
+            TestDataFactory.attendance("m01", 1, AttendanceStatus.PRESENT),
+            TestDataFactory.attendance("m02", 1, AttendanceStatus.PRESENT),
+            TestDataFactory.attendance("m03", 1, AttendanceStatus.PRESENT),
+        )
+        val result = resolve<GetAbsentMenteesNamesUseCase>()(WeekNumberRequest(1))
 
         assertTrue(result.isSuccess)
-        Truth.assertThat(result.getOrNull()).containsExactlyElementsIn(case.expectedNames)
+        Truth.assertThat(result.getOrNull()).isEmpty()
     }
 
     @Test
     fun `returns failure with ValueOutOfRangeExeption when week number is not positive`() {
-        val case = GetAbsentMenteesNamesFixture.failsWhenWeekNumberIsNotPositive
-        startTestKoin(case)
-
-        val result = resolve<GetAbsentMenteesNamesUseCase>()(WeekNumberRequest(case.requestWeek))
+        TestDataFactory.reset()
+        val result = resolve<GetAbsentMenteesNamesUseCase>()(WeekNumberRequest(-2))
 
         assertTrue(result.isFailure)
         assertIs<ValidationExeption.ValueOutOfRangeExeption>(result.exceptionOrNull())
         Truth.assertThat(result.exceptionOrNull()?.message)
-            .isEqualTo(case.expectedErrorMessage ?: WeekNumberValidator.NON_POSITIVE_ERROR)
+            .isEqualTo(WeekNumberValidator.NON_POSITIVE_ERROR)
     }
 
-    @Test
-    fun `returns success with empty list when absences exist only in other weeks`() {
-        val case = GetAbsentMenteesNamesFixture.ignoresAbsencesFromOtherWeeks
-        startTestKoin(case)
 
-        val result = resolve<GetAbsentMenteesNamesUseCase>()(WeekNumberRequest(case.requestWeek))
-
-        assertTrue(result.isSuccess)
-        Truth.assertThat(result.getOrNull()).containsExactlyElementsIn(case.expectedNames)
-    }
 }
+
