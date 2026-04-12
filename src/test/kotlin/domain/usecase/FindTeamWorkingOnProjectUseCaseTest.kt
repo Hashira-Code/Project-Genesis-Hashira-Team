@@ -1,66 +1,55 @@
 package domain.usecase
 
+import com.google.common.truth.Truth.assertThat
+import data.BaseKoinTest
+import data.fixture.TestDataFactory
+import di.testModule
 import domain.model.exception.ValidationExeption
 import domain.model.request.ProjectIdRequest
 import org.junit.jupiter.api.DisplayName
-import data.fake.FakeProjectRepo
-import data.fake.FakeTeamRepo
-import data.fixture.TestDataFactory.defaultProjects
-import data.fixture.TestDataFactory.defaultTeams
-import kotlin.test.Test
-import kotlin.test.assertEquals
+import org.junit.jupiter.api.Test
 import kotlin.test.assertIs
 import kotlin.test.assertTrue
 
 @DisplayName("FindTeamWorkingOnProjectUseCase")
-class FindTeamWorkingOnProjectUseCaseTest {
+class FindTeamWorkingOnProjectUseCaseTest : BaseKoinTest() {
+
+    override fun setup() {
+        startKoinWith(testModule)
+    }
 
     @Test
     fun `returns success with team when project and assigned team exist`() {
-        // Given: a project exists and its assigned team also exists
-        val teams = defaultTeams()
-        val expectedTeam = teams.first()
-        val useCase = FindTeamWorkingOnProjectUseCase(
-            projectRepo = FakeProjectRepo(defaultProjects()),
-            teamRepo = FakeTeamRepo(teams)
-        )
+        TestDataFactory.reset()
 
-        // When: searching for the team working on an existing project
-        val result = useCase(ProjectIdRequest("p01"))
+        val expectedTeam = TestDataFactory.currentTeams.first { it.id == "alpha" }
 
-        // Then: the use case should succeed and return the assigned team
+        val result = resolve<FindTeamWorkingOnProjectUseCase>()(ProjectIdRequest("p01"))
+
         assertTrue(result.isSuccess)
-        assertEquals(expectedTeam, result.getOrNull())
+        assertThat(result.getOrNull()).isEqualTo(expectedTeam)
     }
 
     @Test
     fun `returns failure with DataNotFoundExeption when project does not exist`() {
-        // Given: there are no projects in the project repository
-        val useCase = FindTeamWorkingOnProjectUseCase(
-            projectRepo = FakeProjectRepo(emptyList()),
-            teamRepo = FakeTeamRepo(emptyList())
-        )
+        TestDataFactory.reset()
+        TestDataFactory.currentProjects = emptyList()
 
-        // When: searching for the team working on a project that does not exist
-        val result = useCase(ProjectIdRequest("p01"))
+        val result = resolve<FindTeamWorkingOnProjectUseCase>()(ProjectIdRequest("p01"))
 
-        // Then: the use case should return failure
         assertTrue(result.isFailure)
         assertIs<ValidationExeption.DataNotFoundExeption>(result.exceptionOrNull())
     }
 
     @Test
     fun `returns failure with DataNotFoundExeption when assigned team does not exist`() {
-        // Given: a project exists, but its assigned team does not exist
-        val useCase = FindTeamWorkingOnProjectUseCase(
-            projectRepo = FakeProjectRepo(defaultProjects()),
-            teamRepo = FakeTeamRepo(emptyList())
-        )
+        TestDataFactory.reset()
 
-        // When: searching for the team working on an existing project
-        val result = useCase(ProjectIdRequest("p01"))
+        TestDataFactory.currentProjects = listOf(
+            TestDataFactory.project(id = "p01", name = "Hashira", teamId = "hashira"))
 
-        // Then: the use case should return failure
+        val result = resolve<FindTeamWorkingOnProjectUseCase>()(ProjectIdRequest("p01"))
+
         assertTrue(result.isFailure)
         assertIs<ValidationExeption.DataNotFoundExeption>(result.exceptionOrNull())
     }
