@@ -13,9 +13,9 @@ abstract class BaseKoinTest : KoinComponent {
     @BeforeEach
     abstract fun setup()
 
-    protected fun startKoinWith(tsetModules: Module) {
+    protected fun startKoinWith(testModules: Module) {
         stopKoin()
-        startKoin { modules(tsetModules) }
+        startKoin { modules(testModules) }
     }
 
     protected inline fun <reified T> resolve(): T = get()
