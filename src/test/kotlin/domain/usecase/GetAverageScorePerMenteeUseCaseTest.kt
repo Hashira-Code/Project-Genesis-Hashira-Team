@@ -11,6 +11,8 @@ import kotlin.test.assertTrue
 
 @DisplayName("GetAverageScorePerMenteeUseCase")
 class GetAverageScorePerMenteeUseCaseTest : BaseKoinTest() {
+
+    private val getAverageScorePerMentee: GetAverageScorePerMenteeUseCase by lazy { resolve() }
     override fun setup() {
         startKoinWith(testModule)
     }
@@ -19,8 +21,6 @@ class GetAverageScorePerMenteeUseCaseTest : BaseKoinTest() {
     fun `should calculate correct average score for each mentee`() {
 
         // Given: Default submissions provided by TestDataFactory
-        TestDataFactory.reset()
-        val getAverageScorePerMentee = resolve<GetAverageScorePerMenteeUseCase>()
 
         // When: calculating the average score for each mentee
         val result = getAverageScorePerMentee()
@@ -36,11 +36,10 @@ class GetAverageScorePerMenteeUseCaseTest : BaseKoinTest() {
     fun `should exclude mentees who have no submissions from the result list`() {
 
         // Given: Reset and ensure only one mentee has submissions
-        TestDataFactory.reset()
         TestDataFactory.currentPerformances = listOf(
             TestDataFactory.submission("s01", "m01", SubmissionType.TASK, 80.0)
         )
-        val getAverageScorePerMentee = resolve<GetAverageScorePerMenteeUseCase>()
+
         // When: calculating averages for all mentees
         val result = getAverageScorePerMentee()
 
@@ -55,9 +54,7 @@ class GetAverageScorePerMenteeUseCaseTest : BaseKoinTest() {
     fun `should return empty list when there are no submissions at all`() {
 
         // Given: Reset and clear all submissions
-        TestDataFactory.reset()
         TestDataFactory.currentPerformances = emptyList()
-        val getAverageScorePerMentee = resolve<GetAverageScorePerMenteeUseCase>()
 
         // When: attempting to calculate average scores
         val result = getAverageScorePerMentee()
