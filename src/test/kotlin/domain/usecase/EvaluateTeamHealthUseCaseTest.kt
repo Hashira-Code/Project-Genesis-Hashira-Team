@@ -13,7 +13,7 @@ import kotlin.test.assertTrue
 
 @DisplayName("EvaluateTeamHealthUseCase")
 class EvaluateTeamHealthUseCaseTest: BaseKoinTest()   {
-
+    private val evaluateTeamHealth: EvaluateTeamHealthUseCase by lazy { resolve() }
     override fun setup() {
         startKoinWith(testModule)
     }
@@ -22,28 +22,31 @@ class EvaluateTeamHealthUseCaseTest: BaseKoinTest()   {
     fun `should return EXCELLENT when both performance and attendance are above thresholds`() {
 
         // Given: Team with default excellent data provided by TestDataFactory
-        val evaluateTeamHealth = resolve<EvaluateTeamHealthUseCase>()
-
+        TestDataFactory.currentPerformances = listOf(
+            TestDataFactory.submission("s1", "m01", SubmissionType.TASK, 90.0) // 90 > 80
+        )
+        TestDataFactory.currentAttendances = listOf(
+            TestDataFactory.attendance("m01", 1, AttendanceStatus.PRESENT) // 100% > 90%
+        )
         // When: evaluating the team health status
         val result = evaluateTeamHealth()
 
         // Then: the result should be success and the status for Alpha Team should be EXCELLENT
         assertTrue(result.isSuccess)
-        val report = result.getOrNull()
-        Truth.assertThat(report).isNotNull()
-        Truth.assertThat(report!!["Alpha Team"]).isEqualTo(TeamHealthStatus.EXCELLENT)
+        Truth.assertThat(result.getOrNull()!!["Alpha Team"]).isEqualTo(TeamHealthStatus.EXCELLENT)
 
     }
 
     @Test
     fun `should return GOOD when performance is average and attendance is acceptable`() {
 
-        // Given: Reset to defaults and adjust performance to average level
-        TestDataFactory.reset()
+        // Given: performance and attendance meet the GOOD criteria.
         TestDataFactory.currentPerformances = listOf(
             TestDataFactory.submission("s01", "m01", SubmissionType.TASK, 70.0)
         )
-        val evaluateTeamHealth = resolve<EvaluateTeamHealthUseCase>()
+        TestDataFactory.currentAttendances = listOf(
+            TestDataFactory.attendance("m01", 1, AttendanceStatus.PRESENT)
+        )
 
         // When: evaluating the team health status
         val result = evaluateTeamHealth()
@@ -56,12 +59,10 @@ class EvaluateTeamHealthUseCaseTest: BaseKoinTest()   {
     @Test
     fun `should return NEEDS_ATTENTION when performance falls below threshold`() {
 
-        // Given: Reset to defaults and adjust attendance to reflect poor participation
-        TestDataFactory.reset()
+        // Given: adjust attendance to reflect poor participation
         TestDataFactory.currentAttendances = listOf(
             TestDataFactory.attendance("m01", 1, AttendanceStatus.ABSENT)
         )
-        val evaluateTeamHealth = resolve<EvaluateTeamHealthUseCase>()
 
         // When: evaluating the team health status
         val result = evaluateTeamHealth()
