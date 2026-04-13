@@ -11,6 +11,8 @@ import di.testModule
 
 @DisplayName("GetTopPerformingMenteesBySubmissionTypeUseCase")
 class GetTopPerformingMenteesBySubmissionTypeUseCaseTest : BaseKoinTest(){
+    private val getTopPerformingMenteesBySubmissionType: GetTopPerformingMenteesBySubmissionTypeUseCase by lazy { resolve() }
+
     override fun setup() {
         startKoinWith(testModule)
     }
@@ -19,12 +21,10 @@ class GetTopPerformingMenteesBySubmissionTypeUseCaseTest : BaseKoinTest(){
     fun `returns top performing mentee and ignores negative scores`() {
 
         // Given: mentees with various scores, including negative values that should be ignored
-        TestDataFactory.reset()
         TestDataFactory.currentPerformances = listOf(
             TestDataFactory.submission("s01", "m01", SubmissionType.TASK, 95.0),
             TestDataFactory.submission("s02", "m02", SubmissionType.TASK, -10.0)
         )
-        val getTopPerformingMenteesBySubmissionType = resolve<GetTopPerformingMenteesBySubmissionTypeUseCase>()
 
         // When: retrieving the top performer for a specific submission type
         val result = getTopPerformingMenteesBySubmissionType(SubmissionType.TASK)
@@ -38,12 +38,10 @@ class GetTopPerformingMenteesBySubmissionTypeUseCaseTest : BaseKoinTest(){
     fun `returns the first mentee when scores are tied`() {
 
         // Given: multiple mentees having the same highest score for a submission type
-        TestDataFactory.reset()
         TestDataFactory.currentPerformances = listOf(
             TestDataFactory.submission("s01", "m01", SubmissionType.TASK, 90.0),
             TestDataFactory.submission("s02", "m02", SubmissionType.TASK, 90.0)
         )
-        val getTopPerformingMenteesBySubmissionType = resolve<GetTopPerformingMenteesBySubmissionTypeUseCase>()
 
         // When: retrieving the top performer during a score tie
         val result = getTopPerformingMenteesBySubmissionType(SubmissionType.TASK)
@@ -56,11 +54,9 @@ class GetTopPerformingMenteesBySubmissionTypeUseCaseTest : BaseKoinTest(){
     @Test
     fun `returns null when no submissions match the required type`() {
         // Given: a repository where no submissions match the requested submission type
-        TestDataFactory.reset()
         TestDataFactory.currentPerformances = listOf(
             TestDataFactory.submission("s01", "m01", SubmissionType.TASK, 95.0)
         )
-        val getTopPerformingMenteesBySubmissionType = resolve<GetTopPerformingMenteesBySubmissionTypeUseCase>()
 
         // When: attempting to find the top performer for that missing type
         val result = getTopPerformingMenteesBySubmissionType(SubmissionType.BOOK_CLUB)
