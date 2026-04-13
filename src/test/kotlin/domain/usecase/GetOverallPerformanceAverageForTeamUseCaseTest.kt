@@ -14,41 +14,47 @@ import kotlin.test.assertTrue
 @DisplayName("GetOverallPerformanceAverageForTeamUseCase")
 class GetOverallPerformanceAverageForTeamUseCaseTest : BaseKoinTest() {
 
+    private val getOverallPerformanceAverageForTeamUseCase: GetOverallPerformanceAverageForTeamUseCase by lazy { resolve() }
+
     override fun setup() {
         startKoinWith(testModule)
     }
 
     @Test
     fun `returns success with overall performance average when requested team has scored mentees`() {
-        TestDataFactory.reset()
+        // Given: default data where team "alpha" has mentees with submissions
 
-        val result = resolve<GetOverallPerformanceAverageForTeamUseCase>()(TeamIdRequest("alpha"))
+        // When: getting the overall performance average for team "alpha"
+        val result = getOverallPerformanceAverageForTeamUseCase(TeamIdRequest("alpha"))
 
+        // Then: the result should be success and match the expected average
         assertTrue(result.isSuccess)
         assertThat(result.getOrNull()).isEqualTo(55.0)
     }
 
     @Test
     fun `returns failure with DataNotFoundExeption when requested team has no mentees`() {
-        TestDataFactory.reset()
-        TestDataFactory.currentTeams = listOf( TestDataFactory.team(id = "gamma", name = "Gamma", mentorLead = "X"))
+        // Given: team "gamma" exists but has no mentees
+        TestDataFactory.currentTeams = listOf(TestDataFactory.team(id = "gamma", name = "Gamma", mentorLead = "X"))
 
-        val result = resolve<GetOverallPerformanceAverageForTeamUseCase>()(TeamIdRequest("gamma"))
+        // When: getting the overall performance average for team "gamma"
+        val result = getOverallPerformanceAverageForTeamUseCase(TeamIdRequest("gamma"))
 
+        // Then: the result should be failure with DataNotFoundExeption
         assertTrue(result.isFailure)
         assertIs<ValidationExeption.DataNotFoundExeption>(result.exceptionOrNull())
         assertThat(result.exceptionOrNull()?.message).isEqualTo("No mentees found for this team")
     }
 
-
     @Test
     fun `returns success with zero when requested team mentees have no submissions`() {
-        TestDataFactory.reset()
-
+        // Given: team "alpha" has mentees but no performance submissions
         TestDataFactory.currentPerformances = emptyList()
 
-        val result = resolve<GetOverallPerformanceAverageForTeamUseCase>()(TeamIdRequest("alpha"))
+        // When: getting the overall performance average for team "alpha"
+        val result = getOverallPerformanceAverageForTeamUseCase(TeamIdRequest("alpha"))
 
+        // Then: the result should be success with a score of 0.0
         assertTrue(result.isSuccess)
         assertThat(result.getOrNull()).isEqualTo(0.0)
     }
