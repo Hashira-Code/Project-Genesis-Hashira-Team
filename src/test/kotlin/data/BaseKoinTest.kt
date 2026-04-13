@@ -1,5 +1,6 @@
 package data
 
+import data.fixture.TestDataFactory
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.koin.core.component.KoinComponent
@@ -10,6 +11,11 @@ import org.koin.core.module.Module
 
 abstract class BaseKoinTest : KoinComponent {
 
+    @BeforeEach
+    fun baseSetup(){
+        TestDataFactory.reset()
+        setup()
+    }
     @BeforeEach
     abstract fun setup()
 
