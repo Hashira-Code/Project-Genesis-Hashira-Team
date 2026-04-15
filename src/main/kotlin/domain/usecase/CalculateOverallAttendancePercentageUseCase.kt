@@ -12,6 +12,10 @@ class CalculateOverallAttendancePercentageUseCase(private val attendanceRepo: At
             return Result.failure(it)
         }
 
+        if (attendances.isEmpty()) {
+            return Result.success(-1.0)
+        }
+
         val points = attendances.sumOf { attendance ->
             when (attendance.status) {
                 AttendanceStatus.PRESENT -> 1.0
