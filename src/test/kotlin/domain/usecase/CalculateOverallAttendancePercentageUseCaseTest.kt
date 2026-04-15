@@ -32,5 +32,21 @@ class CalculateOverallAttendancePercentageUseCaseTest:BaseKoinTest()   {
         //Then
         assertEquals(50.0, result.getOrNull())
     }
+
+    @Test
+    fun `should return 0 when mentee does not exist`() {
+        //Given
+        TestDataFactory.currentAttendances=listOf(
+            TestDataFactory.attendance("m01", 1, AttendanceStatus.ABSENT),
+            TestDataFactory.attendance("m01", 2, AttendanceStatus.LATE),
+            TestDataFactory.attendance("m02", 3, AttendanceStatus.PRESENT)
+        )
+
+        //when
+        val result=CalculateOverallAttendancePercentage(MenteeIdRequest("m03"))
+
+        //Then
+        assertEquals(-1.0, result.getOrNull())
+    }
 }
 
