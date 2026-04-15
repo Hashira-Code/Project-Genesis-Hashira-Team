@@ -14,7 +14,7 @@ import data.fake.FakeProjectRepo
 import data.fake.FakeTeamRepo
 import data.fixture.TestDataFactory
 
-val repoTestModule: Module = module {
+val repositoryTestModule: Module = module {
     single<TeamRepo> { FakeTeamRepo(TestDataFactory.currentTeams) }
     single<ProjectRepo> { FakeProjectRepo(TestDataFactory.currentProjects) }
     single<AttendanceRepo> { FakeAttendanceRepo(TestDataFactory.currentAttendances) }

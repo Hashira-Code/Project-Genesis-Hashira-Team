@@ -12,8 +12,10 @@ import domain.model.entity.TeamHealthStatus
 import kotlin.test.assertTrue
 
 @DisplayName("EvaluateTeamHealthUseCase")
-class EvaluateTeamHealthUseCaseTest: BaseKoinTest()   {
+class EvaluateTeamHealthUseCaseTest : BaseKoinTest() {
+
     private val evaluateTeamHealth: EvaluateTeamHealthUseCase by lazy { resolve() }
+
     override fun setup() {
         startKoinWith(testModule)
     }
@@ -32,7 +34,6 @@ class EvaluateTeamHealthUseCaseTest: BaseKoinTest()   {
         val result = evaluateTeamHealth()
 
         // Then: the result should be success and the status for Alpha Team should be EXCELLENT
-        assertTrue(result.isSuccess)
         Truth.assertThat(result.getOrNull()!!["Alpha Team"]).isEqualTo(TeamHealthStatus.EXCELLENT)
 
     }
@@ -52,7 +53,6 @@ class EvaluateTeamHealthUseCaseTest: BaseKoinTest()   {
         val result = evaluateTeamHealth()
 
         // Then: the result should be success and the status for Alpha Team should be GOOD
-        assertTrue(result.isSuccess)
         Truth.assertThat(result.getOrNull()!!["Alpha Team"]).isEqualTo(TeamHealthStatus.GOOD)
     }
 
@@ -68,7 +68,6 @@ class EvaluateTeamHealthUseCaseTest: BaseKoinTest()   {
         val result = evaluateTeamHealth()
 
         // Then: the result should be success and the status for Alpha Team should be NEEDS_ATTENTION
-        assertTrue(result.isSuccess)
         Truth.assertThat(result.getOrNull()!!["Alpha Team"]).isEqualTo(TeamHealthStatus.NEEDS_ATTENTION)
     }
 }
