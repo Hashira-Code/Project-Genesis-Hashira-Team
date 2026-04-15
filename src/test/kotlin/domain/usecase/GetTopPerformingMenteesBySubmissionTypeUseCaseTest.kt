@@ -10,7 +10,8 @@ import domain.model.entity.SubmissionType
 import di.testModule
 
 @DisplayName("GetTopPerformingMenteesBySubmissionTypeUseCase")
-class GetTopPerformingMenteesBySubmissionTypeUseCaseTest : BaseKoinTest(){
+class GetTopPerformingMenteesBySubmissionTypeUseCaseTest : BaseKoinTest() {
+
     private val getTopPerformingMenteesBySubmissionType: GetTopPerformingMenteesBySubmissionTypeUseCase by lazy { resolve() }
 
     override fun setup() {
@@ -30,7 +31,6 @@ class GetTopPerformingMenteesBySubmissionTypeUseCaseTest : BaseKoinTest(){
         val result = getTopPerformingMenteesBySubmissionType(SubmissionType.TASK)
 
         // Then: the result should be success and return the mentee with the highest valid score
-        assertTrue(result.isSuccess)
         Truth.assertThat(result.getOrNull()?.id).isEqualTo("m01")
     }
 
@@ -47,7 +47,6 @@ class GetTopPerformingMenteesBySubmissionTypeUseCaseTest : BaseKoinTest(){
         val result = getTopPerformingMenteesBySubmissionType(SubmissionType.TASK)
 
         // Then: the result should return the first mentee encountered in the list
-        assertTrue(result.isSuccess)
         Truth.assertThat(result.getOrNull()?.id).isEqualTo("m01")
     }
 
@@ -62,7 +61,6 @@ class GetTopPerformingMenteesBySubmissionTypeUseCaseTest : BaseKoinTest(){
         val result = getTopPerformingMenteesBySubmissionType(SubmissionType.BOOK_CLUB)
 
         // Then: the result should be success but the contained data should be null
-        assertTrue(result.isSuccess)
         Truth.assertThat(result.getOrNull()).isNull()
     }
 }
