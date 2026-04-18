@@ -72,7 +72,8 @@ class FindMenteeWithMostAbsencesUseCaseTest : BaseKoinTest() {
         val result = findMenteeWithMostAbsences()
 
         // Then: result is success with m01 since late does not count as absence
-        assertThat(result.getOrNull()?.id).isEqualTo("m01")
+        val studentHighestNumberOfAbsences = "m01"
+        assertThat(result.getOrNull()?.id).isEqualTo(studentHighestNumberOfAbsences)
     }
 
     @Test
@@ -89,7 +90,8 @@ class FindMenteeWithMostAbsencesUseCaseTest : BaseKoinTest() {
         val result = findMenteeWithMostAbsences()
 
         // Then: result is success with m01 since they have the highest absence count
-        assertThat(result.getOrNull()?.id).isEqualTo("m01")
+        val studentHighestNumberOfAbsences = "m01"
+        assertThat(result.getOrNull()?.id).isEqualTo(studentHighestNumberOfAbsences)
     }
 
 }
