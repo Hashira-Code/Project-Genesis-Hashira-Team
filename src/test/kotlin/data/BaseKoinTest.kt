@@ -12,10 +12,11 @@ import org.koin.core.module.Module
 abstract class BaseKoinTest : KoinComponent {
 
     @BeforeEach
-    fun baseSetup(){
+    fun baseSetup() {
         TestDataFactory.reset()
         setup()
     }
+
     @BeforeEach
     abstract fun setup()
 
@@ -27,7 +28,7 @@ abstract class BaseKoinTest : KoinComponent {
     protected inline fun <reified T> resolve(): T = get()
 
     @AfterEach
-    fun tearDownKoin() {
+    fun tearDown() {
         stopKoin()
     }
 }

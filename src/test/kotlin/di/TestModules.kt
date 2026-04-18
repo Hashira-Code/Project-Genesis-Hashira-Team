@@ -4,7 +4,7 @@ import org.koin.dsl.module
 
 val testModule = module {
     includes(
-        repoTestModule,
+        repositoryTestModule,
         validatorTestModule,
         useCaseTestModule
     )
