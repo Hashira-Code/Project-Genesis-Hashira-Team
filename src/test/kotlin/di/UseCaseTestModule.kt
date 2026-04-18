@@ -1,6 +1,7 @@
 package di
 
 import domain.usecase.EvaluateTeamHealthUseCase
+import domain.usecase.FindMenteeWithMostAbsencesUseCase
 import domain.usecase.FindTeamWorkingOnProjectUseCase
 import domain.usecase.GetAbsentMenteesNamesUseCase
 import domain.usecase.GetAverageScorePerMenteeUseCase
@@ -16,4 +17,5 @@ val useCaseTestModule: Module = module {
     factory { GetOverallPerformanceAverageForTeamUseCase(get(), get()) }
     factory { FindTeamWorkingOnProjectUseCase(get(),get()) }
     factory { GetTopPerformingMenteesBySubmissionTypeUseCase(get(),get()) }
+    factory { FindMenteeWithMostAbsencesUseCase(get(), get()) }
 }
