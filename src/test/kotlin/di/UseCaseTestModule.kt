@@ -7,6 +7,7 @@ import domain.usecase.GetAbsentMenteesNamesUseCase
 import domain.usecase.GetAverageScorePerMenteeUseCase
 import domain.usecase.GetOverallPerformanceAverageForTeamUseCase
 import domain.usecase.GetTopPerformingMenteesBySubmissionTypeUseCase
+import domain.usecase.CalculateOverallAttendancePercentageUseCase
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
@@ -18,4 +19,5 @@ val useCaseTestModule: Module = module {
     factory { FindTeamWorkingOnProjectUseCase(get(),get()) }
     factory { GetTopPerformingMenteesBySubmissionTypeUseCase(get(),get()) }
     factory { FindMenteeWithMostAbsencesUseCase(get(), get()) }
-}
+    factory { CalculateOverallAttendancePercentageUseCase(get())}
+    }
