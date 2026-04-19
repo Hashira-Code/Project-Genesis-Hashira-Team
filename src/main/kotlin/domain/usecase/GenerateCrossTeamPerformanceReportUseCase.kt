@@ -31,11 +31,8 @@ class GenerateCrossTeamPerformanceReportUseCase(
         mentees: List<Mentee>,
         submissions: List<PerformanceSubmission>
     ): List<Pair<String, Double>> {
-        val menteeIdsByTeam = mentees.groupBy(
-            keySelector = { it.teamId },
-            valueTransform = { it.id }
-        )
-        val submissionsByMenteeId = submissions.groupBy { it.menteeId }
+        val menteeIdsByTeam = groupMenteeIdsByTeam(mentees)
+        val submissionsByMenteeId = groupSubmissionsByMentee(submissions)
 
         return teams
             .map { team ->
@@ -45,6 +42,19 @@ class GenerateCrossTeamPerformanceReportUseCase(
                 )
             }
             .sortedByDescending { it.second }
+    }
+
+    private fun groupMenteeIdsByTeam(mentees: List<Mentee>): Map<String, List<String>> {
+        return mentees.groupBy(
+            keySelector = { it.teamId },
+            valueTransform = { it.id }
+        )
+    }
+
+    private fun groupSubmissionsByMentee(
+        submissions: List<PerformanceSubmission>
+    ): Map<String, List<PerformanceSubmission>> {
+        return submissions.groupBy { it.menteeId }
     }
 
     private fun calculateTeamAverage(
