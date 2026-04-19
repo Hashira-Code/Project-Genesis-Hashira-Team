@@ -43,7 +43,7 @@ class GenerateCrossTeamPerformanceReportUseCase(
                     submissionsByMenteeId
                 )
             }
-            .sortedByDescending { it.second }
+            .sortedWith(compareByDescending<Pair<String, Double>> { it.second }.thenBy { it.first })
     }
 
     private fun groupMenteeIdsByTeam(mentees: List<Mentee>): Map<String, List<String>> {
