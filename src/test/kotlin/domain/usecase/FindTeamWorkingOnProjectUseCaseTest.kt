@@ -9,7 +9,6 @@ import domain.model.request.ProjectIdRequest
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import kotlin.test.assertIs
-import kotlin.test.assertTrue
 
 @DisplayName("FindTeamWorkingOnProjectUseCase")
 class FindTeamWorkingOnProjectUseCaseTest : BaseKoinTest() {
@@ -29,8 +28,7 @@ class FindTeamWorkingOnProjectUseCaseTest : BaseKoinTest() {
         val result = findTeamWorkingOnProject(ProjectIdRequest("p01"))
 
         // Then: the result should be success and match the expected team
-        assertTrue(result.isSuccess)
-        assertThat(result.getOrNull()).isEqualTo(expectedTeam)
+        assertThat(result.getOrThrow()).isEqualTo(expectedTeam)
     }
 
     @Test
@@ -42,7 +40,6 @@ class FindTeamWorkingOnProjectUseCaseTest : BaseKoinTest() {
         val result = findTeamWorkingOnProject(ProjectIdRequest("p01"))
 
         // Then: the result should be failure with DataNotFoundExeption
-        assertTrue(result.isFailure)
         assertIs<ValidationExeption.DataNotFoundExeption>(result.exceptionOrNull())
     }
 
@@ -56,7 +53,6 @@ class FindTeamWorkingOnProjectUseCaseTest : BaseKoinTest() {
         val result = findTeamWorkingOnProject(ProjectIdRequest("p01"))
 
         // Then: the result should be failure with DataNotFoundExeption
-        assertTrue(result.isFailure)
         assertIs<ValidationExeption.DataNotFoundExeption>(result.exceptionOrNull())
     }
 }

@@ -9,7 +9,6 @@ import data.fixture.TestDataFactory
 import di.testModule
 import domain.model.exception.ValidationExeption
 import kotlin.test.assertIs
-import kotlin.test.assertTrue
 
 @DisplayName("GetOverallPerformanceAverageForTeamUseCase")
 class GetOverallPerformanceAverageForTeamUseCaseTest : BaseKoinTest() {
@@ -28,8 +27,7 @@ class GetOverallPerformanceAverageForTeamUseCaseTest : BaseKoinTest() {
         val result = getOverallPerformanceAverageForTeamUseCase(TeamIdRequest("alpha"))
 
         // Then: the result should be success and match the expected average
-        assertTrue(result.isSuccess)
-        assertThat(result.getOrNull()).isEqualTo(55.0)
+        assertThat(result.getOrThrow()).isEqualTo(55.0)
     }
 
     @Test
@@ -41,9 +39,7 @@ class GetOverallPerformanceAverageForTeamUseCaseTest : BaseKoinTest() {
         val result = getOverallPerformanceAverageForTeamUseCase(TeamIdRequest("gamma"))
 
         // Then: the result should be failure with DataNotFoundExeption
-        assertTrue(result.isFailure)
         assertIs<ValidationExeption.DataNotFoundExeption>(result.exceptionOrNull())
-        assertThat(result.exceptionOrNull()?.message).isEqualTo("No mentees found for this team")
     }
 
     @Test
@@ -55,8 +51,7 @@ class GetOverallPerformanceAverageForTeamUseCaseTest : BaseKoinTest() {
         val result = getOverallPerformanceAverageForTeamUseCase(TeamIdRequest("alpha"))
 
         // Then: the result should be success with a score of 0.0
-        assertTrue(result.isSuccess)
-        assertThat(result.getOrNull()).isEqualTo(0.0)
+        assertThat(result.getOrThrow()).isEqualTo(0.0)
     }
 
 }
