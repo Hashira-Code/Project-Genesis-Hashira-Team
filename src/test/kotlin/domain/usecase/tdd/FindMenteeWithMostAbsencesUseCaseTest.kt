@@ -59,5 +59,39 @@ class FindMenteeWithMostAbsencesUseCaseTest : BaseKoinTest() {
         assertThat(result.getOrNull()).isNull()
     }
 
+    @Test
+    fun `returns success with mentee who has most absences when others have late status`() {
+        // Given: m01 has one absence, m02 has late status which does not count as absence
+        TestDataFactory.currentAttendances = listOf(
+            TestDataFactory.attendance("m01", 1, AttendanceStatus.ABSENT),
+            TestDataFactory.attendance("m02", 1, AttendanceStatus.LATE),
+            TestDataFactory.attendance("m02", 2, AttendanceStatus.LATE),
+        )
+
+        // When: finding the mentee with most absences
+        val result = findMenteeWithMostAbsences()
+
+        // Then: result is success with m01 since late does not count as absence
+        val studentHighestNumberOfAbsences = "m01"
+        assertThat(result.getOrNull()?.id).isEqualTo(studentHighestNumberOfAbsences)
+    }
+
+    @Test
+    fun `returns success with mentee who has most absences across multiple weeks`() {
+        // Given: m01 is absent in three weeks, m02 is absent in one week only
+        TestDataFactory.currentAttendances = listOf(
+            TestDataFactory.attendance("m01", 1, AttendanceStatus.ABSENT),
+            TestDataFactory.attendance("m01", 2, AttendanceStatus.ABSENT),
+            TestDataFactory.attendance("m01", 3, AttendanceStatus.ABSENT),
+            TestDataFactory.attendance("m02", 1, AttendanceStatus.ABSENT),
+        )
+
+        // When: finding the mentee with most absences
+        val result = findMenteeWithMostAbsences()
+
+        // Then: result is success with m01 since they have the highest absence count
+        val studentHighestNumberOfAbsences = "m01"
+        assertThat(result.getOrNull()?.id).isEqualTo(studentHighestNumberOfAbsences)
+    }
 
 }

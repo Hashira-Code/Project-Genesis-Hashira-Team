@@ -10,7 +10,15 @@ class FindMenteeWithMostAbsencesUseCase(
     private val menteeRepo: MenteeRepo
 ) {
     operator fun invoke(): Result<Mentee?> {
+        return attendanceRepo.getAll().mapCatching { attendances ->
+            val menteeIdWithMostAbsences = attendances
+                .filter { it.status == AttendanceStatus.ABSENT }
+                .groupBy { it.menteeId }
+                .maxByOrNull { it.value.size }
+                ?.key ?: return@mapCatching null
 
-        return TODO("Provide the return value")
+            menteeRepo.getAll().getOrThrow()
+                .find { it.id == menteeIdWithMostAbsences }
+        }
     }
 }
