@@ -6,11 +6,13 @@ import domain.model.entity.Team
 import domain.repository.MenteeRepo
 import domain.repository.PerformanceRepo
 import domain.repository.TeamRepo
+import domain.validation.Validator
 
 class GenerateCrossTeamPerformanceReportUseCase(
     private val teamRepo: TeamRepo,
     private val menteeRepo: MenteeRepo,
-    private val performanceRepo: PerformanceRepo
+    private val performanceRepo: PerformanceRepo,
+    private val scoreValidator: Validator<Double, Double>
 ) {
     operator fun invoke(): Result<List<Pair<String, Double>>> {
         val teams = teamRepo.getAll().getOrElse {
@@ -62,9 +64,10 @@ class GenerateCrossTeamPerformanceReportUseCase(
         submissionsByMenteeId: Map<String, List<PerformanceSubmission>>
     ): Double {
         val scores = menteeIds.flatMap { menteeId ->
-            submissionsByMenteeId[menteeId].orEmpty().map { it.score }
+            submissionsByMenteeId[menteeId].orEmpty()
+                .mapNotNull { scoreValidator.validate(it.score).getOrNull() }
         }
 
-        return scores.average()
+        return if (scores.isEmpty()) 0.0 else scores.average()
     }
 }

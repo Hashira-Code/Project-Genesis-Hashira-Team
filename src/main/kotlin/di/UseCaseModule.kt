@@ -7,6 +7,7 @@ import domain.usecase.FindLeadMentorForMenteeUseCase
 import domain.usecase.FindProjectsAssignedToTeamUseCase
 import domain.usecase.FindTeamsWithNoProjectUseCase
 import domain.usecase.FindTeamWorkingOnProjectUseCase
+import domain.usecase.GenerateCrossTeamPerformanceReportUseCase
 import domain.usecase.GetOverallPerformanceAverageForTeamUseCase
 import domain.usecase.GetTopPerformingMenteesBySubmissionTypeUseCase
 import domain.usecase.MenteesWithPerfectAttendanceUseCase
@@ -33,6 +34,7 @@ val useCaseModule = module {
     single { FindTeamsWithNoProjectUseCase(get(), get()) }
     single { FindTeamWorkingOnProjectUseCase(get(), get()) }
     single { FindTopScoringMenteeOverallUseCase(get(),get()) }
+    single { GenerateCrossTeamPerformanceReportUseCase(get(), get(), get(), get()) }
     single { GetAbsentMenteesNamesUseCase(get(), get(), get()) }
     single { GetAverageScorePerMenteeUseCase(get(), get()) }
     single { GetMenteesOrderedByTaskCountUseCase(get(), get()) }
