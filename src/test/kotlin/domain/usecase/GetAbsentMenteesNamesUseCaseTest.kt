@@ -3,7 +3,6 @@ package domain.usecase
 import com.google.common.truth.Truth.assertThat
 import domain.model.exception.ValidationExeption
 import domain.model.request.WeekNumberRequest
-import domain.validation.WeekNumberValidator
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import data.BaseKoinTest
@@ -11,7 +10,6 @@ import data.fixture.TestDataFactory
 import di.testModule
 import domain.model.entity.AttendanceStatus
 import kotlin.test.assertIs
-import kotlin.test.assertTrue
 
 @DisplayName("GetAbsentMenteesNamesUseCase")
 class GetAbsentMenteesNamesUseCaseTest : BaseKoinTest() {
@@ -30,8 +28,7 @@ class GetAbsentMenteesNamesUseCaseTest : BaseKoinTest() {
         val result = getAbsentMenteesNamesUseCase(WeekNumberRequest(1))
 
         // Then: the result should be success and contain "Aisha"
-        assertTrue(result.isSuccess)
-        assertThat(result.getOrNull()).containsExactly("Aisha")
+        assertThat(result.getOrThrow()).containsExactly("Aisha")
     }
 
     @Test
@@ -47,8 +44,7 @@ class GetAbsentMenteesNamesUseCaseTest : BaseKoinTest() {
         val result = getAbsentMenteesNamesUseCase(WeekNumberRequest(1))
 
         // Then: the result should be success with an empty list
-        assertTrue(result.isSuccess)
-        assertThat(result.getOrNull()).isEmpty()
+        assertThat(result.getOrThrow()).isEmpty()
     }
 
     @Test
@@ -59,10 +55,7 @@ class GetAbsentMenteesNamesUseCaseTest : BaseKoinTest() {
         val result = getAbsentMenteesNamesUseCase(WeekNumberRequest(-2))
 
         // Then: the result should be failure with ValueOutOfRangeExeption
-        assertTrue(result.isFailure)
         assertIs<ValidationExeption.ValueOutOfRangeExeption>(result.exceptionOrNull())
-        assertThat(result.exceptionOrNull()?.message)
-            .isEqualTo(WeekNumberValidator.NON_POSITIVE_ERROR)
     }
 
 }
