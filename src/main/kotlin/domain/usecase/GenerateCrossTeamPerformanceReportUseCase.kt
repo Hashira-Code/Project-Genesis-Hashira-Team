@@ -25,17 +25,17 @@ class GenerateCrossTeamPerformanceReportUseCase(
             return Result.failure(it)
         }
 
-        return Result.success(buildReport(teams, mentees, submissions))
+        val menteeIdsByTeam = groupMenteeIdsByTeam(mentees)
+        val submissionsByMenteeId = groupSubmissionsByMentee(submissions)
+
+        return Result.success(buildReport(teams, menteeIdsByTeam, submissionsByMenteeId))
     }
 
     private fun buildReport(
         teams: List<Team>,
-        mentees: List<Mentee>,
-        submissions: List<PerformanceSubmission>
+        menteeIdsByTeam: Map<String, List<String>>,
+        submissionsByMenteeId: Map<String, List<PerformanceSubmission>>
     ): List<Pair<String, Double>> {
-        val menteeIdsByTeam = groupMenteeIdsByTeam(mentees)
-        val submissionsByMenteeId = groupSubmissionsByMentee(submissions)
-
         return teams
             .map { team ->
                 team.name to calculateTeamAverage(
