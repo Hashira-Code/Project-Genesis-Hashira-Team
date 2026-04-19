@@ -44,4 +44,30 @@ class GenerateCrossTeamPerformanceReportUseCaseTest : BaseKoinTest() {
         // Then: Alpha Team should be included with zero average
         assertThat(result.getOrThrow()).contains("Alpha Team" to 0.0)
     }
+
+    @Test
+    fun `returns teams with tied averages ordered by team name`() {
+        // Given: teams have the same average but are stored in reverse alphabetical order
+        TestDataFactory.currentTeams = listOf(
+            TestDataFactory.team(id = "beta", name = "Beta Team", mentorLead = "Omar"),
+            TestDataFactory.team(id = "alpha", name = "Alpha Team", mentorLead = "Sarah")
+        )
+        TestDataFactory.currentMentees = listOf(
+            TestDataFactory.mentee(id = "m01", name = "Aisha", teamId = "alpha"),
+            TestDataFactory.mentee(id = "m03", name = "Lina", teamId = "beta")
+        )
+        TestDataFactory.currentPerformances = listOf(
+            TestDataFactory.submission("s01", "m01", SubmissionType.TASK, 90.0),
+            TestDataFactory.submission("s02", "m03", SubmissionType.TASK, 90.0)
+        )
+
+        // When: generating a cross-team performance report
+        val result = generateCrossTeamPerformanceReport()
+
+        // Then: tied teams should be ordered by team name
+        assertThat(result.getOrThrow()).containsExactly(
+            "Alpha Team" to 90.0,
+            "Beta Team" to 90.0
+        ).inOrder()
+    }
 }
