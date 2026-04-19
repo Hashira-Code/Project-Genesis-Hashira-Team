@@ -22,6 +22,6 @@ val useCaseTestModule: Module = module {
     factory { GetTopPerformingMenteesBySubmissionTypeUseCase(get(),get()) }
     factory { FindMenteeWithMostAbsencesUseCase(get(), get()) }
     factory { FindLeadMentorForMenteeUseCase(get(), get()) }
-    factory { GenerateCrossTeamPerformanceReportUseCase(get(), get(), get()) }
+    factory { GenerateCrossTeamPerformanceReportUseCase(get(), get(), get(), get()) }
     factory { CalculateOverallAttendancePercentageUseCase(get())}
     }
