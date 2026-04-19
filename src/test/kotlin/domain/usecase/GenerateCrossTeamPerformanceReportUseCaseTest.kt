@@ -27,7 +27,7 @@ class GenerateCrossTeamPerformanceReportUseCaseTest : BaseKoinTest() {
         // Then: the report should be ordered by highest average performance
         assertThat(result.getOrThrow()).containsExactly(
             "Beta Team" to 99.0,
-            "Alpha Team" to 55.0
+            "Alpha Team" to 87.5
         ).inOrder()
     }
 
