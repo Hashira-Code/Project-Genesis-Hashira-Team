@@ -13,6 +13,7 @@ import kotlin.test.assertTrue
 class GetAverageScorePerMenteeUseCaseTest : BaseKoinTest() {
 
     private val getAverageScorePerMentee: GetAverageScorePerMenteeUseCase by lazy { resolve() }
+
     override fun setup() {
         startKoinWith(testModule)
     }
@@ -26,7 +27,6 @@ class GetAverageScorePerMenteeUseCaseTest : BaseKoinTest() {
         val result = getAverageScorePerMentee()
 
         // Then: the result should be success and contain the correct pre-calculated average
-        assertTrue(result.isSuccess)
         val averages = result.getOrNull()
         Truth.assertThat(averages).isNotNull()
         Truth.assertThat(averages).isNotEmpty()
@@ -44,7 +44,6 @@ class GetAverageScorePerMenteeUseCaseTest : BaseKoinTest() {
         val result = getAverageScorePerMentee()
 
         // Then: mentees without submissions should be filtered out, leaving only active ones
-        assertTrue(result.isSuccess)
         val averages = result.getOrNull()
         Truth.assertThat(averages).hasSize(1)
         Truth.assertThat(averages!![0]).isEqualTo("Aisha" to 80.0)
@@ -60,7 +59,6 @@ class GetAverageScorePerMenteeUseCaseTest : BaseKoinTest() {
         val result = getAverageScorePerMentee()
 
         // Then: the result should be a success with an empty list of averages
-        assertTrue(result.isSuccess)
         val averages = result.getOrNull()
         Truth.assertThat(averages).isEmpty()
     }
