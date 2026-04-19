@@ -63,11 +63,15 @@ class GenerateCrossTeamPerformanceReportUseCase(
         menteeIds: List<String>,
         submissionsByMenteeId: Map<String, List<PerformanceSubmission>>
     ): Double {
-        val scores = menteeIds.flatMap { menteeId ->
+        val validScores = menteeIds.flatMap { menteeId ->
             submissionsByMenteeId[menteeId].orEmpty()
-                .mapNotNull { scoreValidator.validate(it.score).getOrNull() }
+                .mapNotNull { validScoreOrNull(it) }
         }
 
-        return if (scores.isEmpty()) 0.0 else scores.average()
+        return if (validScores.isEmpty()) 0.0 else validScores.average()
+    }
+
+    private fun validScoreOrNull(submission: PerformanceSubmission): Double? {
+        return scoreValidator.validate(submission.score).getOrNull()
     }
 }
