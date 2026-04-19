@@ -4,6 +4,7 @@ import domain.usecase.EvaluateTeamHealthUseCase
 import domain.usecase.FindMenteeWithMostAbsencesUseCase
 import domain.usecase.FindLeadMentorForMenteeUseCase
 import domain.usecase.FindTeamWorkingOnProjectUseCase
+import domain.usecase.GenerateCrossTeamPerformanceReportUseCase
 import domain.usecase.GetAbsentMenteesNamesUseCase
 import domain.usecase.GetAverageScorePerMenteeUseCase
 import domain.usecase.GetOverallPerformanceAverageForTeamUseCase
@@ -21,5 +22,6 @@ val useCaseTestModule: Module = module {
     factory { GetTopPerformingMenteesBySubmissionTypeUseCase(get(),get()) }
     factory { FindMenteeWithMostAbsencesUseCase(get(), get()) }
     factory { FindLeadMentorForMenteeUseCase(get(), get()) }
+    factory { GenerateCrossTeamPerformanceReportUseCase(get(), get(), get()) }
     factory { CalculateOverallAttendancePercentageUseCase(get())}
     }
