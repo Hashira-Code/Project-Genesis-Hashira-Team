@@ -5,9 +5,10 @@ import data.BaseKoinTest
 import data.fixture.TestDataFactory
 import di.testModule
 import domain.model.entity.AttendanceStatus
-import junit.framework.TestCase
+import domain.model.exception.ValidationExeption
 import org.junit.jupiter.api.DisplayName
 import kotlin.test.Test
+import kotlin.test.assertIs
 
 @DisplayName("FindMenteeWithMostAbsencesUseCase")
 class FindMenteeWithMostAbsencesUseCaseTest : BaseKoinTest() {
@@ -27,8 +28,7 @@ class FindMenteeWithMostAbsencesUseCaseTest : BaseKoinTest() {
         val result = findMenteeWithMostAbsences()
 
         // Then: result is success with the mentee who has the most absences
-        TestCase.assertTrue(result.isSuccess)
-        Truth.assertThat(result.getOrNull()?.id).isEqualTo(expectedMenteeId)
+        Truth.assertThat(result.getOrThrow().id).isEqualTo(expectedMenteeId)
     }
 
     @Test
@@ -43,7 +43,7 @@ class FindMenteeWithMostAbsencesUseCaseTest : BaseKoinTest() {
         val result = findMenteeWithMostAbsences()
 
         // Then: result is success with null since no absences exist
-        Truth.assertThat(result.getOrNull()).isNull()
+        assertIs<ValidationExeption.DataNotFoundExeption>(result.exceptionOrNull())
     }
 
     @Test
@@ -55,7 +55,7 @@ class FindMenteeWithMostAbsencesUseCaseTest : BaseKoinTest() {
         val result = findMenteeWithMostAbsences()
 
         // Then: result is success with null since no records exist
-        Truth.assertThat(result.getOrNull()).isNull()
+        assertIs<ValidationExeption.DataNotFoundExeption>(result.exceptionOrNull())
     }
 
     @Test
@@ -72,7 +72,7 @@ class FindMenteeWithMostAbsencesUseCaseTest : BaseKoinTest() {
 
         // Then: result is success with m01 since late does not count as absence
         val studentHighestNumberOfAbsences = "m01"
-        Truth.assertThat(result.getOrNull()?.id).isEqualTo(studentHighestNumberOfAbsences)
+        Truth.assertThat(result.getOrThrow().id).isEqualTo(studentHighestNumberOfAbsences)
     }
 
     @Test
@@ -90,7 +90,7 @@ class FindMenteeWithMostAbsencesUseCaseTest : BaseKoinTest() {
 
         // Then: result is success with m01 since they have the highest absence count
         val studentHighestNumberOfAbsences = "m01"
-        Truth.assertThat(result.getOrNull()?.id).isEqualTo(studentHighestNumberOfAbsences)
+        Truth.assertThat(result.getOrThrow().id).isEqualTo(studentHighestNumberOfAbsences)
     }
 
 }
