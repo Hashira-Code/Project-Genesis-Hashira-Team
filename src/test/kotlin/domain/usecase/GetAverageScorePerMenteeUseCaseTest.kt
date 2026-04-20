@@ -7,7 +7,7 @@ import di.testModule
 import data.fixture.TestDataFactory
 import data.BaseKoinTest
 import domain.model.entity.SubmissionType
-import kotlin.test.assertTrue
+
 
 @DisplayName("GetAverageScorePerMenteeUseCase")
 class GetAverageScorePerMenteeUseCaseTest : BaseKoinTest() {
@@ -24,12 +24,10 @@ class GetAverageScorePerMenteeUseCaseTest : BaseKoinTest() {
         // Given: Default submissions provided by TestDataFactory
 
         // When: calculating the average score for each mentee
-        val result = getAverageScorePerMentee()
+        val result = getAverageScorePerMentee().getOrNull()
 
         // Then: the result should be success and contain the correct pre-calculated average
-        val averages = result.getOrNull()
-        Truth.assertThat(averages).isNotNull()
-        Truth.assertThat(averages).isNotEmpty()
+        Truth.assertThat(result).isNotEmpty()
     }
 
     @Test
@@ -41,12 +39,10 @@ class GetAverageScorePerMenteeUseCaseTest : BaseKoinTest() {
         )
 
         // When: calculating averages for all mentees
-        val result = getAverageScorePerMentee()
+        val result = getAverageScorePerMentee().getOrNull()
 
         // Then: mentees without submissions should be filtered out, leaving only active ones
-        val averages = result.getOrNull()
-        Truth.assertThat(averages).hasSize(1)
-        Truth.assertThat(averages!![0]).isEqualTo("Aisha" to 80.0)
+        Truth.assertThat(result).containsExactly("Aisha" to 80.0)
     }
 
     @Test
@@ -56,10 +52,9 @@ class GetAverageScorePerMenteeUseCaseTest : BaseKoinTest() {
         TestDataFactory.currentPerformances = emptyList()
 
         // When: attempting to calculate average scores
-        val result = getAverageScorePerMentee()
+        val result = getAverageScorePerMentee().getOrNull()
 
         // Then: the result should be a success with an empty list of averages
-        val averages = result.getOrNull()
-        Truth.assertThat(averages).isEmpty()
+        Truth.assertThat(result).isEmpty()
     }
 }
