@@ -27,12 +27,12 @@ class PerformanceRepoImpl(
         cache.getOrThrow().groupBy { it.type }
     }
 
-    override fun getAll(): Result<List<PerformanceSubmission>> = cache
+    suspend override fun getAll(): Result<List<PerformanceSubmission>> = cache
 
-    override fun getByMenteeId(menteeId: String): Result<List<PerformanceSubmission>> =
+    suspend override fun getByMenteeId(menteeId: String): Result<List<PerformanceSubmission>> =
         cache.map { byMenteeId[menteeId].orEmpty() }
 
-    override fun getByType(type: SubmissionType): Result<List<PerformanceSubmission>> =
+    suspend override fun getByType(type: SubmissionType): Result<List<PerformanceSubmission>> =
         cache.map { byType[type].orEmpty() }
 
 }

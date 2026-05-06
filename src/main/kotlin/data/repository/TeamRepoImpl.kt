@@ -22,9 +22,9 @@ class TeamRepoImpl(
         cache.getOrThrow().associateBy { it.id }
     }
 
-    override fun getAll(): Result<List<Team>> = cache
+    suspend override fun getAll(): Result<List<Team>> = cache
 
-    override fun getById(id: String): Result<Team?> = cache.map { byId[id] }
+    suspend override fun getById(id: String): Result<Team?> = cache.map { byId[id] }
 }
 
 
