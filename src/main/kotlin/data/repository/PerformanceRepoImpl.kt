@@ -7,6 +7,8 @@ import data.exception.mapCsvErrorToDomain
 import domain.model.entity.PerformanceSubmission
 import domain.model.entity.SubmissionType
 import domain.repository.PerformanceRepo
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 
 class PerformanceRepoImpl(
@@ -27,13 +29,17 @@ class PerformanceRepoImpl(
         cache.getOrThrow().groupBy { it.type }
     }
 
-    suspend override fun getAll(): Result<List<PerformanceSubmission>> = cache
+    override suspend fun getAll(): Result<List<PerformanceSubmission>> = withContext(Dispatchers.IO) { cache }
 
-    suspend override fun getByMenteeId(menteeId: String): Result<List<PerformanceSubmission>> =
-        cache.map { byMenteeId[menteeId].orEmpty() }
+    override suspend fun getByMenteeId(menteeId: String): Result<List<PerformanceSubmission>> =
+        withContext(Dispatchers.IO) {
+            cache.map { byMenteeId[menteeId].orEmpty() }
+        }
 
-    suspend override fun getByType(type: SubmissionType): Result<List<PerformanceSubmission>> =
-        cache.map { byType[type].orEmpty() }
+    override suspend fun getByType(type: SubmissionType): Result<List<PerformanceSubmission>> =
+        withContext(Dispatchers.IO) {
+            cache.map { byType[type].orEmpty() }
+        }
 
 }
 
