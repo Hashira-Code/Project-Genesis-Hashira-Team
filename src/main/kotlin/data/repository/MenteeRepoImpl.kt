@@ -26,11 +26,11 @@ class MenteeRepoImpl(
         cache.getOrThrow().groupBy { it.teamId }
     }
 
-    override fun getAll(): Result<List<Mentee>> = cache
+    suspend override fun getAll(): Result<List<Mentee>> = cache
 
-    override fun getById(id: String): Result<Mentee?> = cache.map { byId[id] }
+    suspend override fun getById(id: String): Result<Mentee?> = cache.map { byId[id] }
 
-    override fun getByTeamId(teamId: String): Result<List<Mentee>> = cache.map { byTeamId[teamId].orEmpty() }
+    suspend override fun getByTeamId(teamId: String): Result<List<Mentee>> = cache.map { byTeamId[teamId].orEmpty() }
 }
 
 

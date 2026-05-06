@@ -19,8 +19,8 @@ class ProjectRepoImpl(
         cache.getOrThrow().groupBy { it.teamId }
     }
 
-    override fun getAll(): Result<List<Project>> = cache
-    override fun getByTeamId(teamId: String): Result<List<Project>> = cache.map { byTeamId[teamId].orEmpty() }
+    suspend override fun getAll(): Result<List<Project>> = cache
+    suspend override fun getByTeamId(teamId: String): Result<List<Project>> = cache.map { byTeamId[teamId].orEmpty() }
 }
 
 
