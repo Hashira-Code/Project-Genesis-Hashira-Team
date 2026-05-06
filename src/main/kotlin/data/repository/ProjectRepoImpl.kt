@@ -6,6 +6,8 @@ import domain.model.entity.Project
 import domain.repository.ProjectRepo
 import data.mapper.Mapper
 import data.model.ProjectRaw
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class ProjectRepoImpl(
     private val dataSource: DataSource,
@@ -19,8 +21,9 @@ class ProjectRepoImpl(
         cache.getOrThrow().groupBy { it.teamId }
     }
 
-    suspend override fun getAll(): Result<List<Project>> = cache
-    suspend override fun getByTeamId(teamId: String): Result<List<Project>> = cache.map { byTeamId[teamId].orEmpty() }
+    override suspend fun getAll(): Result<List<Project>> = withContext(Dispatchers.IO) { cache }
+    override suspend fun getByTeamId(teamId: String): Result<List<Project>> =
+        withContext(Dispatchers.IO) { cache.map { byTeamId[teamId].orEmpty() } }
 }
 
 

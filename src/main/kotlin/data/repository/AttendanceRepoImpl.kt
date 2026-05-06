@@ -6,6 +6,8 @@ import domain.model.entity.Attendance
 import domain.repository.AttendanceRepo
 import data.mapper.Mapper
 import data.model.AttendanceRaw
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class AttendanceRepoImpl(
     private val dataSource: DataSource,
@@ -25,13 +27,15 @@ class AttendanceRepoImpl(
         cache.getOrThrow().groupBy { it.weekNumber }
     }
 
-    suspend override fun getAll(): Result<List<Attendance>> = cache
+    override suspend fun getAll(): Result<List<Attendance>> = withContext(Dispatchers.IO) { cache }
 
-    suspend override fun getByMenteeId(menteeId: String): Result<List<Attendance>> =
+    override suspend fun getByMenteeId(menteeId: String): Result<List<Attendance>> = withContext(Dispatchers.IO) {
         cache.map { byMenteeId[menteeId].orEmpty() }
+    }
 
-    suspend override fun getByWeekNumber(weekNumber: Int): Result<List<Attendance>> =
+    override suspend fun getByWeekNumber(weekNumber: Int): Result<List<Attendance>> = withContext(Dispatchers.IO) {
         cache.map { byWeekNumber[weekNumber].orEmpty() }
+    }
 }
 
 

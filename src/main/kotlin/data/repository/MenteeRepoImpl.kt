@@ -6,6 +6,8 @@ import domain.model.entity.Mentee
 import domain.repository.MenteeRepo
 import data.mapper.*
 import data.model.MenteeRaw
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class MenteeRepoImpl(
     private val dataSource: DataSource,
@@ -26,11 +28,12 @@ class MenteeRepoImpl(
         cache.getOrThrow().groupBy { it.teamId }
     }
 
-    suspend override fun getAll(): Result<List<Mentee>> = cache
+    override suspend fun getAll(): Result<List<Mentee>> = withContext(Dispatchers.IO) { cache }
 
-    suspend override fun getById(id: String): Result<Mentee?> = cache.map { byId[id] }
+    override suspend fun getById(id: String): Result<Mentee?> = withContext(Dispatchers.IO) { cache.map { byId[id] } }
 
-    suspend override fun getByTeamId(teamId: String): Result<List<Mentee>> = cache.map { byTeamId[teamId].orEmpty() }
+    override suspend fun getByTeamId(teamId: String): Result<List<Mentee>> =
+        withContext(Dispatchers.IO) { cache.map { byTeamId[teamId].orEmpty() } }
 }
 
 
