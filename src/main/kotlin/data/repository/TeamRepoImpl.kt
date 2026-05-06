@@ -6,6 +6,8 @@ import data.model.TeamRaw
 import data.dataSource.DataSource
 import data.exception.mapCsvErrorToDomain
 import domain.repository.TeamRepo
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 
 class TeamRepoImpl(
@@ -22,9 +24,9 @@ class TeamRepoImpl(
         cache.getOrThrow().associateBy { it.id }
     }
 
-    suspend override fun getAll(): Result<List<Team>> = cache
+    override suspend fun getAll(): Result<List<Team>> = withContext(Dispatchers.IO) { cache }
 
-    suspend override fun getById(id: String): Result<Team?> = cache.map { byId[id] }
+    override suspend fun getById(id: String): Result<Team?> = withContext(Dispatchers.IO) { cache.map { byId[id] } }
 }
 
 
