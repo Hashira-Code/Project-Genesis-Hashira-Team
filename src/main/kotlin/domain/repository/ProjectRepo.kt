@@ -3,7 +3,7 @@ package domain.repository
 import domain.model.entity.Project
 
 interface ProjectRepo {
-    fun getAll(): Result<List<Project>>
-    fun getByTeamId(teamId: String): Result<List<Project>>
+    suspend fun getAll(): Result<List<Project>>
+    suspend fun getByTeamId(teamId: String): Result<List<Project>>
 }
 
