@@ -1,5 +1,7 @@
 package domain.usecase
 
+import kotlinx.coroutines.test.runTest
+
 import com.google.common.truth.Truth.assertThat
 import domain.model.exception.ValidationExeption
 import domain.model.request.WeekNumberRequest
@@ -21,7 +23,7 @@ class GetAbsentMenteesNamesUseCaseTest : BaseKoinTest() {
     }
 
     @Test
-    fun `returns success with absent mentee names when requested week has absences`() {
+    fun `returns success with absent mentee names when requested week has absences`() = runTest {
         // Given: default data with absences in week 1
 
         // When: getting absent mentee names for week 1
@@ -32,7 +34,7 @@ class GetAbsentMenteesNamesUseCaseTest : BaseKoinTest() {
     }
 
     @Test
-    fun `returns success with empty list when requested week has no absences`() {
+    fun `returns success with empty list when requested week has no absences`() = runTest {
         // Given: all mentees are present in week 1
         TestDataFactory.currentAttendances = listOf(
             TestDataFactory.attendance("m01", 1, AttendanceStatus.PRESENT),
@@ -48,7 +50,7 @@ class GetAbsentMenteesNamesUseCaseTest : BaseKoinTest() {
     }
 
     @Test
-    fun `returns failure with ValueOutOfRangeExeption when week number is not positive`() {
+    fun `returns failure with ValueOutOfRangeExeption when week number is not positive`() = runTest {
         // Given: a non-positive week number
 
         // When: getting absent mentee names for week -2

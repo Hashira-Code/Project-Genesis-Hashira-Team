@@ -11,7 +11,7 @@ class GetAbsentMenteesNamesUseCase(
     private val menteeRepo: MenteeRepo,
     private val weekNumberValidator: Validator<Int, Int>
 ) {
-    operator fun invoke(request: WeekNumberRequest): Result<List<String>> {
+    suspend operator fun invoke(request: WeekNumberRequest): Result<List<String>> {
         val weekNumber = weekNumberValidator.validate(request.weekNumber).getOrElse {
             return Result.failure(it)
         }
@@ -23,7 +23,7 @@ class GetAbsentMenteesNamesUseCase(
         return getMenteeNamesByIds(absentIds)
     }
 
-    private fun getAbsentMenteeIds(weekNumber: Int): Result<Set<Any>> {
+    private suspend fun getAbsentMenteeIds(weekNumber: Int): Result<Set<Any>> {
         return attendanceRepo.getByWeekNumber(weekNumber).map { attendanceList ->
             attendanceList.asSequence()
                 .filter { it.status == AttendanceStatus.ABSENT }
@@ -32,7 +32,7 @@ class GetAbsentMenteesNamesUseCase(
         }
     }
 
-    private fun getMenteeNamesByIds(absentIds: Set<Any>): Result<List<String>> {
+    private suspend fun getMenteeNamesByIds(absentIds: Set<Any>): Result<List<String>> {
         return menteeRepo.getAll().map { mentees ->
             mentees.asSequence()
                 .filter { it.id in absentIds }
