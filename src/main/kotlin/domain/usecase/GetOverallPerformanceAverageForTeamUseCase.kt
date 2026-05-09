@@ -11,7 +11,7 @@ class GetOverallPerformanceAverageForTeamUseCase(
     private val performanceRepo: PerformanceRepo,
 ) {
 
-    operator fun invoke(request: TeamIdRequest): Result<Double> {
+    suspend operator fun invoke(request: TeamIdRequest): Result<Double> {
         val menteeIds = getMenteeIdsByTeam(request.id).getOrElse {
             return Result.failure(it)
         }
@@ -27,7 +27,7 @@ class GetOverallPerformanceAverageForTeamUseCase(
 
     }
 
-    private fun getMenteeIdsByTeam(teamId: String): Result<Set<String>> {
+    private suspend fun getMenteeIdsByTeam(teamId: String): Result<Set<String>> {
         return menteeRepo.getByTeamId(teamId).map { mentees ->
             mentees.map { it.id }.toSet()
         }
