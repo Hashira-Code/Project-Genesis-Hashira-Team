@@ -1,5 +1,7 @@
 package domain.usecase
 
+import kotlinx.coroutines.test.runTest
+
 import com.google.common.truth.Truth
 import data.BaseKoinTest
 import org.junit.jupiter.api.DisplayName
@@ -19,7 +21,7 @@ class GetTopPerformingMenteesBySubmissionTypeUseCaseTest : BaseKoinTest() {
     }
 
     @Test
-    fun `returns top performing mentee and ignores negative scores`() {
+    fun `returns top performing mentee and ignores negative scores`() = runTest {
 
         // Given: mentees with various scores, including negative values that should be ignored
         TestDataFactory.currentPerformances = listOf(
@@ -35,7 +37,7 @@ class GetTopPerformingMenteesBySubmissionTypeUseCaseTest : BaseKoinTest() {
     }
 
     @Test
-    fun `returns the first mentee when scores are tied`() {
+    fun `returns the first mentee when scores are tied`() = runTest {
 
         // Given: multiple mentees having the same highest score for a submission type
         TestDataFactory.currentPerformances = listOf(
@@ -51,7 +53,7 @@ class GetTopPerformingMenteesBySubmissionTypeUseCaseTest : BaseKoinTest() {
     }
 
     @Test
-    fun `returns null when no submissions match the required type`() {
+    fun `returns null when no submissions match the required type`() = runTest {
         // Given: a repository where no submissions match the requested submission type
         TestDataFactory.currentPerformances = listOf(
             TestDataFactory.submission("s01", "m01", SubmissionType.TASK, 95.0)
