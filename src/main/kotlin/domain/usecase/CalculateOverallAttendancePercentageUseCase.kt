@@ -7,7 +7,7 @@ import domain.model.entity.AttendanceStatus
 
 class CalculateOverallAttendancePercentageUseCase(private val attendanceRepo: AttendanceRepo){
 
-    operator fun invoke(menteeId: MenteeIdRequest):Result<Double>{
+    suspend operator fun invoke(menteeId: MenteeIdRequest):Result<Double>{
         val attendances: List<Attendance> = attendanceRepo.getByMenteeId(menteeId.id).getOrElse {
             return Result.failure(it)
         }
