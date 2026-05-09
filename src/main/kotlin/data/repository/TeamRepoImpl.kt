@@ -24,9 +24,9 @@ class TeamRepoImpl(
         cache.getOrThrow().associateBy { it.id }
     }
 
-    override suspend fun getAll(): Result<List<Team>> = withContext(Dispatchers.IO) { cache }
+    suspend override  fun getAll(): Result<List<Team>> = withContext(Dispatchers.IO) { cache }
 
-    override suspend fun getById(id: String): Result<Team?> = withContext(Dispatchers.IO) { cache.map { byId[id] } }
+    suspend override  fun getById(id: String): Result<Team?> = withContext(Dispatchers.IO) { cache.map { byId[id] } }
 }
 
 

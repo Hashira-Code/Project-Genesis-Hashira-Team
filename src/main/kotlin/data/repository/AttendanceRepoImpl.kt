@@ -27,13 +27,12 @@ class AttendanceRepoImpl(
         cache.getOrThrow().groupBy { it.weekNumber }
     }
 
-    override suspend fun getAll(): Result<List<Attendance>> = withContext(Dispatchers.IO) { cache }
+    suspend override  fun getAll(): Result<List<Attendance>> = withContext(Dispatchers.IO) { cache }
 
-    override suspend fun getByMenteeId(menteeId: String): Result<List<Attendance>> = withContext(Dispatchers.IO) {
+    suspend override  fun getByMenteeId(menteeId: String): Result<List<Attendance>> = withContext(Dispatchers.IO) {
         cache.map { byMenteeId[menteeId].orEmpty() }
     }
-
-    override suspend fun getByWeekNumber(weekNumber: Int): Result<List<Attendance>> = withContext(Dispatchers.IO) {
+    suspend override  fun getByWeekNumber(weekNumber: Int): Result<List<Attendance>> = withContext(Dispatchers.IO) {
         cache.map { byWeekNumber[weekNumber].orEmpty() }
     }
 }
