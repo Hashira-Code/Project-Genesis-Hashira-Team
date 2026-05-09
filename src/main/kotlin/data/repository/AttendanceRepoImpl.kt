@@ -22,7 +22,6 @@ class AttendanceRepoImpl(
     private val byMenteeId: Map<String, List<Attendance>> by lazy {
         cache.getOrThrow().groupBy { it.menteeId }
     }
-ss
     private val byWeekNumber: Map<Int, List<Attendance>> by lazy {
         cache.getOrThrow().groupBy { it.weekNumber }
     }
@@ -36,5 +35,4 @@ ss
         cache.map { byWeekNumber[weekNumber].orEmpty() }
     }
 }
-
 

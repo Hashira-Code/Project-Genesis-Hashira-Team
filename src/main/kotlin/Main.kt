@@ -8,11 +8,12 @@ import domain.model.request.TeamIdRequest
 import domain.model.request.WeekNumberRequest
 import domain.usecase.FindLeadMentorForMenteeUseCase
 import domain.usecase.FindTopScoringMenteeOverallUseCase
+import kotlinx.coroutines.runBlocking
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 // Main.kt
-fun main() {
+fun main() = runBlocking {
 
     startKoin { modules(appModules) }
     App().run()
@@ -28,7 +29,7 @@ class App : KoinComponent {
     private val findProjects: FindProjectsAssignedToTeamUseCase by inject()
     private val findLeadMentor: FindLeadMentorForMenteeUseCase by inject()
 
-    fun run() {
+    suspend fun run() {
         printSection("Calculating Attendance Times") {
             calcAttendance().fold(
                 onSuccess = { map ->
@@ -78,7 +79,7 @@ class App : KoinComponent {
         }
     }
 
-    private inline fun printSection(title: String, block: () -> Unit) {
+    private suspend inline fun printSection(title: String, block: suspend () -> Unit) {
         println("\n--- $title ---")
         block()
     }
