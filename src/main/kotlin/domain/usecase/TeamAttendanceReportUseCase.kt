@@ -10,7 +10,7 @@ class TeamAttendanceReportUseCase(
     private val menteeRepo: MenteeRepo,
     private val calculateAttendancePercentage: CalculateAttendancePercentageUseCase
 ) {
-    operator fun invoke(): Result<Map<String, List<Pair<String, Double>>>> {
+    suspend operator fun invoke(): Result<Map<String, List<Pair<String, Double>>>> {
         val teams = teamRepo.getAll().getOrElse { return Result.failure(it) }
         val mentees = menteeRepo.getAll().getOrElse { return Result.failure(it) }
         val attendancePercentages = calculateAttendancePercentage().getOrElse {
