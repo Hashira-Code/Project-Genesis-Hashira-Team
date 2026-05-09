@@ -1,5 +1,7 @@
 package domain.usecase
 
+import kotlinx.coroutines.test.runTest
+
 import com.google.common.truth.Truth.assertThat
 import data.BaseKoinTest
 import data.fixture.TestDataFactory
@@ -20,7 +22,7 @@ class FindTeamWorkingOnProjectUseCaseTest : BaseKoinTest() {
     }
 
     @Test
-    fun `returns success with team when project and assigned team exist`() {
+    fun `returns success with team when project and assigned team exist`() = runTest {
         // Given: default data where project "p01" is assigned to team "alpha"
         val expectedTeam = TestDataFactory.currentTeams.first { it.id == "alpha" }
 
@@ -32,7 +34,7 @@ class FindTeamWorkingOnProjectUseCaseTest : BaseKoinTest() {
     }
 
     @Test
-    fun `returns failure with DataNotFoundExeption when project does not exist`() {
+    fun `returns failure with DataNotFoundExeption when project does not exist`() = runTest {
         // Given: no projects exist
         TestDataFactory.currentProjects = emptyList()
 
@@ -44,7 +46,7 @@ class FindTeamWorkingOnProjectUseCaseTest : BaseKoinTest() {
     }
 
     @Test
-    fun `returns failure with DataNotFoundExeption when assigned team does not exist`() {
+    fun `returns failure with DataNotFoundExeption when assigned team does not exist`() = runTest {
         // Given: project "p01" is assigned to a team that does not exist
         TestDataFactory.currentProjects = listOf(
             TestDataFactory.project(id = "p01", name = "Hashira", teamId = "hashira"))
