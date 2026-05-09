@@ -10,6 +10,8 @@ import domain.repository.AttendanceRepo
 import domain.repository.MenteeRepo
 import domain.repository.PerformanceRepo
 import domain.repository.TeamRepo
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 
 class EvaluateTeamHealthUseCase(
     private val teamRepo: TeamRepo,
@@ -17,15 +19,28 @@ class EvaluateTeamHealthUseCase(
     private val performanceRepo: PerformanceRepo,
     private val attendanceRepo: AttendanceRepo
 ) {
-    operator fun invoke(): Result<Map<String, TeamHealthStatus>> {
-        val teams = teamRepo.getAll().getOrElse { return Result.failure(it) }
-        val mentees = menteeRepo.getAll().getOrElse { return Result.failure(it) }
-        val performances = performanceRepo.getAll().getOrElse { return Result.failure(it) }
-        val attendances = attendanceRepo.getAll().getOrElse { return Result.failure(it) }
+    suspend operator fun invoke(): Result<Map<String, TeamHealthStatus>> = coroutineScope {
+        val teamsDeferred = async { teamRepo.getAll() }
+        val menteesDeferred = async { menteeRepo.getAll() }
+        val performancesDeferred = async { performanceRepo.getAll() }
+        val attendancesDeferred = async { attendanceRepo.getAll() }
+
+        val teams = teamsDeferred.await().getOrElse {
+            return@coroutineScope Result.failure(it)
+        }
+        val mentees = menteesDeferred.await().getOrElse {
+            return@coroutineScope Result.failure(it)
+        }
+        val performances = performancesDeferred.await().getOrElse {
+            return@coroutineScope Result.failure(it)
+        }
+        val attendances = attendancesDeferred.await().getOrElse {
+            return@coroutineScope Result.failure(it)
+        }
 
         val teamHealthReport = buildHealthReport(teams, mentees, performances, attendances)
 
-        return Result.success(teamHealthReport)
+        Result.success(teamHealthReport)
     }
 
     private fun buildHealthReport(

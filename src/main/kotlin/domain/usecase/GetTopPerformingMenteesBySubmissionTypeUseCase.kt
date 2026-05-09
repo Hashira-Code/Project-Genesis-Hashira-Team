@@ -10,13 +10,15 @@ class GetTopPerformingMenteesBySubmissionTypeUseCase(
     private val performanceRepo: PerformanceRepo,
     private val menteeRepo: MenteeRepo
 ) {
-    operator fun invoke(type: SubmissionType): Result<Mentee?> {
-        return performanceRepo.getAll().map { submissions ->
-            val topMenteeId = findTopScoringMenteeId(submissions, type)
-            topMenteeId?.let { id ->
-                menteeRepo.getById(id).getOrNull()
-            }
+    suspend operator fun invoke(type: SubmissionType): Result<Mentee?> {
+        val submissions = performanceRepo.getAll().getOrElse {
+            return Result.failure(it)
         }
+
+        val topMenteeId = findTopScoringMenteeId(submissions, type)
+            ?: return Result.success(null)
+
+        return menteeRepo.getById(topMenteeId)
     }
 
     private fun findTopScoringMenteeId(submissions: List<PerformanceSubmission>, type: SubmissionType): String? {

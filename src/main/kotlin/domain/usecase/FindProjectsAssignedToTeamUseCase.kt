@@ -8,7 +8,7 @@ import domain.model.exception.ValidationExeption.EntityNotFoundExeption
 class FindProjectsAssignedToTeamUseCase(
     private val projectRepo: ProjectRepo,
 ) {
-    operator fun invoke(request: TeamIdRequest): Result<List<Project>> {
+    suspend operator fun invoke(request: TeamIdRequest): Result<List<Project>> {
         val projects = projectRepo.getByTeamId(request.id).getOrElse {
             return Result.failure(it)
         }

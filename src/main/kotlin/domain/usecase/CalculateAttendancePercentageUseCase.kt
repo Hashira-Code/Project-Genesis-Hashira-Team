@@ -10,7 +10,7 @@ class CalculateAttendancePercentageUseCase(
     private val attendanceRepo: AttendanceRepo,
     private val attendanceTimes: CalculatingMenteeAttendanceTimesUseCase
 ) {
-    operator fun invoke(): Result<Map<Mentee, Double>> {
+    suspend operator fun invoke(): Result<Map<Mentee, Double>> {
         val attendances = attendanceRepo.getAll().getOrElse {
             return Result.failure(it)
         }

@@ -5,17 +5,26 @@ import domain.repository.AttendanceRepo
 import domain.model.entity.AttendanceStatus
 import domain.model.entity.Mentee
 import domain.repository.MenteeRepo
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 
 class CalculatingMenteeAttendanceTimesUseCase(
     private val menteeRepo: MenteeRepo,
     private val attendanceRepo: AttendanceRepo
 ) {
-    operator fun invoke(): Result<Map<String, Int>> {
-        val mentees = menteeRepo.getAll().getOrElse { return Result.failure(it) }
-        val attendances = attendanceRepo.getAll().getOrElse { return Result.failure(it) }
+    suspend operator fun invoke(): Result<Map<String, Int>> = coroutineScope {
+        val menteesDeferred = async { menteeRepo.getAll() }
+        val attendancesDeferred = async { attendanceRepo.getAll() }
+
+        val mentees = menteesDeferred.await().getOrElse {
+            return@coroutineScope Result.failure(it)
+        }
+        val attendances = attendancesDeferred.await().getOrElse {
+            return@coroutineScope Result.failure(it)
+        }
         val result = mapMenteesToPresentCount(mentees, attendances)
 
-        return Result.success(result)
+        Result.success(result)
     }
 
     private fun mapMenteesToPresentCount(

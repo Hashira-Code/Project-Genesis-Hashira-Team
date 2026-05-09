@@ -1,5 +1,7 @@
 package domain.usecase
 
+import kotlinx.coroutines.test.runTest
+
 import com.google.common.truth.Truth
 import data.BaseKoinTest
 import data.fixture.TestDataFactory
@@ -20,7 +22,7 @@ class FindMenteeWithMostAbsencesUseCaseTest : BaseKoinTest() {
     }
 
     @Test
-    fun `returns success when mentee with most absences exists`() {
+    fun `returns success when mentee with most absences exists`() = runTest {
         // Given: m01 has one absence, m02 and m03 are present
         val expectedMenteeId = "m01"
 
@@ -32,7 +34,7 @@ class FindMenteeWithMostAbsencesUseCaseTest : BaseKoinTest() {
     }
 
     @Test
-    fun `returns success with null when no absences exist`() {
+    fun `returns success with null when no absences exist`() = runTest {
         // Given: all mentees are present with no absences recorded
         TestDataFactory.currentAttendances = listOf(
             TestDataFactory.attendance("m01", 1, AttendanceStatus.PRESENT),
@@ -47,7 +49,7 @@ class FindMenteeWithMostAbsencesUseCaseTest : BaseKoinTest() {
     }
 
     @Test
-    fun `returns success with null when attendance list is empty`() {
+    fun `returns success with null when attendance list is empty`() = runTest {
         // Given: no attendance records exist in the system
         TestDataFactory.currentAttendances = emptyList()
 
@@ -59,7 +61,7 @@ class FindMenteeWithMostAbsencesUseCaseTest : BaseKoinTest() {
     }
 
     @Test
-    fun `returns success with mentee who has most absences when others have late status`() {
+    fun `returns success with mentee who has most absences when others have late status`() = runTest {
         // Given: m01 has one absence, m02 has late status which does not count as absence
         TestDataFactory.currentAttendances = listOf(
             TestDataFactory.attendance("m01", 1, AttendanceStatus.ABSENT),
@@ -76,7 +78,7 @@ class FindMenteeWithMostAbsencesUseCaseTest : BaseKoinTest() {
     }
 
     @Test
-    fun `returns success with mentee who has most absences across multiple weeks`() {
+    fun `returns success with mentee who has most absences across multiple weeks`() = runTest {
         // Given: m01 is absent in three weeks, m02 is absent in one week only
         TestDataFactory.currentAttendances = listOf(
             TestDataFactory.attendance("m01", 1, AttendanceStatus.ABSENT),

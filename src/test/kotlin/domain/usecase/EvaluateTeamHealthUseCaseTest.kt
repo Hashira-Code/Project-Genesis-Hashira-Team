@@ -1,5 +1,7 @@
 package domain.usecase
 
+import kotlinx.coroutines.test.runTest
+
 import com.google.common.truth.Truth
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -21,7 +23,7 @@ class EvaluateTeamHealthUseCaseTest : BaseKoinTest() {
     }
 
     @Test
-    fun `should return EXCELLENT when both performance and attendance are above thresholds`() {
+    fun `should return EXCELLENT when both performance and attendance are above thresholds`() = runTest {
 
         // Given: Team with default excellent data provided by TestDataFactory
         TestDataFactory.currentPerformances = listOf(
@@ -39,7 +41,7 @@ class EvaluateTeamHealthUseCaseTest : BaseKoinTest() {
     }
 
     @Test
-    fun `should return GOOD when performance is average and attendance is acceptable`() {
+    fun `should return GOOD when performance is average and attendance is acceptable`() = runTest {
 
         // Given: performance and attendance meet the GOOD criteria.
         TestDataFactory.currentPerformances = listOf(
@@ -57,7 +59,7 @@ class EvaluateTeamHealthUseCaseTest : BaseKoinTest() {
     }
 
     @Test
-    fun `should return NEEDS_ATTENTION when performance falls below threshold`() {
+    fun `should return NEEDS_ATTENTION when performance falls below threshold`() = runTest {
 
         // Given: adjust attendance to reflect poor participation
         TestDataFactory.currentAttendances = listOf(

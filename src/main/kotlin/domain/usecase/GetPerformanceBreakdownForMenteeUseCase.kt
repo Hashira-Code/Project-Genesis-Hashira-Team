@@ -9,7 +9,7 @@ import domain.model.exception.ValidationExeption.DataNotFoundExeption
 class GetPerformanceBreakdownForMenteeUseCase(
     private val performanceRepo: PerformanceRepo,
 ) {
-    operator fun invoke(request: MenteeIdRequest): Result<Map<SubmissionType, Double>> {
+    suspend operator fun invoke(request: MenteeIdRequest): Result<Map<SubmissionType, Double>> {
         val submissions = performanceRepo.getByMenteeId(request.id).getOrElse {
             return Result.failure(it)
         }

@@ -11,7 +11,7 @@ class FindLeadMentorForMenteeUseCase(
     private val menteeRepo: MenteeRepo,
     private val teamRepo: TeamRepo,
 ) {
-    operator fun invoke(request: MenteeIdRequest): Result<String> {
+    suspend operator fun invoke(request: MenteeIdRequest): Result<String> {
         val mentee = menteeRepo.getById(request.id).getOrElse {
             return Result.failure(it)
         } ?: return Result.failure(EntityNotFoundExeption(MENTEE_NOT_FOUND_MSG))
@@ -22,7 +22,7 @@ class FindLeadMentorForMenteeUseCase(
         return Result.success(team.mentorLead)
     }
 
-    private fun fetchTeamForMentee(mentee: Mentee): Result<Team> {
+    private suspend fun fetchTeamForMentee(mentee: Mentee): Result<Team> {
         val team = teamRepo.getById(mentee.teamId).getOrElse {
             return Result.failure(it)
         } ?: return Result.failure(EntityNotFoundExeption(TEAM_NOT_FOUND_MSG))

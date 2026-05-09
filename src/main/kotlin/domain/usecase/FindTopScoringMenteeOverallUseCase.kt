@@ -4,19 +4,28 @@ import domain.model.entity.Mentee
 import domain.model.entity.PerformanceSubmission
 import domain.repository.MenteeRepo
 import domain.repository.PerformanceRepo
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 
 class FindTopScoringMenteeOverallUseCase(
     private val performanceRepo: PerformanceRepo,
     private val menteeRepo: MenteeRepo
 ) {
-    operator fun invoke(): Result<Mentee?> {
-        val mentees = menteeRepo.getAll().getOrElse { return Result.failure(it) }
-        val performances = performanceRepo.getAll().getOrElse { return Result.failure(it) }
+    suspend operator fun invoke(): Result<Mentee?> = coroutineScope {
+        val menteesDeferred = async { menteeRepo.getAll() }
+        val performancesDeferred = async { performanceRepo.getAll() }
+
+        val mentees = menteesDeferred.await().getOrElse {
+            return@coroutineScope Result.failure(it)
+        }
+        val performances = performancesDeferred.await().getOrElse {
+            return@coroutineScope Result.failure(it)
+        }
 
         val topMenteeId = findOverallTopMenteeId(performances)
         val topMentee = mentees.find { mentee -> mentee.id == topMenteeId }
 
-        return Result.success(topMentee)
+        Result.success(topMentee)
     }
 
     private fun findOverallTopMenteeId(

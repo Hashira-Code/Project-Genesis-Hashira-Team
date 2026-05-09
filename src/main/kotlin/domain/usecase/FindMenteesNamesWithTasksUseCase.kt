@@ -10,7 +10,7 @@ class FindMenteesNamesWithTasksUseCase(
     private val menteeRepo: MenteeRepo,
     private val performanceRepo: PerformanceRepo
 ) {
-    operator fun invoke(): Result<List<String>> {
+    suspend operator fun invoke(): Result<List<String>> {
         val taskSubmissions = performanceRepo.getByType(SubmissionType.TASK).getOrElse {
             return Result.failure(it)
         }

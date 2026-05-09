@@ -11,7 +11,7 @@ class FindTeamWorkingOnProjectUseCase(
     private val projectRepo: ProjectRepo,
     private val teamRepo: TeamRepo
 ) {
-    operator fun invoke(request: ProjectIdRequest): Result<Team> {
+    suspend operator fun invoke(request: ProjectIdRequest): Result<Team> {
         val project = findProjectById(request.id).getOrElse {
             return Result.failure(it)
         }
@@ -23,7 +23,7 @@ class FindTeamWorkingOnProjectUseCase(
         return Result.success(team)
     }
 
-    private fun findProjectById(projectId: String): Result<Project> {
+    private suspend fun findProjectById(projectId: String): Result<Project> {
         val projects = projectRepo.getAll().getOrElse {
             return Result.failure(it)
         }

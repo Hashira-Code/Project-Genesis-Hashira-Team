@@ -1,5 +1,7 @@
 package domain.usecase
 
+import kotlinx.coroutines.test.runTest
+
 import com.google.common.truth.Truth.assertThat
 import domain.model.request.TeamIdRequest
 import org.junit.jupiter.api.DisplayName
@@ -20,7 +22,7 @@ class GetOverallPerformanceAverageForTeamUseCaseTest : BaseKoinTest() {
     }
 
     @Test
-    fun `returns success with overall performance average when requested team has scored mentees`() {
+    fun `returns success with overall performance average when requested team has scored mentees`() = runTest {
         // Given: default data where team "alpha" has mentees with submissions
 
         // When: getting the overall performance average for team "alpha"
@@ -31,7 +33,7 @@ class GetOverallPerformanceAverageForTeamUseCaseTest : BaseKoinTest() {
     }
 
     @Test
-    fun `returns failure with DataNotFoundExeption when requested team has no mentees`() {
+    fun `returns failure with DataNotFoundExeption when requested team has no mentees`() = runTest {
         // Given: team "gamma" exists but has no mentees
         TestDataFactory.currentTeams = listOf(TestDataFactory.team(id = "gamma", name = "Gamma", mentorLead = "X"))
 
@@ -43,7 +45,7 @@ class GetOverallPerformanceAverageForTeamUseCaseTest : BaseKoinTest() {
     }
 
     @Test
-    fun `returns success with zero when requested team mentees have no submissions`() {
+    fun `returns success with zero when requested team mentees have no submissions`() = runTest {
         // Given: team "alpha" has mentees but no performance submissions
         TestDataFactory.currentPerformances = emptyList()
 

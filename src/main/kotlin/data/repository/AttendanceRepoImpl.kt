@@ -22,18 +22,17 @@ class AttendanceRepoImpl(
     private val byMenteeId: Map<String, List<Attendance>> by lazy {
         cache.getOrThrow().groupBy { it.menteeId }
     }
-
+ss
     private val byWeekNumber: Map<Int, List<Attendance>> by lazy {
         cache.getOrThrow().groupBy { it.weekNumber }
     }
 
-    suspend override fun getAll(): Result<List<Attendance>> = withContext(Dispatchers.IO) { cache }
+    suspend override  fun getAll(): Result<List<Attendance>> = withContext(Dispatchers.IO) { cache }
 
-    suspend override fun getByMenteeId(menteeId: String): Result<List<Attendance>> = withContext(Dispatchers.IO) {
+    suspend override  fun getByMenteeId(menteeId: String): Result<List<Attendance>> = withContext(Dispatchers.IO) {
         cache.map { byMenteeId[menteeId].orEmpty() }
     }
-
-    suspend override fun getByWeekNumber(weekNumber: Int): Result<List<Attendance>> = withContext(Dispatchers.IO) {
+    suspend override  fun getByWeekNumber(weekNumber: Int): Result<List<Attendance>> = withContext(Dispatchers.IO) {
         cache.map { byWeekNumber[weekNumber].orEmpty() }
     }
 }

@@ -1,5 +1,7 @@
 package domain.usecase
 
+import kotlinx.coroutines.test.runTest
+
 import com.google.common.truth.Truth.assertThat
 import data.BaseKoinTest
 import data.fixture.TestDataFactory
@@ -20,7 +22,7 @@ class FindLeadMentorForMenteeUseCaseTest : BaseKoinTest() {
     }
 
     @Test
-    fun `returns success with lead mentor name when mentee and team exist`() {
+    fun `returns success with lead mentor name when mentee and team exist`() = runTest {
         // Given: default data where mentee "m01" belongs to team "alpha"
 
         // When: finding the lead mentor for mentee "m01"
@@ -31,7 +33,7 @@ class FindLeadMentorForMenteeUseCaseTest : BaseKoinTest() {
     }
 
     @Test
-    fun `returns success with lead mentor name for mentee in another team`() {
+    fun `returns success with lead mentor name for mentee in another team`() = runTest {
         // Given: default data where mentee "m03" belongs to team "beta"
 
         // When: finding the lead mentor for mentee "m03"
@@ -42,7 +44,7 @@ class FindLeadMentorForMenteeUseCaseTest : BaseKoinTest() {
     }
 
     @Test
-    fun `returns failure with EntityNotFoundExeption when mentee does not exist`() {
+    fun `returns failure with EntityNotFoundExeption when mentee does not exist`() = runTest {
         // Given: no mentee exists with id "m99"
 
         // When: finding the lead mentor for a non-existent mentee
@@ -53,7 +55,7 @@ class FindLeadMentorForMenteeUseCaseTest : BaseKoinTest() {
     }
 
     @Test
-    fun `returns failure with EntityNotFoundExeption when mentee team does not exist`() {
+    fun `returns failure with EntityNotFoundExeption when mentee team does not exist`() = runTest {
         // Given: mentee "m01" belongs to a team that does not exist
         TestDataFactory.currentMentees = listOf(
             TestDataFactory.mentee(id = "m01", name = "Aisha", teamId = "missing-team")

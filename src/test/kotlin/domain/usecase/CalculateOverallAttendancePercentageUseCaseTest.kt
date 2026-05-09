@@ -1,5 +1,7 @@
 package domain.usecase
 
+import kotlinx.coroutines.test.runTest
+
 import org.junit.jupiter.api.Test
 import data.BaseKoinTest
 import di.testModule
@@ -18,7 +20,7 @@ class CalculateOverallAttendancePercentageUseCaseTest:BaseKoinTest()   {
 
 
     @Test
-    fun `should return correct percentage for mentee m01`(){
+    fun `should return correct percentage for mentee m01`() = runTest {
         //Given
         TestDataFactory.currentAttendances=listOf(
             TestDataFactory.attendance("m01", 1, AttendanceStatus.ABSENT),
@@ -34,7 +36,7 @@ class CalculateOverallAttendancePercentageUseCaseTest:BaseKoinTest()   {
     }
 
     @Test
-    fun `should return 0 when mentee does not exist`() {
+    fun `should return 0 when mentee does not exist`() = runTest {
         //Given
         TestDataFactory.currentAttendances=listOf(
             TestDataFactory.attendance("m01", 1, AttendanceStatus.ABSENT),
