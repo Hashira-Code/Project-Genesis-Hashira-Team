@@ -1,5 +1,7 @@
 package domain.usecase
 
+import kotlinx.coroutines.test.runTest
+
 import com.google.common.truth.Truth
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -19,7 +21,7 @@ class GetAverageScorePerMenteeUseCaseTest : BaseKoinTest() {
     }
 
     @Test
-    fun `should calculate correct average score for each mentee`() {
+    fun `should calculate correct average score for each mentee`() = runTest {
 
         // Given: Default submissions provided by TestDataFactory
 
@@ -31,7 +33,7 @@ class GetAverageScorePerMenteeUseCaseTest : BaseKoinTest() {
     }
 
     @Test
-    fun `should exclude mentees who have no submissions from the result list`() {
+    fun `should exclude mentees who have no submissions from the result list`() = runTest {
 
         // Given: Reset and ensure only one mentee has submissions
         TestDataFactory.currentPerformances = listOf(
@@ -46,7 +48,7 @@ class GetAverageScorePerMenteeUseCaseTest : BaseKoinTest() {
     }
 
     @Test
-    fun `should return empty list when there are no submissions at all`() {
+    fun `should return empty list when there are no submissions at all`() = runTest {
 
         // Given: Reset and clear all submissions
         TestDataFactory.currentPerformances = emptyList()
