@@ -4,20 +4,28 @@ import domain.repository.MenteeRepo
 import domain.repository.TeamRepo
 import domain.model.entity.Mentee
 import domain.model.entity.Team
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 
 class GetMenteesPerTeamUseCase(
     private val menteeRepo: MenteeRepo,
     private val teamRepo: TeamRepo
 ) {
 
-    operator fun invoke(): Result<Map<Team, List<Mentee>>> {
+    suspend operator fun invoke(): Result<Map<Team, List<Mentee>>> = coroutineScope {
+        val teamsDeferred = async { teamRepo.getAll() }
+        val menteesDeferred = async { menteeRepo.getAll() }
 
-        val teams = teamRepo.getAll().getOrElse({ return Result.failure(it) })
-        val mentees = menteeRepo.getAll().getOrElse { return Result.failure(it) }
+        val teams = teamsDeferred.await().getOrElse {
+            return@coroutineScope Result.failure(it)
+        }
+        val mentees = menteesDeferred.await().getOrElse {
+            return@coroutineScope Result.failure(it)
+        }
 
-        if (teams.isEmpty()) return Result.success(emptyMap())
+        if (teams.isEmpty()) return@coroutineScope Result.success(emptyMap())
         val result = mapMenteesToTeams(teams, mentees)
-        return Result.success(result)
+        Result.success(result)
     }
 
     private fun mapMenteesToTeams(
