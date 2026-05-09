@@ -6,7 +6,7 @@ class MenteeWithPoorAttendanceUseCase(
     private val calculateAttendancePercentageUseCase: CalculateAttendancePercentageUseCase
 ) {
 
-    operator fun invoke(): Result<List<String>> {
+    suspend operator fun invoke(): Result<List<String>> {
         val attendancePercentages = calculateAttendancePercentageUseCase().getOrElse {
             return Result.failure(it)
         }
