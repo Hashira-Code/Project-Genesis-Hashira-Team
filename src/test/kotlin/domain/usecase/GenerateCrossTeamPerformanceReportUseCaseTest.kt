@@ -1,5 +1,7 @@
 package domain.usecase
 
+import kotlinx.coroutines.test.runTest
+
 import com.google.common.truth.Truth.assertThat
 import data.BaseKoinTest
 import data.fixture.TestDataFactory
@@ -18,7 +20,7 @@ class GenerateCrossTeamPerformanceReportUseCaseTest : BaseKoinTest() {
     }
 
     @Test
-    fun `returns success with team performance averages ordered from highest to lowest`() {
+    fun `returns success with team performance averages ordered from highest to lowest`() = runTest {
         // Given: default data where Beta Team average is higher than Alpha Team
 
         // When: generating a cross-team performance report
@@ -32,7 +34,7 @@ class GenerateCrossTeamPerformanceReportUseCaseTest : BaseKoinTest() {
     }
 
     @Test
-    fun `returns success with zero average for team mentees without submissions`() {
+    fun `returns success with zero average for team mentees without submissions`() = runTest {
         // Given: Alpha Team has mentees but no performance submissions
         TestDataFactory.currentPerformances = listOf(
             TestDataFactory.submission("s01", "m03", SubmissionType.TASK, 70.0)
@@ -46,7 +48,7 @@ class GenerateCrossTeamPerformanceReportUseCaseTest : BaseKoinTest() {
     }
 
     @Test
-    fun `returns teams with tied averages ordered by team name`() {
+    fun `returns teams with tied averages ordered by team name`() = runTest {
         // Given: teams have the same average but are stored in reverse alphabetical order
         TestDataFactory.currentTeams = listOf(
             TestDataFactory.team(id = "beta", name = "Beta Team", mentorLead = "Omar"),

@@ -7,6 +7,8 @@ import domain.repository.MenteeRepo
 import domain.repository.PerformanceRepo
 import domain.repository.TeamRepo
 import domain.validation.Validator
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 
 class GenerateCrossTeamPerformanceReportUseCase(
     private val teamRepo: TeamRepo,
@@ -14,21 +16,25 @@ class GenerateCrossTeamPerformanceReportUseCase(
     private val performanceRepo: PerformanceRepo,
     private val scoreValidator: Validator<Double, Double>
 ) {
-    operator fun invoke(): Result<List<Pair<String, Double>>> {
-        val teams = teamRepo.getAll().getOrElse {
-            return Result.failure(it)
+    suspend operator fun invoke(): Result<List<Pair<String, Double>>> = coroutineScope {
+        val teamsDeferred = async { teamRepo.getAll() }
+        val menteesDeferred = async { menteeRepo.getAll() }
+        val submissionsDeferred = async { performanceRepo.getAll() }
+
+        val teams = teamsDeferred.await().getOrElse {
+            return@coroutineScope Result.failure(it)
         }
-        val mentees = menteeRepo.getAll().getOrElse {
-            return Result.failure(it)
+        val mentees = menteesDeferred.await().getOrElse {
+            return@coroutineScope Result.failure(it)
         }
-        val submissions = performanceRepo.getAll().getOrElse {
-            return Result.failure(it)
+        val submissions = submissionsDeferred.await().getOrElse {
+            return@coroutineScope Result.failure(it)
         }
 
         val menteeIdsByTeam = groupMenteeIdsByTeam(mentees)
         val submissionsByMenteeId = groupSubmissionsByMentee(submissions)
 
-        return Result.success(buildReport(teams, menteeIdsByTeam, submissionsByMenteeId))
+        Result.success(buildReport(teams, menteeIdsByTeam, submissionsByMenteeId))
     }
 
     private fun buildReport(
