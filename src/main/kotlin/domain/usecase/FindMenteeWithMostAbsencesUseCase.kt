@@ -11,7 +11,7 @@ class FindMenteeWithMostAbsencesUseCase(
     private val attendanceRepo: AttendanceRepo,
     private val menteeRepo: MenteeRepo
 ) {
-    operator fun invoke(): Result<Mentee> {
+    suspend operator fun invoke(): Result<Mentee> {
         val attendances = attendanceRepo.getAll().getOrElse {
             return Result.failure(it)
         }
