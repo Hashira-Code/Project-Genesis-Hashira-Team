@@ -10,12 +10,15 @@ import data.BaseKoinTest
 import data.fixture.TestDataFactory
 import di.testModule
 import domain.model.exception.ValidationExeption
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlin.test.assertIs
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @DisplayName("GetOverallPerformanceAverageForTeamUseCase")
 class GetOverallPerformanceAverageForTeamUseCaseTest : BaseKoinTest() {
 
-    private val getOverallPerformanceAverageForTeamUseCase: GetOverallPerformanceAverageForTeamUseCase by lazy { resolve() }
+    private val getOverallPerformanceAverageForTeamUseCase:
+            GetOverallPerformanceAverageForTeamUseCase by lazy { resolve() }
 
     override fun setup() {
         startKoinWith(testModule)
