@@ -8,14 +8,17 @@ import data.fixture.TestDataFactory
 import di.testModule
 import domain.model.exception.ValidationExeption
 import domain.model.request.ProjectIdRequest
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import kotlin.test.assertIs
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @DisplayName("FindTeamWorkingOnProjectUseCase")
 class FindTeamWorkingOnProjectUseCaseTest : BaseKoinTest() {
 
-    private val findTeamWorkingOnProject: FindTeamWorkingOnProjectUseCase by lazy { resolve() }
+    private val findTeamWorkingOnProject:
+            FindTeamWorkingOnProjectUseCase by lazy { resolve() }
 
     override fun setup() {
         startKoinWith(testModule)

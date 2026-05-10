@@ -10,11 +10,14 @@ import kotlin.test.Test
 import kotlin.test.assertTrue
 import domain.model.entity.SubmissionType
 import di.testModule
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @DisplayName("GetTopPerformingMenteesBySubmissionTypeUseCase")
 class GetTopPerformingMenteesBySubmissionTypeUseCaseTest : BaseKoinTest() {
 
-    private val getTopPerformingMenteesBySubmissionType: GetTopPerformingMenteesBySubmissionTypeUseCase by lazy { resolve() }
+    private val getTopPerformingMenteesBySubmissionType:
+            GetTopPerformingMenteesBySubmissionTypeUseCase by lazy { resolve() }
 
     override fun setup() {
         startKoinWith(testModule)

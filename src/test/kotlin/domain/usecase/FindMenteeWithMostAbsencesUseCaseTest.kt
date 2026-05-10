@@ -8,14 +8,17 @@ import data.fixture.TestDataFactory
 import di.testModule
 import domain.model.entity.AttendanceStatus
 import domain.model.exception.ValidationExeption
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.jupiter.api.DisplayName
 import kotlin.test.Test
 import kotlin.test.assertIs
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @DisplayName("FindMenteeWithMostAbsencesUseCase")
 class FindMenteeWithMostAbsencesUseCaseTest : BaseKoinTest() {
 
-    private val findMenteeWithMostAbsences: FindMenteeWithMostAbsencesUseCase by lazy { resolve() }
+    private val findMenteeWithMostAbsences:
+            FindMenteeWithMostAbsencesUseCase by lazy { resolve() }
 
     override fun setup() {
         startKoinWith(testModule)
