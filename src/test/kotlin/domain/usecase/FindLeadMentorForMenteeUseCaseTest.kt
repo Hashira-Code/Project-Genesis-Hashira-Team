@@ -8,14 +8,17 @@ import data.fixture.TestDataFactory
 import di.testModule
 import domain.model.exception.ValidationExeption
 import domain.model.request.MenteeIdRequest
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import kotlin.test.assertIs
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @DisplayName("FindLeadMentorForMenteeUseCase")
 class FindLeadMentorForMenteeUseCaseTest : BaseKoinTest() {
 
-    private val findLeadMentorForMentee: FindLeadMentorForMenteeUseCase by lazy { resolve() }
+    private val findLeadMentorForMentee:
+            FindLeadMentorForMenteeUseCase by lazy { resolve() }
 
     override fun setup() {
         startKoinWith(testModule)
