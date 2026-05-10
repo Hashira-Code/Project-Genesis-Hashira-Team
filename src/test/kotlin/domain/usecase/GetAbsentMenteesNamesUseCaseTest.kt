@@ -11,12 +11,15 @@ import data.BaseKoinTest
 import data.fixture.TestDataFactory
 import di.testModule
 import domain.model.entity.AttendanceStatus
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlin.test.assertIs
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @DisplayName("GetAbsentMenteesNamesUseCase")
 class GetAbsentMenteesNamesUseCaseTest : BaseKoinTest() {
 
-    private val getAbsentMenteesNamesUseCase: GetAbsentMenteesNamesUseCase by lazy { resolve() }
+    private val getAbsentMenteesNamesUseCase:
+            GetAbsentMenteesNamesUseCase by lazy { resolve() }
 
     override fun setup() {
         startKoinWith(testModule)
