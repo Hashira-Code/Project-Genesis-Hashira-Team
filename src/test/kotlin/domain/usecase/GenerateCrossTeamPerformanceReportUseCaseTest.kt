@@ -7,13 +7,16 @@ import data.BaseKoinTest
 import data.fixture.TestDataFactory
 import di.testModule
 import domain.model.entity.SubmissionType
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @DisplayName("GenerateCrossTeamPerformanceReportUseCase")
 class GenerateCrossTeamPerformanceReportUseCaseTest : BaseKoinTest() {
 
-    private val generateCrossTeamPerformanceReport: GenerateCrossTeamPerformanceReportUseCase by lazy { resolve() }
+    private val generateCrossTeamPerformanceReport:
+            GenerateCrossTeamPerformanceReportUseCase by lazy { resolve() }
 
     override fun setup() {
         startKoinWith(testModule)
