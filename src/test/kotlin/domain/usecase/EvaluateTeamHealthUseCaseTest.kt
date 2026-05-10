@@ -11,12 +11,15 @@ import di.testModule
 import domain.model.entity.AttendanceStatus
 import domain.model.entity.SubmissionType
 import domain.model.entity.TeamHealthStatus
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlin.test.assertTrue
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @DisplayName("EvaluateTeamHealthUseCase")
 class EvaluateTeamHealthUseCaseTest : BaseKoinTest() {
 
-    private val evaluateTeamHealth: EvaluateTeamHealthUseCase by lazy { resolve() }
+    private val evaluateTeamHealth:
+            EvaluateTeamHealthUseCase by lazy { resolve() }
 
     override fun setup() {
         startKoinWith(testModule)
