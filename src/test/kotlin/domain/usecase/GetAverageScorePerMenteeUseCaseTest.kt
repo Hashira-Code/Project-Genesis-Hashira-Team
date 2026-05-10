@@ -9,16 +9,19 @@ import di.testModule
 import data.fixture.TestDataFactory
 import data.BaseKoinTest
 import domain.model.entity.SubmissionType
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-
+@OptIn(ExperimentalCoroutinesApi::class)
 @DisplayName("GetAverageScorePerMenteeUseCase")
 class GetAverageScorePerMenteeUseCaseTest : BaseKoinTest() {
 
-    private val getAverageScorePerMentee: GetAverageScorePerMenteeUseCase by lazy { resolve() }
+    private val getAverageScorePerMentee:
+            GetAverageScorePerMenteeUseCase by lazy { resolve() }
 
     override fun setup() {
         startKoinWith(testModule)
     }
+
 
     @Test
     fun `should calculate correct average score for each mentee`() = runTest {
