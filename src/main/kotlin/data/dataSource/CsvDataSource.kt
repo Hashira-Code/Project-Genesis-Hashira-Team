@@ -1,138 +1,63 @@
 package data.dataSource
 
-import data.exception.CsvException
-import data.model.*
-import data.validation.EmptyFieldValidator
-import data.validation.MissingColumnsValidator
-import data.validation.Validator
-import java.io.File
+import data.model.AttendanceRaw
+import data.model.MenteeRaw
+import data.model.PerformanceRaw
+import data.model.ProjectRaw
+import data.model.TeamRaw
 
 class CsvDataSource(
-    private val path: String,
-    private val fileValidator: Validator<File>,
-    private val lineValidator: Validator<String>,
-    private val emptyFieldValidator: Validator<List<String>>
+    private val fileReader: CsvFileReader,
+    private val rowParser: CsvRowParser
 ) : DataSource {
 
-
-
-
-    override fun getAllAttendance() = attendanceParse()
-    override fun getAllPerformance() = performanceParse()
-    override fun getAllMentees() = menteeParse()
-    override fun getAllTeams() = teamParse()
-    override fun getAllProjects() = projectParse()
-
-
-    private fun menteeParse(): List<MenteeRaw> =
-        parseFile(
-            MENTEES_FILE,
-            MENTEE_COLUMNS,
-        ) { raw ->
+    override suspend fun getAllMentees(): List<MenteeRaw> =
+        parseResource(MENTEES_FILE, MENTEE_COLUMNS) { row ->
             MenteeRaw(
-                id = raw[0],
-                name = raw[1],
-                teamId = raw[2]
-            )
+                id = row[0],
+                name = row[1],
+                teamId = row[2])
         }
 
-    private fun teamParse(): List<TeamRaw> =
-        parseFile(
-            TEAMS_FILE,
-            TEAM_COLUMNS,
-        ) { raw ->
+    override suspend fun getAllTeams(): List<TeamRaw> =
+        parseResource(TEAMS_FILE, TEAM_COLUMNS) { row ->
             TeamRaw(
-                id = raw[0],
-                name = raw[1],
-                mentorLead = raw[2]
-            )
+                id = row[0],
+                name = row[1],
+                mentorLead = row[2])
         }
 
-    private fun projectParse(): List<ProjectRaw> =
-        parseFile(
-            PROJECTS_FILE,
-            PROJECT_COLUMNS,
-        ) { raw ->
+    override suspend fun getAllProjects(): List<ProjectRaw> =
+        parseResource(PROJECTS_FILE, PROJECT_COLUMNS) { row ->
             ProjectRaw(
-                id = raw[0],
-                name = raw[1],
-                teamId = raw[2]
-            )
+                id = row[0],
+                name = row[1],
+                teamId = row[2])
         }
 
-    private fun performanceParse(): List<PerformanceRaw> =
-        parseFile(
-            PERFORMANCE_FILE,
-            PERFORMANCE_COLUMNS,
-        ) { raw ->
+    override suspend fun getAllPerformance(): List<PerformanceRaw> =
+        parseResource(PERFORMANCE_FILE, PERFORMANCE_COLUMNS) { row ->
             PerformanceRaw(
-                id = raw[1],
-                type = raw[2],
-                score = raw[3].toDoubleOrNull() ?: 0.0,
-                menteeId = raw[0]
-            )
+                menteeId = row[0],
+                id = row[1],
+                type = row[2],
+                score = row[3].toDoubleOrNull() ?: 0.0)
         }
 
-    private fun attendanceParse(): List<AttendanceRaw> =
-        parseFile(
-            ATTENDANCE_FILE,
-            ATTENDANCE_MIN_COLUMNS
-        ) { raw ->
+    override suspend fun getAllAttendance(): List<AttendanceRaw> =
+        parseResource(ATTENDANCE_FILE, ATTENDANCE_MIN_COLUMNS) { row ->
             AttendanceRaw(
-                menteeId = raw[0],
-                weeks = raw.drop(1)
-            )
+                menteeId = row[0],
+                weeks = row.drop(1))
         }
 
-    private fun <T> parseFile(
+    private suspend fun <T> parseResource(
         resource: String,
         expectedColumns: Int,
         mapper: (List<String>) -> T
     ): List<T> {
-        val columnsValidator = MissingColumnsValidator(expectedColumns)
-        return readLinesCsv(resource).mapIndexed() { index, raw ->
-            columnsValidator.validate(raw).getOrElse() {
-                throw CsvException.MissingColumnsException(
-                    buildErrorMessage(resource, index + DATA_START_LINE, CsvException.MISSING_COLUMNS)
-                )
-            }
-            emptyFieldValidator.validate(raw).getOrElse() {
-                throw CsvException.EmptyFieldException(
-                    buildErrorMessage(resource, index + DATA_START_LINE, CsvException.EMPTY_FIELD)
-                )
-            }
-            mapper(raw)
-        }
-    }
-
-    private fun buildErrorMessage(
-        resource: String,
-        lineNumber: Int,
-        message: String
-    ): String {
-        return "Error in file '$resource' at line $lineNumber: $message"
-    }
-
-    private fun readLinesCsv(resource: String): List<List<String>> {
-        val file = File("$path/$resource")
-        fileValidator.validate(file).getOrElse() {
-            throw CsvException.FileNotValidException(
-                buildErrorMessage(resource, 0, CsvException.FILE_NOT_VALID)
-            )
-        }
-
-        return file.readLines()
-            .drop(1)
-            .mapIndexed { index, line ->
-                lineValidator.validate(line).getOrElse {
-                    throw CsvException.EmptyLineException(
-                        buildErrorMessage(resource, index + DATA_START_LINE, CsvException.EMPTY_LINE)
-                    )
-                }
-            }
-            .map { line ->
-                line.split(",").map { it.trim() }
-            }
+        val rows = fileReader.readLines(resource)
+        return rowParser.parseRows(rows, resource, expectedColumns, mapper)
     }
 
     companion object {
@@ -146,6 +71,5 @@ class CsvDataSource(
         private const val PROJECT_COLUMNS = 3
         private const val PERFORMANCE_COLUMNS = 4
         private const val ATTENDANCE_MIN_COLUMNS = 2
-        private const val DATA_START_LINE = 2
     }
 }
